@@ -49,8 +49,10 @@ export default {
 
       <div class="tui-actions">
         <a class="tui-btn primary" href="mailto:${config.contactEmail}">[ EMAIL ME ]</a>
-        <button class="tui-btn" id="btnCopyEmail">[ COPY EMAIL ]</button>
         <a class="tui-btn primary" href="${config.matrixUserUrl}" target="_blank" rel="noopener">[ MESSAGE ON MATRIX ]</a>
+      </div>
+      <div class="tui-actions" style="margin-top: calc(8px * var(--app-scale, 1));">
+        <button class="tui-btn" id="btnCopyEmail">[ COPY EMAIL ]</button>
         <button class="tui-btn" id="btnCopyMatrix">[ COPY MATRIX ID ]</button>
       </div>
     `;

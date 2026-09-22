@@ -602,6 +602,20 @@
 }
 
 /* ==========================================================================
+   MODULE: NOTES
+   ========================================================================== */
+.app-window.notes-window {
+  width: min(460px, 92vw);
+  height: min(320px, calc(100vh - 96px));
+  min-height: 220px;
+  min-width: 320px;
+}
+
+.app-window.notes-window .app-content {
+  padding: calc(18px * var(--app-scale, 1)) calc(22px * var(--app-scale, 1));
+}
+
+/* ==========================================================================
    MODULE: MATRIX
    ========================================================================== */
 .app-window.matrix-window {

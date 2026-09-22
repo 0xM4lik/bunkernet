@@ -55,7 +55,7 @@ export default {
     return `
       <div class="tui-section">
         <div class="tui-heading" data-tui-stream>Skills &amp; Technologies:</div>
-        <div class="tui-line" data-tui-stream>[ Python ]  [ Rust ]  [ TypeScript ]  [ Linux ]  [ Security ]  [ Docker ]</div>
+        <div class="tui-line" data-tui-stream>[ Python ]  [ JavaScript ]  [ CSS ]  [ HTML ]  [ Linux ]  [ Docker ]</div>
       </div>
 
       <div class="tui-section">

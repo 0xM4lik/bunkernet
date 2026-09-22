@@ -1,5 +1,6 @@
 /**
  * Matrix Rain App Module
+ * 100% transparent canvas with high-performance digital phosphor stream trails.
  */
 import { config } from '../config.js';
 import { sound } from '../audio.js';
@@ -9,74 +10,127 @@ let matrixLoopId = null;
 let mCanvas = null;
 let mctx = null;
 let mColumns = [];
+let lastFrameTime = 0;
+
 const MATRIX_CHARS = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン<>-_/\\[]{}=+*^?#$%@!&';
 const OCEAN_CHARS = '01°·oO○◌~≈≋∿☵⌬⚓∆∇λµ§•アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-const MATRIX_SPEED = 0.4;
+const FONT_SIZE = 14;
+const STEP_MS = 33; // ~30 FPS rain step cadence
 
 function sizeCanvas() {
   if (!mCanvas || !mCanvas.parentElement) return;
   const parent = mCanvas.parentElement;
-  const newW = Math.floor(parent.offsetWidth || parent.clientWidth || 640);
-  const newH = Math.floor(parent.offsetHeight || parent.clientHeight || 400);
+  const newW = Math.floor(parent.offsetWidth || parent.clientWidth || 740);
+  const newH = Math.floor(parent.offsetHeight || parent.clientHeight || 500);
   if (newW <= 0 || newH <= 0) return;
   if (mCanvas.width === newW && mCanvas.height === newH) return;
 
   mCanvas.width = newW;
   mCanvas.height = newH;
-  const fontSize = 14;
-  const cols = Math.floor(newW / fontSize);
-  if (mColumns.length < cols) {
-    const needed = cols - mColumns.length;
-    for (let i = 0; i < needed; i++) {
-      mColumns.push(Math.random() * -60);
-    }
-  } else if (mColumns.length > cols) {
-    mColumns.length = cols;
-  }
-}
-
-function drawFrame() {
-  if (!mctx || !mCanvas) return;
-  const fontSize = 14;
 
   const currentTheme = getCurrentTheme();
   const isOcean = currentTheme && currentTheme.id === 'ocean';
   const charSet = isOcean ? OCEAN_CHARS : MATRIX_CHARS;
-  const brightColor = (currentTheme && currentTheme.matrixColors) ? currentTheme.matrixColors.bright : '#e8fff2';
-  const dimColor = (currentTheme && currentTheme.matrixColors) ? currentTheme.matrixColors.dim : '#2fbf6f';
 
-  // Fade out trails with destination-out so the canvas background remains 100% transparent
-  mctx.globalCompositeOperation = 'destination-out';
-  mctx.fillStyle = isOcean ? 'rgba(0, 0, 0, 0.06)' : 'rgba(0, 0, 0, 0.08)';
-  mctx.fillRect(0, 0, mCanvas.width, mCanvas.height);
-  mctx.globalCompositeOperation = 'source-over';
+  const cols = Math.floor(newW / FONT_SIZE);
+  const maxRows = Math.ceil(newH / FONT_SIZE) + 40;
 
-  mctx.font = fontSize + 'px monospace';
+  mColumns = [];
+  for (let i = 0; i < cols; i++) {
+    const chars = new Array(maxRows);
+    for (let c = 0; c < maxRows; c++) {
+      chars[c] = charSet[Math.floor(Math.random() * charSet.length)];
+    }
+    mColumns.push({
+      y: Math.floor(Math.random() * (maxRows + 10)) - 10,
+      length: 10 + Math.floor(Math.random() * 18),
+      speed: Math.random() < 0.2 ? 2 : 1,
+      tick: 0,
+      chars
+    });
+  }
+
+  if (mctx) {
+    mctx.clearRect(0, 0, mCanvas.width, mCanvas.height);
+  }
+}
+
+function drawFrame(timestamp) {
+  if (!mctx || !mCanvas) return;
+  matrixLoopId = requestAnimationFrame(drawFrame);
+
+  if (timestamp - lastFrameTime < STEP_MS) return;
+  lastFrameTime = timestamp;
+
+  // 100% transparent canvas background on every frame
+  mctx.clearRect(0, 0, mCanvas.width, mCanvas.height);
+
+  const currentTheme = getCurrentTheme();
+  const isOcean = currentTheme && currentTheme.id === 'ocean';
+  const charSet = isOcean ? OCEAN_CHARS : MATRIX_CHARS;
+  const matrixColor = currentTheme?.primaryHex || currentTheme?.matrixColors?.dim || '#2fbf6f';
+
+  mctx.font = `${FONT_SIZE}px monospace`;
+  mctx.textBaseline = 'top';
+  mctx.fillStyle = matrixColor;
+
+  const rowsCount = Math.ceil(mCanvas.height / FONT_SIZE);
 
   for (let i = 0; i < mColumns.length; i++) {
-    const char = charSet[Math.floor(Math.random() * charSet.length)];
-    const x = i * fontSize;
-    const y = Math.floor(mColumns[i]) * fontSize;
-    if (isOcean && Math.random() > 0.96) {
-      mctx.fillStyle = '#ff9d00'; // Subnautica Alterra orange highlights
-    } else {
-      mctx.fillStyle = Math.random() > 0.92 ? brightColor : dimColor;
+    const col = mColumns[i];
+    const x = i * FONT_SIZE;
+
+    // Draw active trail for this column
+    for (let k = 0; k <= col.length; k++) {
+      const row = col.y - k;
+      if (row < 0 || row >= rowsCount + 2) continue;
+
+      const y = row * FONT_SIZE;
+      let char = col.chars[row % col.chars.length];
+
+      // Occasional cybernetic glyph glitch in the falling stream
+      if (Math.random() < 0.04) {
+        char = charSet[Math.floor(Math.random() * charSet.length)];
+        col.chars[row % col.chars.length] = char;
+      }
+
+      if (k === 0) {
+        mctx.globalAlpha = 1.0;
+      } else {
+        // Trailing glyphs: smooth alpha gradient into 100% transparency
+        const progress = k / col.length; // 0 at head, 1 at tail
+        mctx.globalAlpha = Math.max(0, Math.pow(1 - progress, 1.4));
+      }
+
+      mctx.fillText(char, x, y);
     }
-    mctx.fillText(char, x, y);
-    if (y > mCanvas.height && Math.random() > 0.975) {
-      mColumns[i] = 0;
-    } else {
-      mColumns[i] += MATRIX_SPEED;
+
+    // Step column drop
+    col.tick++;
+    if (col.tick >= col.speed) {
+      col.tick = 0;
+      col.y++;
+
+      // When entire trail passes below canvas, reset to top with randomized delay
+      if (col.y - col.length > rowsCount) {
+        col.y = Math.floor(Math.random() * -20);
+        col.length = 10 + Math.floor(Math.random() * 18);
+        col.speed = Math.random() < 0.2 ? 2 : 1;
+        for (let c = 0; c < col.chars.length; c++) {
+          col.chars[c] = charSet[Math.floor(Math.random() * charSet.length)];
+        }
+      }
     }
   }
-  matrixLoopId = requestAnimationFrame(drawFrame);
+
+  mctx.globalAlpha = 1.0;
 }
 
 export default {
   id: 'matrix',
   label: '[ MATRIX ]',
   command: 'matrix',
-  windowTitle: `bunkernet.cc — matrix`,
+  windowTitle: 'bunkernet.cc — matrix',
   windowClass: 'matrix-window',
   baseWidth: 740,
   baseHeight: 500,
@@ -120,9 +174,9 @@ export default {
     if (mCanvas) {
       mctx = mCanvas.getContext('2d');
       sizeCanvas();
-      mctx.clearRect(0, 0, mCanvas.width, mCanvas.height);
+      lastFrameTime = 0;
       if (matrixLoopId) cancelAnimationFrame(matrixLoopId);
-      drawFrame();
+      matrixLoopId = requestAnimationFrame(drawFrame);
     }
 
     const btn = winEl.querySelector('.matrix-cta .ascii-btn');
