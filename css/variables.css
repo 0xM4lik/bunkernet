@@ -1,0 +1,994 @@
+/* ==========================================================================
+   CSS VARIABLES & MULTI-THEME DESIGN SYSTEM (DOCK & MAC-TUI)
+   ========================================================================== */
+
+:root {
+  /* Common Fonts */
+  --mono: ui-monospace, "SF Mono", "Menlo", "Cascadia Code", "Roboto Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+
+  /* macOS Traffic Light Colors */
+  --red: #ff5f57;
+  --red-dark: #e0443e;
+  --yellow: #febc2e;
+  --yellow-dark: #dea123;
+  --green: #28c840;
+  --green-dark: #1aab29;
+
+  /* macOS Animation & Physics Curves */
+  --ease-apple-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-apple-close: cubic-bezier(0.32, 0, 0.67, 0);
+  --ease-apple-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-dock-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Fallback System Defaults (Dark) */
+  --desktop-bg: #0d1117;
+  --window-bg: rgba(22, 27, 34, 0.90);
+  --window-border: #30363d;
+  --window-shadow: 0 24px 48px -12px rgba(1, 4, 9, 0.8);
+  --titlebar-bg: rgba(22, 27, 34, 0.96);
+  --titlebar-border: #30363d;
+  --title-text-color: #848d97;
+  --menubar-bg: rgba(22, 27, 34, 0.92);
+
+  --term-primary-rgb: 88, 166, 255;
+  --term-secondary-rgb: 188, 140, 255;
+  --term-green: #58a6ff;
+  --term-green-dim: #848d97;
+  --term-blue: #79c0ff;
+  --text-dim: #848d97;
+  --text-main: #e6edf3;
+
+  --app-bg: rgba(22, 27, 34, 0.90);
+  --app-border: #30363d;
+  --app-border-bright: rgba(88, 166, 255, 0.4);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(1, 4, 9, 0.6);
+
+  --logo-filter: brightness(0) invert(92%);
+  --scanline-opacity: 0;
+  --term-btn-hover-color: #58a6ff;
+
+  --term-glow-1: rgba(88, 166, 255, 0.15);
+  --term-glow-2: rgba(88, 166, 255, 0.08);
+  --term-glow-3: transparent;
+  --term-glow-soft: rgba(88, 166, 255, 0.1);
+  --term-glow-heavy: rgba(88, 166, 255, 0.25);
+
+  --dock-bg: rgba(22, 27, 34, 0.90);
+  --dock-border: #30363d;
+  --dock-shadow: 0 20px 40px -10px rgba(1, 4, 9, 0.7), 0 0 0 1px #30363d;
+  --dock-squircle-bg: linear-gradient(180deg, #21262d 0%, #161b22 100%);
+  --dock-squircle-border: #30363d;
+  --dock-indicator: #58a6ff;
+  --dock-tooltip-bg: #21262d;
+  --dock-tooltip-color: #e6edf3;
+  --dock-tooltip-border: #30363d;
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: #848d97;
+  --theme-btn-hover-bg: rgba(255, 255, 255, 0.08);
+  --theme-btn-hover-border: rgba(255, 255, 255, 0.12);
+  --theme-btn-hover-color: #e6edf3;
+  --theme-btn-active-bg: rgba(255, 255, 255, 0.12);
+  --theme-btn-open-bg: rgba(255, 255, 255, 0.10);
+  --theme-btn-open-border: #30363d;
+
+  --popover-bg: #161b22;
+  --popover-border: #30363d;
+  --popover-color: #e6edf3;
+  --popover-shadow: 0 12px 30px rgba(1, 4, 9, 0.65), 0 0 0 1px #30363d;
+  --popover-item-hover-bg: #21262d;
+  --popover-item-hover-color: #58a6ff;
+
+  --scrollbar-thumb: rgba(132, 141, 151, 0.3);
+  --scrollbar-thumb-hover: rgba(132, 141, 151, 0.5);
+
+  --theme-card-bg: #161b22;
+  --theme-card-border: #30363d;
+  --theme-card-hover-bg: #21262d;
+  --theme-card-active-bg: rgba(88, 166, 255, 0.12);
+  --theme-badge-text: #ffffff;
+}
+
+/* System Light Mode Pre-render (Instant unstyled-flash prevention: Light) */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --desktop-bg: #f6f8fa;
+    --window-bg: rgba(255, 255, 255, 0.94);
+    --window-border: #d0d7de;
+    --window-shadow: 0 20px 40px -12px rgba(140, 149, 159, 0.25);
+    --titlebar-bg: rgba(246, 248, 250, 0.97);
+    --titlebar-border: #d0d7de;
+    --title-text-color: #656d76;
+    --menubar-bg: rgba(246, 248, 250, 0.92);
+
+    --term-primary-rgb: 9, 105, 218;
+    --term-secondary-rgb: 130, 80, 223;
+    --term-green: #0969da;
+    --term-green-dim: #656d76;
+    --term-blue: #0550ae;
+    --text-dim: #656d76;
+    --text-main: #1f2328;
+
+    --app-bg: rgba(255, 255, 255, 0.94);
+    --app-border: #d0d7de;
+    --app-border-bright: rgba(9, 105, 218, 0.35);
+    --app-text: var(--text-main);
+    --app-dim: var(--text-dim);
+    --overlay-bg: rgba(31, 35, 40, 0.25);
+
+    --logo-filter: brightness(0) opacity(0.88);
+    --scanline-opacity: 0;
+    --term-btn-hover-color: #0969da;
+
+    --term-glow-1: rgba(9, 105, 218, 0.15);
+    --term-glow-2: rgba(9, 105, 218, 0.08);
+    --term-glow-3: transparent;
+    --term-glow-soft: rgba(9, 105, 218, 0.1);
+    --term-glow-heavy: rgba(9, 105, 218, 0.25);
+
+    --dock-bg: rgba(255, 255, 255, 0.92);
+    --dock-border: #d0d7de;
+    --dock-shadow: 0 16px 36px -8px rgba(140, 149, 159, 0.3), 0 0 0 1px #d0d7de;
+    --dock-squircle-bg: linear-gradient(180deg, #ffffff 0%, #f6f8fa 100%);
+    --dock-squircle-border: #d0d7de;
+    --dock-indicator: #0969da;
+    --dock-tooltip-bg: #ffffff;
+    --dock-tooltip-color: #1f2328;
+    --dock-tooltip-border: #d0d7de;
+
+    --theme-btn-bg: transparent;
+    --theme-btn-border: transparent;
+    --theme-btn-color: #656d76;
+    --theme-btn-hover-bg: rgba(0, 0, 0, 0.06);
+    --theme-btn-hover-border: rgba(0, 0, 0, 0.08);
+    --theme-btn-hover-color: #1f2328;
+    --theme-btn-active-bg: rgba(0, 0, 0, 0.09);
+    --theme-btn-open-bg: rgba(0, 0, 0, 0.07);
+    --theme-btn-open-border: #d0d7de;
+
+    --popover-bg: #ffffff;
+    --popover-border: #d0d7de;
+    --popover-color: #1f2328;
+    --popover-shadow: 0 12px 28px rgba(140, 149, 159, 0.25), 0 0 0 1px #d0d7de;
+    --popover-item-hover-bg: #f6f8fa;
+    --popover-item-hover-color: #0969da;
+
+    --scrollbar-thumb: rgba(101, 109, 118, 0.25);
+    --scrollbar-thumb-hover: rgba(101, 109, 118, 0.45);
+
+    --theme-card-bg: #ffffff;
+    --theme-card-border: #d0d7de;
+    --theme-card-hover-bg: #f6f8fa;
+    --theme-card-active-bg: rgba(9, 105, 218, 0.08);
+    --theme-badge-text: #ffffff;
+  }
+}
+
+/* ==========================================================================
+   THEME: DARK (Simple, Ultra-Readable & Clean)
+   ========================================================================== */
+[data-theme="dark"] {
+  --desktop-bg: #0d1117;
+  --window-bg: rgba(22, 27, 34, 0.90);
+  --window-border: #30363d;
+  --window-shadow: 0 24px 48px -12px rgba(1, 4, 9, 0.8);
+  --titlebar-bg: rgba(22, 27, 34, 0.96);
+  --titlebar-border: #30363d;
+  --title-text-color: #848d97;
+  --menubar-bg: rgba(22, 27, 34, 0.92);
+
+  --term-primary-rgb: 88, 166, 255;
+  --term-secondary-rgb: 188, 140, 255;
+  --term-green: #58a6ff;
+  --term-green-dim: #848d97;
+  --term-blue: #79c0ff;
+  --text-dim: #848d97;
+  --text-main: #e6edf3;
+
+  --app-bg: rgba(22, 27, 34, 0.90);
+  --app-border: #30363d;
+  --app-border-bright: rgba(88, 166, 255, 0.4);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(1, 4, 9, 0.6);
+
+  --logo-filter: brightness(0) invert(92%);
+  --scanline-opacity: 0;
+  --term-btn-hover-color: #58a6ff;
+
+  --term-glow-1: rgba(88, 166, 255, 0.15);
+  --term-glow-2: rgba(88, 166, 255, 0.08);
+  --term-glow-3: transparent;
+  --term-glow-soft: rgba(88, 166, 255, 0.1);
+  --term-glow-heavy: rgba(88, 166, 255, 0.25);
+
+  --dock-bg: rgba(22, 27, 34, 0.90);
+  --dock-border: #30363d;
+  --dock-shadow: 0 20px 40px -10px rgba(1, 4, 9, 0.7), 0 0 0 1px #30363d;
+  --dock-squircle-bg: linear-gradient(180deg, #21262d 0%, #161b22 100%);
+  --dock-squircle-border: #30363d;
+  --dock-indicator: #58a6ff;
+  --dock-tooltip-bg: #21262d;
+  --dock-tooltip-color: #e6edf3;
+  --dock-tooltip-border: #30363d;
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: #848d97;
+  --theme-btn-hover-bg: rgba(255, 255, 255, 0.08);
+  --theme-btn-hover-border: rgba(255, 255, 255, 0.12);
+  --theme-btn-hover-color: #e6edf3;
+  --theme-btn-active-bg: rgba(255, 255, 255, 0.12);
+  --theme-btn-open-bg: rgba(255, 255, 255, 0.10);
+  --theme-btn-open-border: #30363d;
+
+  --popover-bg: #161b22;
+  --popover-border: #30363d;
+  --popover-color: #e6edf3;
+  --popover-shadow: 0 12px 30px rgba(1, 4, 9, 0.65), 0 0 0 1px #30363d;
+  --popover-item-hover-bg: #21262d;
+  --popover-item-hover-color: #58a6ff;
+
+  --scrollbar-thumb: rgba(132, 141, 151, 0.3);
+  --scrollbar-thumb-hover: rgba(132, 141, 151, 0.5);
+
+  --theme-card-bg: #161b22;
+  --theme-card-border: #30363d;
+  --theme-card-hover-bg: #21262d;
+  --theme-card-active-bg: rgba(88, 166, 255, 0.12);
+  --theme-badge-text: #ffffff;
+}
+
+/* ==========================================================================
+   THEME: LIGHT (Simple, High-Contrast & Clean)
+   ========================================================================== */
+[data-theme="light"] {
+  --desktop-bg: #f6f8fa;
+  --window-bg: rgba(255, 255, 255, 0.94);
+  --window-border: #d0d7de;
+  --window-shadow: 0 20px 40px -12px rgba(140, 149, 159, 0.25);
+  --titlebar-bg: rgba(246, 248, 250, 0.97);
+  --titlebar-border: #d0d7de;
+  --title-text-color: #656d76;
+  --menubar-bg: rgba(246, 248, 250, 0.92);
+
+  --term-primary-rgb: 9, 105, 218;
+  --term-secondary-rgb: 130, 80, 223;
+  --term-green: #0969da;
+  --term-green-dim: #656d76;
+  --term-blue: #0550ae;
+  --text-dim: #656d76;
+  --text-main: #1f2328;
+
+  --app-bg: rgba(255, 255, 255, 0.94);
+  --app-border: #d0d7de;
+  --app-border-bright: rgba(9, 105, 218, 0.35);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(31, 35, 40, 0.25);
+
+  --logo-filter: brightness(0) opacity(0.88);
+  --scanline-opacity: 0;
+  --term-btn-hover-color: #0969da;
+
+  --term-glow-1: rgba(9, 105, 218, 0.15);
+  --term-glow-2: rgba(9, 105, 218, 0.08);
+  --term-glow-3: transparent;
+  --term-glow-soft: rgba(9, 105, 218, 0.1);
+  --term-glow-heavy: rgba(9, 105, 218, 0.25);
+
+  --dock-bg: rgba(255, 255, 255, 0.92);
+  --dock-border: #d0d7de;
+  --dock-shadow: 0 16px 36px -8px rgba(140, 149, 159, 0.3), 0 0 0 1px #d0d7de;
+  --dock-squircle-bg: linear-gradient(180deg, #ffffff 0%, #f6f8fa 100%);
+  --dock-squircle-border: #d0d7de;
+  --dock-indicator: #0969da;
+  --dock-tooltip-bg: #ffffff;
+  --dock-tooltip-color: #1f2328;
+  --dock-tooltip-border: #d0d7de;
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: #656d76;
+  --theme-btn-hover-bg: rgba(0, 0, 0, 0.06);
+  --theme-btn-hover-border: rgba(0, 0, 0, 0.08);
+  --theme-btn-hover-color: #1f2328;
+  --theme-btn-active-bg: rgba(0, 0, 0, 0.09);
+  --theme-btn-open-bg: rgba(0, 0, 0, 0.07);
+  --theme-btn-open-border: #d0d7de;
+
+  --popover-bg: #ffffff;
+  --popover-border: #d0d7de;
+  --popover-color: #1f2328;
+  --popover-shadow: 0 12px 28px rgba(140, 149, 159, 0.25), 0 0 0 1px #d0d7de;
+  --popover-item-hover-bg: #f6f8fa;
+  --popover-item-hover-color: #0969da;
+
+  --scrollbar-thumb: rgba(101, 109, 118, 0.25);
+  --scrollbar-thumb-hover: rgba(101, 109, 118, 0.45);
+
+  --theme-card-bg: #ffffff;
+  --theme-card-border: #d0d7de;
+  --theme-card-hover-bg: #f6f8fa;
+  --theme-card-active-bg: rgba(9, 105, 218, 0.08);
+  --theme-badge-text: #ffffff;
+}
+
+/* ==========================================================================
+   THEME: MATRIX (Classic Cyberpunk Green CRT Phosphor Terminal)
+   ========================================================================== */
+[data-theme="matrix"] {
+  --desktop-bg: #000000;
+  --window-bg: rgba(10, 12, 10, 0.32);
+  --window-border: #30363d;
+  --window-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7), 0 10px 20px -8px rgba(0, 0, 0, 0.4);
+  --titlebar-bg: rgba(20, 24, 20, 0.55);
+  --titlebar-border: rgba(0, 0, 0, 0.45);
+  --title-text-color: rgba(214, 255, 230, 0.6);
+  --menubar-bg: rgba(20, 18, 30, 0.35);
+
+  --term-primary-rgb: 77, 255, 158;
+  --term-secondary-rgb: 122, 176, 255;
+  --term-green: #4dff9e;
+  --term-green-dim: #2f8f5f;
+  --term-blue: #7ab0ff;
+  --text-dim: #7da38d;
+  --text-main: #d6ffe6;
+
+  --app-bg: rgba(10, 12, 10, 0.32);
+  --app-border: rgba(77, 255, 158, 0.2);
+  --app-border-bright: rgba(77, 255, 158, 0.45);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+
+  --logo-filter: none;
+  --scanline-opacity: 0.85;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(77, 255, 158, 0.85);
+  --term-glow-2: rgba(77, 255, 158, 0.55);
+  --term-glow-3: rgba(77, 255, 158, 0.35);
+  --term-glow-soft: rgba(77, 255, 158, 0.18);
+  --term-glow-heavy: rgba(77, 255, 158, 1);
+
+  --dock-bg: rgba(18, 20, 24, 0.85);
+  --dock-border: rgba(77, 255, 158, 0.2);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(77, 255, 158, 0.2);
+  --dock-squircle-bg: linear-gradient(180deg, #22262c 0%, #121417 100%);
+  --dock-squircle-border: rgba(77, 255, 158, 0.2);
+  --dock-indicator: rgba(77, 255, 158, 0.9);
+  --dock-tooltip-bg: rgba(26, 28, 32, 0.92);
+  --dock-tooltip-color: #f2f2f7;
+  --dock-tooltip-border: rgba(77, 255, 158, 0.2);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(214, 255, 230, 0.7);
+  --theme-btn-hover-bg: rgba(77, 255, 158, 0.12);
+  --theme-btn-hover-border: rgba(77, 255, 158, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(77, 255, 158, 0.18);
+  --theme-btn-open-bg: rgba(77, 255, 158, 0.15);
+  --theme-btn-open-border: rgba(77, 255, 158, 0.35);
+
+  --popover-bg: rgba(18, 22, 18, 0.95);
+  --popover-border: rgba(77, 255, 158, 0.25);
+  --popover-color: rgba(240, 240, 248, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(77, 255, 158, 0.2);
+  --popover-item-hover-bg: rgba(77, 255, 158, 0.15);
+  --popover-item-hover-color: #4dff9e;
+
+  --scrollbar-thumb: rgba(77, 255, 158, 0.22);
+  --scrollbar-thumb-hover: rgba(77, 255, 158, 0.45);
+
+  --theme-card-bg: rgba(77, 255, 158, 0.04);
+  --theme-card-border: rgba(77, 255, 158, 0.15);
+  --theme-card-hover-bg: rgba(77, 255, 158, 0.08);
+  --theme-card-active-bg: rgba(77, 255, 158, 0.14);
+  --theme-badge-text: #000000;
+}
+
+/* ==========================================================================
+   THEME: OCEAN (Subnautica Planet 4546B & Alterra PDA)
+   ========================================================================== */
+[data-theme="ocean"] {
+  --desktop-bg: #010a14;
+  --window-bg: rgba(2, 18, 34, 0.52);
+  --window-border: #30363d;
+  --window-shadow: 0 26px 54px -12px rgba(0, 8, 18, 0.8), 0 8px 22px -6px rgba(0, 240, 255, 0.16);
+  --titlebar-bg: rgba(4, 28, 50, 0.72);
+  --titlebar-border: rgba(0, 0, 0, 0.45);
+  --title-text-color: rgba(224, 250, 255, 0.65);
+  --menubar-bg: rgba(3, 22, 40, 0.50);
+
+  --term-primary-rgb: 0, 240, 255;
+  --term-secondary-rgb: 255, 157, 0;
+  --term-green: #00f0ff;
+  --term-green-dim: #00a0b2;
+  --term-blue: #ff9d00;
+  --text-dim: #5f8d9e;
+  --text-main: #e0faff;
+
+  --app-bg: rgba(2, 18, 34, 0.52);
+  --app-border: rgba(0, 240, 255, 0.22);
+  --app-border-bright: rgba(0, 240, 255, 0.6);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(1, 10, 20, 0.55);
+
+  --logo-filter: hue-rotate(36deg) saturate(1.6) brightness(1.12);
+  --scanline-opacity: 0.6;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(0, 240, 255, 0.85);
+  --term-glow-2: rgba(0, 240, 255, 0.55);
+  --term-glow-3: rgba(0, 240, 255, 0.35);
+  --term-glow-soft: rgba(0, 240, 255, 0.2);
+  --term-glow-heavy: rgba(0, 240, 255, 1);
+
+  --dock-bg: rgba(2, 16, 30, 0.88);
+  --dock-border: rgba(0, 240, 255, 0.22);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 8, 18, 0.8), 0 0 0 1px rgba(0, 240, 255, 0.2), inset 0 1px 0 rgba(0, 240, 255, 0.2);
+  --dock-squircle-bg: linear-gradient(180deg, #03213d 0%, #011120 100%);
+  --dock-squircle-border: rgba(0, 240, 255, 0.25);
+  --dock-indicator: rgba(0, 240, 255, 0.95);
+  --dock-tooltip-bg: rgba(2, 18, 34, 0.94);
+  --dock-tooltip-color: #e0faff;
+  --dock-tooltip-border: rgba(0, 240, 255, 0.25);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(224, 250, 255, 0.7);
+  --theme-btn-hover-bg: rgba(0, 240, 255, 0.12);
+  --theme-btn-hover-border: rgba(0, 240, 255, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(0, 240, 255, 0.18);
+  --theme-btn-open-bg: rgba(0, 240, 255, 0.15);
+  --theme-btn-open-border: rgba(0, 240, 255, 0.35);
+
+  --popover-bg: rgba(2, 20, 38, 0.95);
+  --popover-border: rgba(0, 240, 255, 0.25);
+  --popover-color: rgba(224, 250, 255, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 8, 18, 0.8), 0 0 0 1px rgba(0, 240, 255, 0.25);
+  --popover-item-hover-bg: rgba(0, 240, 255, 0.15);
+  --popover-item-hover-color: #00f0ff;
+
+  --scrollbar-thumb: rgba(0, 240, 255, 0.25);
+  --scrollbar-thumb-hover: rgba(0, 240, 255, 0.5);
+
+  --theme-card-bg: rgba(0, 240, 255, 0.04);
+  --theme-card-border: rgba(0, 240, 255, 0.15);
+  --theme-card-hover-bg: rgba(0, 240, 255, 0.08);
+  --theme-card-active-bg: rgba(0, 240, 255, 0.14);
+  --theme-badge-text: #010a14;
+}
+
+/* ==========================================================================
+   THEME: DRACULA (Iconic Gothic Dark Palette)
+   ========================================================================== */
+[data-theme="dracula"] {
+  --desktop-bg: #1e1f29;
+  --window-bg: rgba(40, 42, 54, 0.58);
+  --window-border: #30363d;
+  --window-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+  --titlebar-bg: rgba(33, 34, 44, 0.75);
+  --titlebar-border: rgba(0, 0, 0, 0.4);
+  --title-text-color: rgba(248, 248, 242, 0.6);
+  --menubar-bg: rgba(30, 28, 42, 0.55);
+
+  --term-primary-rgb: 189, 147, 249;
+  --term-secondary-rgb: 255, 121, 198;
+  --term-green: #bd93f9;
+  --term-green-dim: #7957b8;
+  --term-blue: #ff79c6;
+  --text-dim: #6272a4;
+  --text-main: #f8f8f2;
+
+  --app-bg: rgba(40, 42, 54, 0.58);
+  --app-border: rgba(189, 147, 249, 0.2);
+  --app-border-bright: rgba(189, 147, 249, 0.55);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(18, 19, 25, 0.55);
+
+  --logo-filter: hue-rotate(115deg) saturate(1.3);
+  --scanline-opacity: 0.5;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(189, 147, 249, 0.85);
+  --term-glow-2: rgba(189, 147, 249, 0.55);
+  --term-glow-3: rgba(189, 147, 249, 0.35);
+  --term-glow-soft: rgba(189, 147, 249, 0.2);
+  --term-glow-heavy: rgba(189, 147, 249, 1);
+
+  --dock-bg: rgba(33, 34, 44, 0.88);
+  --dock-border: rgba(189, 147, 249, 0.2);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(189, 147, 249, 0.2);
+  --dock-squircle-bg: linear-gradient(180deg, #383a4c 0%, #21222c 100%);
+  --dock-squircle-border: rgba(189, 147, 249, 0.22);
+  --dock-indicator: #bd93f9;
+  --dock-tooltip-bg: rgba(33, 34, 44, 0.94);
+  --dock-tooltip-color: #f8f8f2;
+  --dock-tooltip-border: rgba(189, 147, 249, 0.25);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(248, 248, 242, 0.7);
+  --theme-btn-hover-bg: rgba(189, 147, 249, 0.12);
+  --theme-btn-hover-border: rgba(189, 147, 249, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(189, 147, 249, 0.18);
+  --theme-btn-open-bg: rgba(189, 147, 249, 0.15);
+  --theme-btn-open-border: rgba(189, 147, 249, 0.35);
+
+  --popover-bg: rgba(33, 34, 44, 0.95);
+  --popover-border: rgba(189, 147, 249, 0.25);
+  --popover-color: rgba(248, 248, 242, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(189, 147, 249, 0.25);
+  --popover-item-hover-bg: rgba(189, 147, 249, 0.15);
+  --popover-item-hover-color: #bd93f9;
+
+  --scrollbar-thumb: rgba(189, 147, 249, 0.22);
+  --scrollbar-thumb-hover: rgba(189, 147, 249, 0.45);
+
+  --theme-card-bg: rgba(189, 147, 249, 0.04);
+  --theme-card-border: rgba(189, 147, 249, 0.15);
+  --theme-card-hover-bg: rgba(189, 147, 249, 0.08);
+  --theme-card-active-bg: rgba(189, 147, 249, 0.14);
+  --theme-badge-text: #1e1f29;
+}
+
+/* ==========================================================================
+   THEME: NORD (Arctic Scandinavian Frost)
+   ========================================================================== */
+[data-theme="nord"] {
+  --desktop-bg: #242933;
+  --window-bg: rgba(46, 52, 64, 0.62);
+  --window-border: #30363d;
+  --window-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.55);
+  --titlebar-bg: rgba(36, 41, 51, 0.78);
+  --titlebar-border: rgba(0, 0, 0, 0.35);
+  --title-text-color: rgba(236, 239, 244, 0.6);
+  --menubar-bg: rgba(34, 38, 48, 0.55);
+
+  --term-primary-rgb: 136, 192, 208;
+  --term-secondary-rgb: 129, 161, 193;
+  --term-green: #88c0d0;
+  --term-green-dim: #5e81ac;
+  --term-blue: #81a1c1;
+  --text-dim: #7b88a1;
+  --text-main: #eceff4;
+
+  --app-bg: rgba(46, 52, 64, 0.62);
+  --app-border: rgba(136, 192, 208, 0.2);
+  --app-border-bright: rgba(136, 192, 208, 0.55);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(20, 23, 30, 0.5);
+
+  --logo-filter: hue-rotate(42deg) saturate(0.8) brightness(1.05);
+  --scanline-opacity: 0.4;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(136, 192, 208, 0.85);
+  --term-glow-2: rgba(136, 192, 208, 0.55);
+  --term-glow-3: rgba(136, 192, 208, 0.35);
+  --term-glow-soft: rgba(136, 192, 208, 0.2);
+  --term-glow-heavy: rgba(136, 192, 208, 1);
+
+  --dock-bg: rgba(36, 41, 51, 0.88);
+  --dock-border: rgba(136, 192, 208, 0.2);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(136, 192, 208, 0.2);
+  --dock-squircle-bg: linear-gradient(180deg, #434c5e 0%, #2e3440 100%);
+  --dock-squircle-border: rgba(136, 192, 208, 0.2);
+  --dock-indicator: #88c0d0;
+  --dock-tooltip-bg: rgba(36, 41, 51, 0.94);
+  --dock-tooltip-color: #eceff4;
+  --dock-tooltip-border: rgba(136, 192, 208, 0.25);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(236, 239, 244, 0.7);
+  --theme-btn-hover-bg: rgba(136, 192, 208, 0.12);
+  --theme-btn-hover-border: rgba(136, 192, 208, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(136, 192, 208, 0.18);
+  --theme-btn-open-bg: rgba(136, 192, 208, 0.15);
+  --theme-btn-open-border: rgba(136, 192, 208, 0.35);
+
+  --popover-bg: rgba(36, 41, 51, 0.95);
+  --popover-border: rgba(136, 192, 208, 0.25);
+  --popover-color: rgba(236, 239, 244, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(136, 192, 208, 0.25);
+  --popover-item-hover-bg: rgba(136, 192, 208, 0.15);
+  --popover-item-hover-color: #88c0d0;
+
+  --scrollbar-thumb: rgba(136, 192, 208, 0.22);
+  --scrollbar-thumb-hover: rgba(136, 192, 208, 0.45);
+
+  --theme-card-bg: rgba(136, 192, 208, 0.04);
+  --theme-card-border: rgba(136, 192, 208, 0.15);
+  --theme-card-hover-bg: rgba(136, 192, 208, 0.08);
+  --theme-card-active-bg: rgba(136, 192, 208, 0.14);
+  --theme-badge-text: #242933;
+}
+
+/* ==========================================================================
+   THEME: AMBER (Classic DEC VT220 Monochrome CRT)
+   ========================================================================== */
+[data-theme="amber"] {
+  --desktop-bg: #070502;
+  --window-bg: rgba(20, 14, 4, 0.45);
+  --window-border: #30363d;
+  --window-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.75);
+  --titlebar-bg: rgba(30, 20, 8, 0.62);
+  --titlebar-border: rgba(0, 0, 0, 0.45);
+  --title-text-color: rgba(255, 238, 194, 0.6);
+  --menubar-bg: rgba(24, 16, 6, 0.45);
+
+  --term-primary-rgb: 255, 176, 0;
+  --term-secondary-rgb: 255, 119, 0;
+  --term-green: #ffb000;
+  --term-green-dim: #946000;
+  --term-blue: #ff7700;
+  --text-dim: #b58c5c;
+  --text-main: #ffeec2;
+
+  --app-bg: rgba(20, 14, 4, 0.45);
+  --app-border: rgba(255, 176, 0, 0.18);
+  --app-border-bright: rgba(255, 176, 0, 0.5);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(7, 5, 2, 0.6);
+
+  --logo-filter: hue-rotate(-112deg) saturate(1.4) brightness(1.1);
+  --scanline-opacity: 0.85;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(255, 176, 0, 0.85);
+  --term-glow-2: rgba(255, 176, 0, 0.55);
+  --term-glow-3: rgba(255, 176, 0, 0.35);
+  --term-glow-soft: rgba(255, 176, 0, 0.2);
+  --term-glow-heavy: rgba(255, 176, 0, 1);
+
+  --dock-bg: rgba(24, 16, 6, 0.88);
+  --dock-border: rgba(255, 176, 0, 0.18);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 176, 0, 0.18);
+  --dock-squircle-bg: linear-gradient(180deg, #2d1e08 0%, #170e03 100%);
+  --dock-squircle-border: rgba(255, 176, 0, 0.2);
+  --dock-indicator: #ffb000;
+  --dock-tooltip-bg: rgba(24, 16, 6, 0.94);
+  --dock-tooltip-color: #ffeec2;
+  --dock-tooltip-border: rgba(255, 176, 0, 0.25);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(255, 238, 194, 0.7);
+  --theme-btn-hover-bg: rgba(255, 176, 0, 0.12);
+  --theme-btn-hover-border: rgba(255, 176, 0, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(255, 176, 0, 0.18);
+  --theme-btn-open-bg: rgba(255, 176, 0, 0.15);
+  --theme-btn-open-border: rgba(255, 176, 0, 0.35);
+
+  --popover-bg: rgba(24, 16, 6, 0.95);
+  --popover-border: rgba(255, 176, 0, 0.25);
+  --popover-color: rgba(255, 238, 194, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 176, 0, 0.25);
+  --popover-item-hover-bg: rgba(255, 176, 0, 0.15);
+  --popover-item-hover-color: #ffb000;
+
+  --scrollbar-thumb: rgba(255, 176, 0, 0.22);
+  --scrollbar-thumb-hover: rgba(255, 176, 0, 0.45);
+
+  --theme-card-bg: rgba(255, 176, 0, 0.04);
+  --theme-card-border: rgba(255, 176, 0, 0.15);
+  --theme-card-hover-bg: rgba(255, 176, 0, 0.08);
+  --theme-card-active-bg: rgba(255, 176, 0, 0.14);
+  --theme-badge-text: #070502;
+}
+
+/* ==========================================================================
+   THEME: TOKYO NIGHT (Modern Cyberpunk Indigo & Neon Blue)
+   ========================================================================== */
+[data-theme="tokyo-night"] {
+  --desktop-bg: #13141f;
+  --window-bg: rgba(26, 27, 38, 0.6);
+  --window-border: #30363d;
+  --window-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.65);
+  --titlebar-bg: rgba(22, 22, 30, 0.78);
+  --titlebar-border: rgba(0, 0, 0, 0.4);
+  --title-text-color: rgba(192, 202, 245, 0.6);
+  --menubar-bg: rgba(20, 20, 32, 0.55);
+
+  --term-primary-rgb: 122, 162, 247;
+  --term-secondary-rgb: 187, 154, 247;
+  --term-green: #7aa2f7;
+  --term-green-dim: #4463a8;
+  --term-blue: #bb9af7;
+  --text-dim: #565f89;
+  --text-main: #c0caf5;
+
+  --app-bg: rgba(26, 27, 38, 0.6);
+  --app-border: rgba(122, 162, 247, 0.2);
+  --app-border-bright: rgba(122, 162, 247, 0.55);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(15, 15, 25, 0.55);
+
+  --logo-filter: hue-rotate(150deg) saturate(1.2) brightness(1.1);
+  --scanline-opacity: 0.5;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(122, 162, 247, 0.85);
+  --term-glow-2: rgba(122, 162, 247, 0.55);
+  --term-glow-3: rgba(122, 162, 247, 0.35);
+  --term-glow-soft: rgba(122, 162, 247, 0.2);
+  --term-glow-heavy: rgba(122, 162, 247, 1);
+
+  --dock-bg: rgba(22, 22, 30, 0.88);
+  --dock-border: rgba(122, 162, 247, 0.2);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(122, 162, 247, 0.2);
+  --dock-squircle-bg: linear-gradient(180deg, #282a3c 0%, #151620 100%);
+  --dock-squircle-border: rgba(122, 162, 247, 0.22);
+  --dock-indicator: #7aa2f7;
+  --dock-tooltip-bg: rgba(22, 22, 30, 0.94);
+  --dock-tooltip-color: #c0caf5;
+  --dock-tooltip-border: rgba(122, 162, 247, 0.25);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(192, 202, 245, 0.7);
+  --theme-btn-hover-bg: rgba(122, 162, 247, 0.12);
+  --theme-btn-hover-border: rgba(122, 162, 247, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(122, 162, 247, 0.18);
+  --theme-btn-open-bg: rgba(122, 162, 247, 0.15);
+  --theme-btn-open-border: rgba(122, 162, 247, 0.35);
+
+  --popover-bg: rgba(22, 22, 30, 0.95);
+  --popover-border: rgba(122, 162, 247, 0.25);
+  --popover-color: rgba(192, 202, 245, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(122, 162, 247, 0.25);
+  --popover-item-hover-bg: rgba(122, 162, 247, 0.15);
+  --popover-item-hover-color: #7aa2f7;
+
+  --scrollbar-thumb: rgba(122, 162, 247, 0.22);
+  --scrollbar-thumb-hover: rgba(122, 162, 247, 0.45);
+
+  --theme-card-bg: rgba(122, 162, 247, 0.04);
+  --theme-card-border: rgba(122, 162, 247, 0.15);
+  --theme-card-hover-bg: rgba(122, 162, 247, 0.08);
+  --theme-card-active-bg: rgba(122, 162, 247, 0.14);
+  --theme-badge-text: #13141f;
+}
+
+/* ==========================================================================
+   THEME: GRUVBOX (Warm Retro Dark Palette)
+   ========================================================================== */
+[data-theme="gruvbox"] {
+  --desktop-bg: #1d2021;
+  --window-bg: rgba(29, 32, 33, 0.62);
+  --window-border: #30363d;
+  --window-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+  --titlebar-bg: rgba(40, 40, 40, 0.78);
+  --titlebar-border: rgba(0, 0, 0, 0.4);
+  --title-text-color: rgba(235, 219, 178, 0.6);
+  --menubar-bg: rgba(30, 30, 30, 0.55);
+
+  --term-primary-rgb: 250, 189, 47;
+  --term-secondary-rgb: 254, 128, 25;
+  --term-green: #fabd2f;
+  --term-green-dim: #a88018;
+  --term-blue: #fe8019;
+  --text-dim: #928374;
+  --text-main: #ebdbb2;
+
+  --app-bg: rgba(29, 32, 33, 0.62);
+  --app-border: rgba(250, 189, 47, 0.2);
+  --app-border-bright: rgba(250, 189, 47, 0.55);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(25, 27, 28, 0.55);
+
+  --logo-filter: hue-rotate(-120deg) saturate(1.5) brightness(1.15);
+  --scanline-opacity: 0.5;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(250, 189, 47, 0.85);
+  --term-glow-2: rgba(250, 189, 47, 0.55);
+  --term-glow-3: rgba(250, 189, 47, 0.35);
+  --term-glow-soft: rgba(250, 189, 47, 0.2);
+  --term-glow-heavy: rgba(250, 189, 47, 1);
+
+  --dock-bg: rgba(40, 40, 40, 0.88);
+  --dock-border: rgba(250, 189, 47, 0.2);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(250, 189, 47, 0.2);
+  --dock-squircle-bg: linear-gradient(180deg, #44403c 0%, #282828 100%);
+  --dock-squircle-border: rgba(250, 189, 47, 0.22);
+  --dock-indicator: #fabd2f;
+  --dock-tooltip-bg: rgba(40, 40, 40, 0.94);
+  --dock-tooltip-color: #ebdbb2;
+  --dock-tooltip-border: rgba(250, 189, 47, 0.25);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(235, 219, 178, 0.7);
+  --theme-btn-hover-bg: rgba(250, 189, 47, 0.12);
+  --theme-btn-hover-border: rgba(250, 189, 47, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(250, 189, 47, 0.18);
+  --theme-btn-open-bg: rgba(250, 189, 47, 0.15);
+  --theme-btn-open-border: rgba(250, 189, 47, 0.35);
+
+  --popover-bg: rgba(40, 40, 40, 0.95);
+  --popover-border: rgba(250, 189, 47, 0.25);
+  --popover-color: rgba(235, 219, 178, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(250, 189, 47, 0.25);
+  --popover-item-hover-bg: rgba(250, 189, 47, 0.15);
+  --popover-item-hover-color: #fabd2f;
+
+  --scrollbar-thumb: rgba(250, 189, 47, 0.22);
+  --scrollbar-thumb-hover: rgba(250, 189, 47, 0.45);
+
+  --theme-card-bg: rgba(250, 189, 47, 0.04);
+  --theme-card-border: rgba(250, 189, 47, 0.15);
+  --theme-card-hover-bg: rgba(250, 189, 47, 0.08);
+  --theme-card-active-bg: rgba(250, 189, 47, 0.14);
+  --theme-badge-text: #1d2021;
+}
+
+/* ==========================================================================
+   THEME: CATPPUCCIN (Soothing Pastel Mocha)
+   ========================================================================== */
+[data-theme="catppuccin"] {
+  --desktop-bg: #11111b;
+  --window-bg: rgba(30, 30, 46, 0.62);
+  --window-border: #30363d;
+  --window-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.65);
+  --titlebar-bg: rgba(24, 24, 37, 0.78);
+  --titlebar-border: rgba(0, 0, 0, 0.4);
+  --title-text-color: rgba(205, 214, 244, 0.6);
+  --menubar-bg: rgba(17, 17, 27, 0.55);
+
+  --term-primary-rgb: 203, 166, 247;
+  --term-secondary-rgb: 137, 220, 235;
+  --term-green: #cba6f7;
+  --term-green-dim: #8868b8;
+  --term-blue: #89dceb;
+  --text-dim: #6c7086;
+  --text-main: #cdd6f4;
+
+  --app-bg: rgba(30, 30, 46, 0.62);
+  --app-border: rgba(203, 166, 247, 0.2);
+  --app-border-bright: rgba(203, 166, 247, 0.55);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(17, 17, 27, 0.55);
+
+  --logo-filter: hue-rotate(130deg) saturate(1.4);
+  --scanline-opacity: 0.45;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(203, 166, 247, 0.85);
+  --term-glow-2: rgba(203, 166, 247, 0.55);
+  --term-glow-3: rgba(203, 166, 247, 0.35);
+  --term-glow-soft: rgba(203, 166, 247, 0.2);
+  --term-glow-heavy: rgba(203, 166, 247, 1);
+
+  --dock-bg: rgba(24, 24, 37, 0.88);
+  --dock-border: rgba(203, 166, 247, 0.2);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(203, 166, 247, 0.2);
+  --dock-squircle-bg: linear-gradient(180deg, #313244 0%, #1e1e2e 100%);
+  --dock-squircle-border: rgba(203, 166, 247, 0.22);
+  --dock-indicator: #cba6f7;
+  --dock-tooltip-bg: rgba(24, 24, 37, 0.94);
+  --dock-tooltip-color: #cdd6f4;
+  --dock-tooltip-border: rgba(203, 166, 247, 0.25);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(205, 214, 244, 0.7);
+  --theme-btn-hover-bg: rgba(203, 166, 247, 0.12);
+  --theme-btn-hover-border: rgba(203, 166, 247, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(203, 166, 247, 0.18);
+  --theme-btn-open-bg: rgba(203, 166, 247, 0.15);
+  --theme-btn-open-border: rgba(203, 166, 247, 0.35);
+
+  --popover-bg: rgba(24, 24, 37, 0.95);
+  --popover-border: rgba(203, 166, 247, 0.25);
+  --popover-color: rgba(205, 214, 244, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(203, 166, 247, 0.25);
+  --popover-item-hover-bg: rgba(203, 166, 247, 0.15);
+  --popover-item-hover-color: #cba6f7;
+
+  --scrollbar-thumb: rgba(203, 166, 247, 0.22);
+  --scrollbar-thumb-hover: rgba(203, 166, 247, 0.45);
+
+  --theme-card-bg: rgba(203, 166, 247, 0.04);
+  --theme-card-border: rgba(203, 166, 247, 0.15);
+  --theme-card-hover-bg: rgba(203, 166, 247, 0.08);
+  --theme-card-active-bg: rgba(203, 166, 247, 0.14);
+  --theme-badge-text: #11111b;
+}
+
+/* ==========================================================================
+   THEME: MONOKAI (Vibrant Classic Code Palette)
+   ========================================================================== */
+[data-theme="monokai"] {
+  --desktop-bg: #1e1f1c;
+  --window-bg: rgba(39, 40, 34, 0.62);
+  --window-border: #30363d;
+  --window-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+  --titlebar-bg: rgba(30, 31, 28, 0.78);
+  --titlebar-border: rgba(0, 0, 0, 0.4);
+  --title-text-color: rgba(248, 248, 242, 0.6);
+  --menubar-bg: rgba(25, 26, 22, 0.55);
+
+  --term-primary-rgb: 166, 226, 46;
+  --term-secondary-rgb: 249, 38, 114;
+  --term-green: #a6e22e;
+  --term-green-dim: #669614;
+  --term-blue: #f92672;
+  --text-dim: #75715e;
+  --text-main: #f8f8f2;
+
+  --app-bg: rgba(39, 40, 34, 0.62);
+  --app-border: rgba(166, 226, 46, 0.2);
+  --app-border-bright: rgba(166, 226, 46, 0.55);
+  --app-text: var(--text-main);
+  --app-dim: var(--text-dim);
+  --overlay-bg: rgba(25, 26, 22, 0.55);
+
+  --logo-filter: hue-rotate(-15deg) saturate(1.3) brightness(1.05);
+  --scanline-opacity: 0.5;
+  --term-btn-hover-color: #ffffff;
+
+  --term-glow-1: rgba(166, 226, 46, 0.85);
+  --term-glow-2: rgba(166, 226, 46, 0.55);
+  --term-glow-3: rgba(166, 226, 46, 0.35);
+  --term-glow-soft: rgba(166, 226, 46, 0.2);
+  --term-glow-heavy: rgba(166, 226, 46, 1);
+
+  --dock-bg: rgba(30, 31, 28, 0.88);
+  --dock-border: rgba(166, 226, 46, 0.2);
+  --dock-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(166, 226, 46, 0.2);
+  --dock-squircle-bg: linear-gradient(180deg, #49483e 0%, #272822 100%);
+  --dock-squircle-border: rgba(166, 226, 46, 0.22);
+  --dock-indicator: #a6e22e;
+  --dock-tooltip-bg: rgba(30, 31, 28, 0.94);
+  --dock-tooltip-color: #f8f8f2;
+  --dock-tooltip-border: rgba(166, 226, 46, 0.25);
+
+  --theme-btn-bg: transparent;
+  --theme-btn-border: transparent;
+  --theme-btn-color: rgba(248, 248, 242, 0.7);
+  --theme-btn-hover-bg: rgba(166, 226, 46, 0.12);
+  --theme-btn-hover-border: rgba(166, 226, 46, 0.3);
+  --theme-btn-hover-color: #ffffff;
+  --theme-btn-active-bg: rgba(166, 226, 46, 0.18);
+  --theme-btn-open-bg: rgba(166, 226, 46, 0.15);
+  --theme-btn-open-border: rgba(166, 226, 46, 0.35);
+
+  --popover-bg: rgba(30, 31, 28, 0.95);
+  --popover-border: rgba(166, 226, 46, 0.25);
+  --popover-color: rgba(248, 248, 242, 0.9);
+  --popover-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(166, 226, 46, 0.25);
+  --popover-item-hover-bg: rgba(166, 226, 46, 0.15);
+  --popover-item-hover-color: #a6e22e;
+
+  --scrollbar-thumb: rgba(166, 226, 46, 0.22);
+  --scrollbar-thumb-hover: rgba(166, 226, 46, 0.45);
+
+  --theme-card-bg: rgba(166, 226, 46, 0.04);
+  --theme-card-border: rgba(166, 226, 46, 0.15);
+  --theme-card-hover-bg: rgba(166, 226, 46, 0.08);
+  --theme-card-active-bg: rgba(166, 226, 46, 0.14);
+  --theme-badge-text: #1e1f1c;
+}

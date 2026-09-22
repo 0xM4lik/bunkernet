@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bunkernet.cc</title>
+
+  <meta name="description" content="bunkernet.cc — personal security research, systems, homelab, and interactive terminal portfolio.">
+  <link rel="icon" type="image/png" href="assets/ASCII-logo.png">
+
+  <!-- Open Graph & Social Cards -->
+  <meta property="og:title" content="bunkernet.cc">
+  <meta property="og:description" content="Cyberpunk terminal interface, 3D network starfield, and self-hosted systems portfolio.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/ASCII-logo.png">
+  <meta name="twitter:card" content="summary">
+
+  <!-- Instant OS Theme Detection (Flash Prevention) -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('bunkernet_theme_v2');
+        var theme = saved;
+        if (!saved || saved === 'system' || saved === 'auto') {
+          theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- External Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpePEzpS0nMQFb12xVCZ755nd263UQMvzUWBoaTSuvOzCD992KOT58BiKLc46Ygk4vAz492923MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Modular Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css?v=6">
+  <link rel="stylesheet" href="css/base.css?v=6">
+  <link rel="stylesheet" href="css/terminal.css?v=6">
+  <link rel="stylesheet" href="css/apps.css?v=6">
+  <link rel="stylesheet" href="css/background.css?v=6">
+</head>
+<body>
+
+  <!-- Infinite 3D Canvas Network Background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Audio Consent Prompt Dialog (appears after 3D background reveal) -->
+  <div class="audio-prompt-dialog" id="audioPromptDialog" aria-modal="true" role="dialog">
+    <div class="audio-prompt-box" id="audioPromptBox">
+      <div class="audio-prompt-titlebar" id="audioPromptTitlebar">
+        <div class="traffic-lights">
+          <button class="light close" id="btnAudioClose" aria-label="Close" title="Close" type="button">
+            <svg viewBox="0 0 8 8"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="title-text">bunkernet.cc</div>
+      </div>
+      <div class="audio-prompt-content">
+        <div class="audio-prompt-text">Enable sound effects?</div>
+        <div class="audio-prompt-actions">
+          <button class="ascii-btn" id="btnAudioYes" aria-label="Enable Sound">
+            <span class="ascii-label" data-text="[ YES ]">[ YES ]</span>
+          </button>
+          <button class="ascii-btn" id="btnAudioNo" aria-label="Mute Audio">
+            <span class="ascii-label" data-text="[ NO ]">[ NO ]</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal Window Stage -->
+  <div class="stage">
+    <div class="terminal" id="terminal">
+      <!-- 8-Directional Resize Handles -->
+      <div class="resize-handle rh-n" data-dir="n"></div>
+      <div class="resize-handle rh-s" data-dir="s"></div>
+      <div class="resize-handle rh-e" data-dir="e"></div>
+      <div class="resize-handle rh-w" data-dir="w"></div>
+      <div class="resize-handle rh-nw" data-dir="nw"></div>
+      <div class="resize-handle rh-ne" data-dir="ne"></div>
+      <div class="resize-handle rh-sw" data-dir="sw"></div>
+      <div class="resize-handle rh-se" data-dir="se" title="Resize Terminal">
+        <svg class="resize-grip" viewBox="0 0 10 10" aria-hidden="true">
+          <line x1="8" y1="2" x2="2" y2="8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="8" y1="5" x2="5" y2="8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="8" y1="8" x2="8" y2="8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="titlebar" id="titlebar">
+        <div class="traffic-lights">
+          <button class="light close" id="btnClose" aria-label="Close" title="Close">
+            <svg viewBox="0 0 8 8"><path d="M1.5 1.5L6.5 6.5M6.5 1.5L1.5 6.5" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+          </button>
+          <button class="light min" id="btnMin" aria-label="Minimize" title="Minimize">
+            <svg viewBox="0 0 8 8"><line x1="1.5" y1="4" x2="6.5" y2="4" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="light max" id="btnMax" aria-label="Maximize" title="Maximize">
+            <svg viewBox="0 0 8 8"><path d="M4.5 1.5H6.5V3.5M6.3 1.7L4 4M3.5 6.5H1.5V4.5M1.7 6.3L4 4" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="title-text">bunkernet.cc</div>
+        <div class="macos-theme-menu-wrap" id="themeMenuWrap">
+          <button class="macos-theme-btn" id="themeMenuBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch Theme">
+            <span class="theme-btn-icon" id="themeBtnIcon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="8" r="6.25"/>
+                <path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="theme-btn-label" id="themeBtnLabel">Auto</span>
+            <svg class="theme-chevron-svg" viewBox="0 0 8 6" width="7" height="6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="1.5 1.75 4 4.25 6.5 1.75"/>
+            </svg>
+          </button>
+          <div class="macos-theme-popover" id="themeMenuPopover" role="menu" aria-label="Themes"></div>
+        </div>
+      </div>
+
+      <div class="body" id="body">
+        <div class="body-inner">
+          <div class="logo-wrap" id="logoWrap">
+            <picture>
+              <source srcset="assets/ASCII-logo.webp" type="image/webp">
+              <img src="assets/ASCII-logo.png" alt="bunkernet.cc Logo" class="logo-img" id="asciiLogo" draggable="false" />
+            </picture>
+            <div class="logo-glow-gradient" id="logoGlowGradient" aria-hidden="true"></div>
+          </div>
+
+          <!-- Dynamic ASCII Launcher Button Grid -->
+          <div class="menu-grid" id="menuGrid"></div>
+
+          <!-- Interactive CLI Shell Prompt & History -->
+          <div id="promptHistory" aria-live="polite"></div>
+          <div class="prompt-line" id="promptLine">
+            <span class="prompt-user">guest@bunkernet</span> <span class="prompt-path">~</span><span class="prompt-sep">%</span>
+            <input id="promptInput" class="prompt-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- macOS / GNOME Desktop Dock -->
+  <div class="macos-dock" id="macosDock" role="toolbar" aria-label="Application Dock">
+    <button class="dock-app" id="dockRestore" aria-label="Terminal" title="Terminal">
+      <div class="dock-app-squircle">
+        <svg class="dock-app-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
+        </svg>
+      </div>
+      <span class="dock-indicator" id="dockIndicator"></span>
+      <span class="dock-tooltip">Terminal</span>
+    </button>
+  </div>
+
+  <!-- Modal Overlay Backdrop -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Dynamic Modal Windows Container -->
+  <div id="appWindowsContainer"></div>
+
+  <!-- Main ES Module Entry Point -->
+  <script type="module" src="js/main.js?v=6"></script>
+
+</body>
+</html>

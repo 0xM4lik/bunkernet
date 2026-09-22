@@ -1,0 +1,22 @@
+# Operating System
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Personal planning & concept notes
+.gitignored/
+.gitignored
+
+# AI agent environments & scratch directories
+.agents/
+skills-lock.json
+backup/
+
+# Node / Logs / Temp
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+.env*
+scratch/

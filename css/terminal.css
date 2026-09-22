@@ -1,0 +1,1236 @@
+/* ==========================================================================
+   MACOS TERMINAL WINDOW & CRT PHOSPHOR STYLING
+   ========================================================================== */
+
+.terminal {
+  width: min(860px, 92vw);
+  height: min(600px, calc(100vh - 96px));
+  min-width: 360px;
+  min-height: 280px;
+  max-width: calc(100vw - 20px);
+  max-height: calc(100vh - 90px);
+  position: relative;
+  background: var(--window-bg);
+  border: 1px solid var(--window-border, #30363d);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 30px 60px -15px rgba(0, 0, 0, 0.5),
+    0 10px 20px -8px rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  transform-origin: center center;
+  opacity: 0;
+  transform: scale(0.88) translateY(24px);
+  transition: box-shadow 0.3s ease;
+  will-change: transform, opacity, filter;
+}
+
+/* macOS App Launch Zoom Entrance */
+.terminal.open {
+  animation: macosWindowOpen 0.44s var(--ease-apple-spring) forwards !important;
+}
+
+@keyframes macosWindowOpen {
+  0% {
+    opacity: 0;
+    transform: scale(0.88) translateY(24px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* Authentic macOS Window Close (Snappy, stationary depth recede & fade) */
+.terminal.closing {
+  animation: macosWindowClose 0.2s cubic-bezier(0.2, 0, 0.25, 1) forwards !important;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+@keyframes macosWindowClose {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.92);
+    filter: brightness(0.85);
+  }
+}
+
+/* macOS Dock Suction ("Genie/Scale to Dock" into bottom-center dock restore item) */
+.terminal.minimizing {
+  animation: macosMinimizeToDock 0.38s var(--ease-apple-in-out) forwards !important;
+  pointer-events: none;
+  transform-origin: center bottom;
+}
+
+@keyframes macosMinimizeToDock {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+  60% {
+    opacity: 0.85;
+    transform: scale(0.55, 0.35) translateY(22vh);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.16, 0.06) translateY(44vh);
+    filter: blur(5px);
+  }
+}
+
+/* macOS Dock Restore ("Unminimize from Dock" springing out smoothly back into place) */
+.terminal.unminimizing {
+  animation: macosUnminimizeFromDock 0.44s var(--ease-apple-spring) forwards !important;
+  transform-origin: center bottom;
+  pointer-events: none;
+}
+
+@keyframes macosUnminimizeFromDock {
+  0% {
+    opacity: 0;
+    transform: scale(0.18, 0.08) translateY(40vh);
+    filter: blur(5px);
+  }
+  40% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+.terminal.maximized {
+  position: fixed !important;
+  inset: 16px !important;
+  width: auto !important;
+  height: auto !important;
+  transform: none !important;
+  transition: all 0.4s cubic-bezier(.2, .9, .25, 1);
+  z-index: 10;
+}
+
+.terminal.restoring {
+  transition: all 0.4s cubic-bezier(.2, .9, .25, 1);
+}
+
+body.window-dragging,
+body.window-dragging *,
+body.window-resizing,
+body.window-resizing * {
+  user-select: none !important;
+}
+
+body.window-dragging,
+body.window-dragging * {
+  cursor: grabbing !important;
+}
+
+.terminal.is-dragging,
+.terminal.is-resizing {
+  transition: none !important;
+  user-select: none;
+  -moz-user-select: none;
+}
+
+/* ---- Titlebar & Traffic Lights ---- */
+.titlebar {
+  height: 38px;
+  flex: 0 0 auto;
+  background: var(--titlebar-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  position: relative;
+  user-select: none;
+  -moz-user-select: none;
+  border-bottom: 1px solid var(--titlebar-border, rgba(0, 0, 0, 0.35));
+  cursor: grab;
+  touch-action: none;
+}
+
+.titlebar:active {
+  cursor: grabbing;
+}
+
+.traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  box-sizing: border-box;
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+  -webkit-appearance: none;
+}
+
+/* Maintain fixed dimensions: do not scale up on hover */
+.light:hover {
+  transform: none;
+}
+
+.light:active {
+  transform: scale(0.92);
+  filter: brightness(0.85);
+}
+
+.light svg {
+  width: 8px;
+  height: 8px;
+  display: block;
+  margin: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+.traffic-lights:hover .light svg,
+.light:hover svg {
+  opacity: 1;
+}
+
+.light.close {
+  background: linear-gradient(180deg, var(--red), var(--red-dark));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.light.min {
+  background: linear-gradient(180deg, var(--yellow), var(--yellow-dark));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.light.max {
+  background: linear-gradient(180deg, var(--green), var(--green-dark));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.light.close:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 6px rgba(255, 95, 87, 0.6);
+}
+.light.min:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 6px rgba(254, 188, 46, 0.6);
+}
+.light.max:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 6px rgba(40, 200, 64, 0.6);
+}
+
+.light.close svg path { stroke: rgba(70, 10, 10, 0.75); }
+.light.min svg line   { stroke: rgba(60, 45, 0, 0.75); }
+.light.max svg path   { stroke: rgba(10, 50, 10, 0.75); }
+
+.light:focus-visible {
+  outline: 2px solid var(--term-green);
+  outline-offset: 2px;
+}
+
+.title-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--title-text-color, rgba(235, 235, 245, 0.55));
+  font-weight: 500;
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ---- macOS Titlebar Theme Menu Control ---- */
+.macos-theme-menu-wrap {
+  margin-left: auto;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: auto;
+}
+
+.macos-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 7px 0 6px;
+  background: var(--theme-btn-bg, transparent);
+  border: 1px solid var(--theme-btn-border, transparent);
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  color: var(--theme-btn-color, var(--title-text-color));
+  cursor: pointer;
+  outline: none;
+  touch-action: auto;
+  pointer-events: auto;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s var(--ease-apple-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.macos-theme-btn:hover {
+  background: var(--theme-btn-hover-bg, rgba(255, 255, 255, 0.08));
+  border-color: var(--theme-btn-hover-border, transparent);
+  color: var(--theme-btn-hover-color, #ffffff);
+}
+
+.macos-theme-btn:focus-visible {
+  outline: 1.5px dashed var(--term-green);
+  outline-offset: 2px;
+}
+
+.macos-theme-btn:active {
+  transform: scale(0.96);
+  background: var(--theme-btn-active-bg, rgba(255, 255, 255, 0.12));
+}
+
+.macos-theme-menu-wrap.is-open .macos-theme-btn {
+  background: var(--theme-btn-open-bg, rgba(255, 255, 255, 0.10));
+  border-color: var(--theme-btn-open-border, var(--window-border));
+  color: var(--theme-btn-hover-color, #ffffff);
+}
+
+.theme-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.theme-btn-icon svg {
+  display: block;
+  width: 13px;
+  height: 13px;
+}
+
+.macos-theme-btn:hover .theme-btn-icon {
+  opacity: 1;
+}
+
+.theme-btn-label {
+  line-height: 1;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.theme-chevron-svg {
+  width: 7px;
+  height: 6px;
+  display: block;
+  opacity: 0.55;
+  flex-shrink: 0;
+  stroke: currentColor;
+  margin-left: 1px;
+  transition: transform 0.2s ease, opacity 0.15s ease;
+}
+
+.macos-theme-btn:hover .theme-chevron-svg {
+  opacity: 0.85;
+}
+
+.macos-theme-menu-wrap.is-open .theme-chevron-svg {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* ---- macOS Popover Menu ---- */
+.macos-theme-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 175px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background: var(--popover-bg, #161b22);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--popover-border, #30363d);
+  border-radius: 8px;
+  box-shadow: var(--popover-shadow,
+    0 14px 34px -4px rgba(0, 0, 0, 0.65),
+    0 0 0 1px #30363d);
+  padding: 5px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(-4px) scale(0.97);
+  pointer-events: none;
+  transform-origin: top right;
+  transition: opacity 0.16s ease, transform 0.16s var(--ease-apple-spring);
+}
+
+.macos-theme-popover::-webkit-scrollbar {
+  width: 4px;
+}
+
+.macos-theme-popover::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb, rgba(255, 255, 255, 0.15));
+  border-radius: 2px;
+}
+
+.macos-menu-divider {
+  height: 1px;
+  background: var(--popover-border, rgba(255, 255, 255, 0.12));
+  margin: 4px 2px;
+}
+
+.macos-menu-section-header {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim, #848d97);
+  padding: 4px 8px 2px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.macos-menu-hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  padding: 6px 8px 3px;
+  border-top: 1px solid var(--popover-border);
+  margin-top: 4px;
+  user-select: none;
+  letter-spacing: 0.2px;
+}
+
+.macos-theme-menu-wrap.is-open .macos-theme-popover {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.macos-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 450;
+  color: var(--popover-color, #e6edf3);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 0.12s ease, color 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.macos-menu-item:hover,
+.macos-menu-item:focus-visible {
+  background: var(--popover-item-hover-bg, #21262d);
+  color: var(--popover-item-hover-color, #58a6ff);
+}
+
+.macos-menu-item.is-selected {
+  font-weight: 600;
+}
+
+.macos-menu-item-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.85;
+}
+
+.macos-menu-item-icon svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+.macos-menu-item-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .macos-menu-item-swatch {
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.macos-menu-item-label {
+  flex: 1;
+  line-height: 1.25;
+}
+
+.macos-menu-check {
+  width: 13px;
+  height: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  flex-shrink: 0;
+  color: var(--term-green, #58a6ff);
+}
+
+.macos-menu-item.is-selected .macos-menu-check {
+  opacity: 1;
+}
+
+.macos-menu-check svg {
+  width: 10px;
+  height: 10px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* ---- Terminal Body ---- */
+.body {
+  flex: 1 1 auto;
+  padding: calc(22px * var(--term-scale, 1)) calc(20px * var(--term-scale, 1));
+  font-family: var(--mono);
+  font-size: clamp(12.5px, calc(13.5px * var(--term-scale, 1)), 24px);
+  line-height: 1.5;
+  color: var(--text-main);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb, rgba(255, 255, 255, 0.12));
+  border-radius: 4px;
+}
+
+.body::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover, rgba(255, 255, 255, 0.25));
+}
+
+.body-inner {
+  width: 100%;
+  max-width: calc(640px * var(--term-scale, 1));
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- CRT Logo Container & Phosphor Styling ---- */
+.logo-wrap {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: calc(26px * var(--term-scale, 1));
+  width: 100%;
+  max-width: calc(600px * var(--term-scale, 1));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+
+.logo-wrap picture,
+#logoWrap picture {
+  filter: var(--logo-filter, none);
+  transition: filter 0.3s ease;
+  display: block;
+  width: 100%;
+  max-width: calc(600px * var(--term-scale, 1));
+  position: relative;
+  z-index: 1;
+}
+
+.logo-img {
+  display: block;
+  width: 100%;
+  max-width: calc(600px * var(--term-scale, 1));
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleY(0.01) scaleX(0.2);
+  transform-origin: center center;
+}
+
+/* Runs once upon popping up */
+.logo-img.revealed {
+  opacity: 1;
+  transform: scaleY(1) scaleX(1);
+  animation: crtIgnition 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Steady clean phosphor characters without background blur */
+.logo-img.glow {
+  opacity: 1;
+  transform: scaleY(1) scaleX(1);
+  filter: none !important;
+  animation: none !important;
+}
+
+/* Character-only glow gradient moving from bottom to top — strictly on character pixels */
+.logo-glow-gradient {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  -webkit-mask-image: url('../assets/ASCII-logo.png');
+  mask-image: url('../assets/ASCII-logo.png');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background: linear-gradient(
+    0deg,
+    transparent 0%,
+    rgba(var(--term-primary-rgb, 77, 255, 158), 0) 15%,
+    rgba(var(--term-primary-rgb, 77, 255, 158), 0.45) 35%,
+    rgba(var(--term-primary-rgb, 77, 255, 158), 0.95) 50%,
+    rgba(var(--term-primary-rgb, 77, 255, 158), 0.45) 65%,
+    rgba(var(--term-primary-rgb, 77, 255, 158), 0) 85%,
+    transparent 100%
+  );
+  background-size: 100% 250%;
+  background-position: 0 100%;
+  mix-blend-mode: screen;
+}
+
+.logo-wrap.glow .logo-glow-gradient,
+.logo-wrap:has(.logo-img.glow) .logo-glow-gradient {
+  opacity: 1;
+  animation: logoGlowSweepUp 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes logoGlowSweepUp {
+  0% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 0 -150%;
+  }
+}
+
+@keyframes crtIgnition {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.005) scaleX(0.1);
+  }
+  35% {
+    opacity: 1;
+    transform: scaleY(0.02) scaleX(1);
+  }
+  70% {
+    opacity: 1;
+    transform: scaleY(1.06) scaleX(1);
+  }
+  88% {
+    opacity: 1;
+    transform: scaleY(0.98) scaleX(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) scaleX(1);
+  }
+}
+
+/* ---- Audio Consent Prompt Dialog ---- */
+.audio-prompt-dialog {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.audio-prompt-dialog.visible {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.audio-prompt-box {
+  width: min(380px, 92vw);
+  background: var(--window-bg);
+  border: 1px solid var(--window-border, #30363d);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 30px 60px -15px rgba(0, 0, 0, 0.5),
+    0 10px 20px -8px rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.88) translateY(24px);
+  opacity: 0;
+  touch-action: none;
+}
+
+.audio-prompt-box.is-dragging {
+  transition: none !important;
+  user-select: none;
+  -moz-user-select: none;
+}
+
+.audio-prompt-box.open-anim {
+  animation: macosWindowOpen 0.44s var(--ease-apple-spring) forwards;
+}
+
+.audio-prompt-titlebar {
+  height: 38px;
+  flex: 0 0 auto;
+  background: var(--titlebar-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  position: relative;
+  user-select: none;
+  -moz-user-select: none;
+  border-bottom: 1px solid var(--titlebar-border, rgba(0, 0, 0, 0.35));
+  cursor: grab;
+  touch-action: none;
+}
+
+.audio-prompt-titlebar:active {
+  cursor: grabbing;
+}
+
+.audio-prompt-content {
+  padding: 26px 22px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: var(--mono);
+}
+
+.audio-prompt-text {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 22px;
+  letter-spacing: 0.5px;
+}
+
+.audio-prompt-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.audio-prompt-actions .ascii-btn {
+  width: calc(100px * var(--term-scale, 1));
+}
+
+.audio-prompt-actions .ascii-btn .ascii-label {
+  margin-top: 0;
+  font-size: clamp(12px, calc(13px * var(--term-scale, 1)), 20px);
+}
+
+/* ---- Menu Grid & ASCII Launcher Buttons ---- */
+.menu-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  width: 100%;
+  margin-bottom: calc(26px * var(--term-scale, 1));
+  opacity: 0;
+}
+
+.menu-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(26px * var(--term-scale, 1)) calc(20px * var(--term-scale, 1));
+  justify-content: center;
+  width: 100%;
+}
+
+.ascii-btn {
+  background: none;
+  border: none;
+  text-decoration: none;
+  padding: calc(6px * var(--term-scale, 1)) calc(8px * var(--term-scale, 1));
+  margin: 0;
+  cursor: pointer;
+  font-family: var(--mono);
+  color: var(--term-green-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(2px * var(--term-scale, 1));
+  width: calc(128px * var(--term-scale, 1));
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ascii-btn .ascii-art {
+  margin: 0;
+  white-space: pre;
+  font-size: clamp(11.5px, calc(12px * var(--term-scale, 1)), 22px);
+  line-height: 1.2;
+  color: inherit;
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+}
+
+.ascii-btn .ascii-label {
+  display: block;
+  margin-top: calc(4px * var(--term-scale, 1));
+  font-size: clamp(11.5px, calc(12px * var(--term-scale, 1)), 22px);
+  letter-spacing: 1px;
+  white-space: pre;
+  color: var(--term-green);
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+}
+
+.ascii-btn:hover .ascii-art,
+.ascii-btn:focus-visible .ascii-art {
+  color: var(--term-green);
+  text-shadow:
+    0 0 6px var(--term-glow-1, rgba(77, 255, 158, 0.85)),
+    0 0 16px var(--term-glow-2, rgba(77, 255, 158, 0.55)),
+    0 0 32px var(--term-glow-3, rgba(77, 255, 158, 0.35));
+}
+
+.ascii-btn:hover .ascii-label,
+.ascii-btn:focus-visible .ascii-label {
+  color: var(--term-btn-hover-color, #ffffff);
+  text-shadow:
+    0 0 6px var(--term-glow-1, rgba(255, 255, 255, 0.7)),
+    0 0 18px var(--term-glow-2, rgba(77, 255, 158, 0.6));
+}
+
+.ascii-btn:focus-visible {
+  outline: 1px dashed var(--term-green);
+  outline-offset: 4px;
+}
+
+/* ---- Terminal Prompt & History ---- */
+#promptHistory {
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.history-line {
+  color: var(--text-main);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.history-output {
+  color: var(--text-dim);
+  margin: 2px 0 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.prompt-line {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  opacity: 0;
+  padding-bottom: 4px;
+  font-size: clamp(12.5px, calc(13.5px * var(--term-scale, 1)), 24px);
+}
+
+.prompt-user {
+  color: var(--term-green);
+}
+
+.prompt-path {
+  color: var(--term-blue);
+}
+
+.prompt-sep {
+  margin: 0 6px 0 4px;
+  color: var(--text-main);
+}
+
+.prompt-input {
+  flex: 1;
+  min-width: 40px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-family: var(--mono);
+  font-size: clamp(12.5px, calc(13.5px * var(--term-scale, 1)), 24px);
+  caret-color: var(--term-green);
+  padding: 0;
+  margin: 0;
+}
+
+/* ==========================================================================
+   APPLE / GNOME DESKTOP DOCK & APP TILE
+   ========================================================================== */
+
+.macos-dock {
+  position: fixed;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 5px 8px 4px 8px;
+  background: var(--dock-bg, rgba(20, 22, 26, 0.55));
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--dock-border, rgba(255, 255, 255, 0.12));
+  border-radius: 16px;
+  box-shadow: var(--dock-shadow,
+    0 16px 36px -8px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18));
+  z-index: 35;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.38s var(--ease-apple-spring), opacity 0.26s ease;
+}
+
+.macos-dock.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dock-app {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  outline: none;
+  transition: transform 0.2s var(--ease-apple-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dock-app:hover {
+  transform: translateY(-4px) scale(1.06);
+}
+
+.dock-app:active {
+  transform: translateY(-1px) scale(0.96);
+}
+
+.dock-app-squircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dock-squircle-bg, linear-gradient(180deg, #22262c 0%, #121417 100%));
+  border: 1px solid var(--dock-squircle-border, rgba(255, 255, 255, 0.12));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.dock-app:hover .dock-app-squircle {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 14px var(--term-glow-3, rgba(77, 255, 158, 0.3));
+  border-color: var(--term-green-dim, rgba(77, 255, 158, 0.45));
+  background: linear-gradient(180deg, #2a3038 0%, #16191d 100%);
+}
+
+.dock-app-svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  flex-shrink: 0;
+  stroke: var(--term-green);
+}
+
+/* Apple / GNOME Running Indicator Dot */
+.dock-indicator {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  margin-top: 3px;
+  background: var(--dock-indicator, rgba(255, 255, 255, 0.9));
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.25s ease, transform 0.25s var(--ease-apple-spring), background 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* When terminal is open or minimized, indicator is ON! */
+.dock-app.is-open .dock-indicator,
+.dock-app.is-minimized .dock-indicator {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* When minimized: warm glowing amber dot indicating running background window */
+.dock-app.is-minimized .dock-indicator {
+  background: var(--yellow);
+  box-shadow: 0 0 6px rgba(254, 188, 46, 0.85);
+}
+
+/* macOS Floating Tooltip on Hover */
+.dock-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 4px 10px;
+  background: var(--dock-tooltip-bg, rgba(26, 28, 32, 0.88));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--dock-tooltip-border, rgba(255, 255, 255, 0.12));
+  border-radius: 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  color: var(--dock-tooltip-color, #f2f2f7);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s var(--ease-apple-spring);
+  z-index: 50;
+}
+
+.dock-app:hover .dock-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Subtle dock bounce animation when receiving minimized window */
+.dock-app.dock-bounce {
+  animation: dockItemBounce 0.4s var(--ease-dock-bounce);
+}
+
+@keyframes dockItemBounce {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.1); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* ---- Responsive Resolution Adjustments ---- */
+@media (min-width: 2200px) and (min-height: 1200px) {
+  .terminal {
+    width: min(1140px, 80vw);
+    height: min(760px, 78vh);
+  }
+}
+
+@media (min-width: 1500px) and (max-width: 2199px) {
+  .terminal {
+    width: min(940px, 86vw);
+    height: min(640px, 82vh);
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-wrap { margin-bottom: 18px; }
+  .menu-grid { gap: 20px 12px; }
+  .ascii-btn { width: 100px; }
+}
+
+/* ==========================================================================
+   TERMINAL WINDOW RESIZING HANDLES & RETRO GRIP
+   ========================================================================== */
+
+.resize-handle {
+  position: absolute;
+  z-index: 15;
+  touch-action: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.terminal.maximized .resize-handle {
+  display: none !important;
+}
+
+.resize-handle.rh-n  { top: -4px; left: 12px; right: 12px; height: 8px; cursor: ns-resize; }
+.resize-handle.rh-s  { bottom: -4px; left: 12px; right: 12px; height: 8px; cursor: ns-resize; }
+.resize-handle.rh-e  { right: -4px; top: 12px; bottom: 12px; width: 8px; cursor: ew-resize; }
+.resize-handle.rh-w  { left: -4px; top: 12px; bottom: 12px; width: 8px; cursor: ew-resize; }
+.resize-handle.rh-nw { top: -4px; left: -4px; width: 14px; height: 14px; cursor: nwse-resize; z-index: 16; }
+.resize-handle.rh-ne { top: -4px; right: -4px; width: 14px; height: 14px; cursor: nesw-resize; z-index: 16; }
+.resize-handle.rh-sw { bottom: -4px; left: -4px; width: 14px; height: 14px; cursor: nesw-resize; z-index: 16; }
+
+.resize-handle.rh-se {
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  cursor: nwse-resize;
+  z-index: 16;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 4px;
+}
+
+.resize-grip {
+  width: 10px;
+  height: 10px;
+  color: var(--term-green);
+  opacity: 0.35;
+  pointer-events: none;
+  transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+}
+
+.resize-handle.rh-se:hover .resize-grip,
+.terminal.is-resizing .resize-grip {
+  opacity: 0.95;
+  filter: drop-shadow(0 0 5px var(--term-green));
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   OCEAN THEME (SUBNAUTICA) DEDICATED VISUAL EFFECTS
+   ========================================================================== */
+
+[data-theme="ocean"] .terminal,
+[data-theme="ocean"] .app-window {
+  box-shadow:
+    0 26px 54px -12px rgba(0, 8, 18, 0.8),
+    0 8px 22px -6px rgba(0, 240, 255, 0.16),
+    0 0 20px -2px rgba(0, 240, 255, 0.14) !important;
+}
+
+
+[data-theme="ocean"] .prompt-user {
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+}
+
+[data-theme="ocean"] .prompt-path {
+  color: var(--term-blue);
+  text-shadow: 0 0 8px rgba(255, 157, 0, 0.5);
+}
+
+[data-theme="ocean"] .ascii-btn:hover .ascii-label,
+[data-theme="ocean"] .ascii-btn:focus-visible .ascii-label {
+  color: #e0faff;
+  text-shadow:
+    0 0 8px rgba(0, 240, 255, 0.9),
+    0 0 20px rgba(0, 240, 255, 0.6);
+}
+
+[data-theme="ocean"] .body::-webkit-scrollbar-thumb,
+[data-theme="ocean"] .app-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.22);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+[data-theme="ocean"] .body::-webkit-scrollbar-thumb:hover,
+[data-theme="ocean"] .app-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.45);
+}
+
+/* ==========================================================================
+   DARK & LIGHT THEME DEDICATED VISUAL EFFECTS
+   ========================================================================== */
+
+[data-theme="dark"] .logo-img.revealed,
+[data-theme="light"] .logo-img.revealed,
+:root:not([data-theme]) .logo-img.revealed {
+  animation: logoCleanReveal 0.5s var(--ease-apple-spring) forwards !important;
+}
+
+[data-theme="dark"] .logo-img.glow,
+[data-theme="light"] .logo-img.glow,
+:root:not([data-theme]) .logo-img.glow {
+  animation: none !important;
+  filter: none !important;
+  opacity: 0.95;
+}
+
+[data-theme="dark"] .logo-glow-gradient,
+[data-theme="light"] .logo-glow-gradient,
+:root:not([data-theme]) .logo-glow-gradient {
+  display: none !important;
+}
+
+@keyframes logoCleanReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: none;
+  }
+  100% {
+    opacity: 0.95;
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+
+
+

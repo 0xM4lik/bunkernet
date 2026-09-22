@@ -1,0 +1,711 @@
+/* ==========================================================================
+   MODAL APP WINDOWS & PURE TUI STYLING
+   ========================================================================== */
+
+/* ---- Backdrop Overlay ---- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg, rgba(0, 0, 0, 0.3));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s var(--ease-apple-in-out);
+}
+
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---- App Window Shell ---- */
+.app-window {
+  position: fixed;
+  width: min(720px, 92vw);
+  height: min(500px, calc(100vh - 96px));
+  min-width: 340px;
+  min-height: 260px;
+  max-width: calc(100vw - 20px);
+  max-height: calc(100vh - 20px);
+  background: var(--window-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--window-border, #30363d);
+  border-radius: 12px;
+  box-shadow:
+    0 30px 60px -15px rgba(0, 0, 0, 0.5),
+    0 10px 20px -8px rgba(0, 0, 0, 0.35) !important;
+  z-index: 21;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  font-family: var(--mono);
+  color: var(--text-main);
+}
+
+.app-window.open,
+.app-window.closing {
+  display: flex;
+}
+
+.app-window.closing {
+  pointer-events: none;
+}
+
+.app-window.is-dragging,
+.app-window.is-resizing {
+  transition: none !important;
+  user-select: none;
+  -moz-user-select: none;
+}
+
+/* ---- App Titlebar ---- */
+.app-titlebar {
+  flex: 0 0 auto;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  background: var(--titlebar-bg);
+  border-bottom: 1px solid var(--titlebar-border, rgba(0, 0, 0, 0.35));
+  cursor: grab;
+  user-select: none;
+  -moz-user-select: none;
+  touch-action: none;
+  position: relative;
+}
+
+.app-titlebar:active {
+  cursor: grabbing;
+}
+
+.app-titlebar .traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.app-titlebar .title-text,
+.app-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--title-text-color, rgba(235, 235, 245, 0.55));
+  font-weight: 500;
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.app-close {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  background: linear-gradient(180deg, var(--red), var(--red-dark));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.16s var(--ease-apple-spring), box-shadow 0.16s ease, filter 0.15s ease;
+  z-index: 2;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+.app-close:hover {
+  transform: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 6px rgba(255, 95, 87, 0.6);
+}
+
+.app-close:active {
+  transform: scale(0.92);
+  filter: brightness(0.85);
+}
+
+.app-close:focus-visible {
+  outline: 2px solid var(--term-green);
+  outline-offset: 2px;
+}
+
+.app-close svg {
+  width: 8px;
+  height: 8px;
+  opacity: 0;
+  transition: opacity 0.14s ease;
+  pointer-events: none;
+  display: block;
+  margin: auto;
+}
+
+.app-close:hover svg,
+.app-titlebar .traffic-lights:hover .app-close svg {
+  opacity: 1;
+}
+
+.app-close svg path {
+  stroke: rgba(70, 10, 10, 0.75);
+}
+
+/* ---- App Content Area ---- */
+.app-content {
+  flex: 1 1 auto;
+  padding: calc(18px * var(--app-scale, 1)) calc(22px * var(--app-scale, 1));
+  overflow-y: auto;
+  font-family: var(--mono);
+  font-size: clamp(12px, calc(13px * var(--app-scale, 1)), 18px);
+  line-height: 1.55;
+  color: var(--text-main);
+  background: transparent;
+}
+
+.app-content::-webkit-scrollbar {
+  width: 7px;
+}
+
+.app-content::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb, rgba(255, 255, 255, 0.16));
+  border-radius: 4px;
+}
+
+.app-content::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover, rgba(255, 255, 255, 0.3));
+}
+
+/* ---- Bracket-Only Glowing Buttons (No regular buttons) ---- */
+.tui-btn {
+  background: none;
+  border: none;
+  padding: calc(2px * var(--app-scale, 1)) calc(4px * var(--app-scale, 1));
+  margin: 0;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: clamp(11.5px, calc(12px * var(--app-scale, 1)), 17px);
+  color: var(--term-green-dim);
+  text-decoration: none;
+  display: inline-block;
+  transition: color 0.15s ease, text-shadow 0.15s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tui-btn:hover {
+  color: var(--term-green);
+  text-shadow:
+    0 0 8px var(--term-glow-1, rgba(77, 255, 158, 0.85)),
+    0 0 18px var(--term-glow-2, rgba(77, 255, 158, 0.55));
+  transform: translateY(-1px);
+}
+
+.tui-btn:focus-visible {
+  color: var(--term-green);
+  text-shadow:
+    0 0 8px var(--term-glow-1, rgba(77, 255, 158, 0.85)),
+    0 0 18px var(--term-glow-2, rgba(77, 255, 158, 0.55));
+  transform: translateY(-1px);
+  outline: 1.5px dashed var(--term-green);
+  outline-offset: 2px;
+}
+
+.tui-btn.primary {
+  color: var(--term-green);
+  font-weight: 600;
+  text-shadow: 0 0 6px var(--term-glow-1, rgba(77, 255, 158, 0.7));
+}
+
+.tui-btn.primary:hover,
+.tui-btn.primary:focus-visible {
+  color: var(--term-btn-hover-color, #ffffff);
+  text-shadow:
+    0 0 8px var(--term-glow-1, rgba(77, 255, 158, 0.95)),
+    0 0 20px var(--term-glow-2, rgba(77, 255, 158, 0.65));
+}
+
+.tui-status-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: normal;
+  letter-spacing: 0.4px;
+  color: var(--text-dim);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.tui-status-tag.live {
+  color: var(--term-green);
+  text-shadow: 0 0 6px var(--term-glow-1, rgba(77, 255, 158, 0.6));
+}
+
+.tui-btn:active {
+  transform: scale(0.97);
+}
+
+.tui-btn.active {
+  color: #ff8888;
+}
+
+.tui-btn.active:hover {
+  color: #ffaaaa;
+  text-shadow: 0 0 8px rgba(255, 100, 100, 0.85);
+}
+
+.tui-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(1px * var(--app-scale, 1));
+  line-height: 1;
+}
+
+.tui-btn-icon {
+  display: inline-block;
+  width: calc(12px * var(--app-scale, 1));
+  height: calc(12px * var(--app-scale, 1));
+  margin: 0 calc(2px * var(--app-scale, 1));
+  vertical-align: middle;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.tui-btn:hover .tui-btn-icon,
+.tui-btn:focus-visible .tui-btn-icon {
+  filter: drop-shadow(0 0 6px var(--term-glow-1, rgba(77, 255, 158, 0.85)));
+}
+
+/* ---- Typewriter Stream & Cursor ---- */
+.term-cursor {
+  display: inline-block;
+  width: calc(7px * var(--app-scale, 1));
+  height: calc(13px * var(--app-scale, 1));
+  background: var(--term-green);
+  vertical-align: -2px;
+  margin-left: 2px;
+  animation: tuiBlink 0.7s step-end infinite;
+}
+
+@keyframes tuiBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ---- TUI Typography & Atomic Layout Elements ---- */
+.tui-ascii {
+  color: var(--term-green);
+  font-size: clamp(11px, calc(11.5px * var(--app-scale, 1)), 16px);
+  line-height: 1.15;
+  margin: 0 0 calc(14px * var(--app-scale, 1));
+  user-select: none;
+}
+
+.tui-section {
+  margin-bottom: calc(16px * var(--app-scale, 1));
+}
+
+.tui-heading {
+  color: var(--term-green);
+  font-weight: 600;
+  font-size: clamp(12.5px, calc(13.5px * var(--app-scale, 1)), 19px);
+  margin: 0 0 calc(6px * var(--app-scale, 1));
+  letter-spacing: 0.5px;
+}
+
+.tui-dim {
+  color: var(--text-dim);
+}
+
+.tui-bright {
+  color: var(--term-green);
+  font-weight: 600;
+}
+
+.tui-line {
+  margin-bottom: calc(3px * var(--app-scale, 1));
+}
+
+.tui-item {
+  margin-bottom: calc(12px * var(--app-scale, 1));
+}
+
+.tui-item:last-child {
+  margin-bottom: 0;
+}
+
+.tui-list {
+  margin: 0 0 calc(14px * var(--app-scale, 1));
+  padding-left: calc(16px * var(--app-scale, 1));
+  color: var(--text-main);
+  line-height: 1.55;
+}
+
+.tui-actions {
+  display: flex;
+  gap: calc(10px * var(--app-scale, 1));
+  flex-wrap: wrap;
+  margin-top: calc(6px * var(--app-scale, 1));
+}
+
+.tui-footer {
+  font-size: clamp(11px, calc(11.5px * var(--app-scale, 1)), 15px);
+  color: var(--text-dim);
+  margin-top: calc(16px * var(--app-scale, 1));
+  padding-top: calc(6px * var(--app-scale, 1));
+}
+
+.tui-footer a {
+  color: var(--term-green-dim);
+  text-decoration: none;
+}
+
+.tui-footer a:hover {
+  color: var(--term-green);
+  text-shadow: 0 0 8px var(--term-glow-1, rgba(77, 255, 158, 0.8));
+}
+
+/* ---- Neofetch / Fastfetch Layout ---- */
+.tui-neofetch {
+  display: flex;
+  gap: calc(22px * var(--app-scale, 1));
+  align-items: flex-start;
+  margin-bottom: calc(14px * var(--app-scale, 1));
+}
+
+/* ---- Neofetch 3D ASCII Globe Logo ---- */
+.tui-neofetch-logo {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tui-globe-pre {
+  color: var(--term-green);
+  font-family: var(--mono);
+  font-size: clamp(5.5px, calc(6.8px * var(--app-scale, 1)), 12px);
+  line-height: 1.12;
+  letter-spacing: 0px;
+  margin: 0;
+  text-shadow: 0 0 7px var(--term-glow-2, rgba(77, 255, 158, 0.45));
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  transform-origin: center center;
+}
+
+.tui-globe-pre.revealed {
+  animation: globeIgnition 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes globeIgnition {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) scaleY(0.02);
+    filter: brightness(4.5) drop-shadow(0 0 20px rgba(var(--term-primary-rgb, 77, 255, 158), 1));
+  }
+  35% {
+    opacity: 1;
+    transform: scale(0.6) scaleY(0.08);
+    filter: brightness(3.5) drop-shadow(0 0 16px rgba(var(--term-primary-rgb, 77, 255, 158), 0.95));
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.05) scaleY(1.05);
+    filter: brightness(1.8) drop-shadow(0 0 10px rgba(var(--term-primary-rgb, 77, 255, 158), 0.7));
+  }
+  88% {
+    opacity: 1;
+    transform: scale(0.98) scaleY(0.98);
+    filter: brightness(1.2) drop-shadow(0 0 6px rgba(var(--term-primary-rgb, 77, 255, 158), 0.55));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) scaleY(1);
+    filter: drop-shadow(0 0 5px rgba(var(--term-primary-rgb, 77, 255, 158), 0.45));
+  }
+}
+
+.tui-globe-pre:active,
+.tui-globe-pre.is-dragging {
+  cursor: grabbing;
+}
+
+.tui-neofetch-specs {
+  display: flex;
+  flex-direction: column;
+  gap: calc(3px * var(--app-scale, 1));
+  font-size: clamp(11.5px, calc(12px * var(--app-scale, 1)), 17px);
+  line-height: 1.45;
+}
+
+.tui-neofetch-title {
+  color: var(--term-green);
+  font-weight: 600;
+  font-size: clamp(12.5px, calc(13.5px * var(--app-scale, 1)), 19px);
+}
+
+.tui-neofetch-divider {
+  color: var(--text-dim);
+  user-select: none;
+  margin-bottom: calc(3px * var(--app-scale, 1));
+}
+
+.tui-neofetch-row {
+  display: flex;
+  align-items: flex-start;
+  column-gap: calc(8px * var(--app-scale, 1));
+  line-height: 1.45;
+  margin-bottom: calc(2px * var(--app-scale, 1));
+}
+
+.tui-spec-key {
+  color: var(--term-green);
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tui-spec-val {
+  color: var(--text-main);
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: normal;
+}
+
+.tui-palette-swatches {
+  margin-top: calc(6px * var(--app-scale, 1));
+  color: var(--term-green-dim);
+  letter-spacing: 2px;
+  font-size: clamp(10px, calc(10.5px * var(--app-scale, 1)), 16px);
+}
+
+.tui-links-row {
+  display: flex;
+  gap: calc(8px * var(--app-scale, 1));
+  align-items: center;
+  margin-top: calc(8px * var(--app-scale, 1));
+  flex-wrap: wrap;
+}
+
+/* ---- TUI Tree Structure (e.g. Directory / Link Trees) ---- */
+.tui-tree {
+  margin: calc(4px * var(--app-scale, 1)) 0 calc(8px * var(--app-scale, 1));
+}
+
+.tui-tree-row {
+  display: flex;
+  align-items: center;
+  gap: calc(8px * var(--app-scale, 1));
+  margin-bottom: calc(4px * var(--app-scale, 1));
+  line-height: 1.4;
+}
+
+.tui-tree-branch {
+  color: var(--text-dim);
+  user-select: none;
+  font-family: var(--mono);
+  flex-shrink: 0;
+}
+
+.tui-tree-label {
+  color: var(--term-green);
+  font-weight: 600;
+  width: calc(100px * var(--app-scale, 1));
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+  .tui-neofetch {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .tui-neofetch-logo {
+    width: 100%;
+  }
+  .tui-neofetch-specs {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   MODULE: ABOUT
+   ========================================================================== */
+.app-window.about-window {
+  width: min(820px, 92vw);
+  height: min(540px, calc(100vh - 96px));
+  min-height: 320px;
+  min-width: 360px;
+}
+
+.app-window.about-window .app-content {
+  padding: calc(16px * var(--app-scale, 1)) calc(20px * var(--app-scale, 1));
+}
+
+/* ==========================================================================
+   MODULE: WORK
+   ========================================================================== */
+.app-window.work-window {
+  width: min(720px, 92vw);
+  height: min(520px, calc(100vh - 96px));
+  min-height: 280px;
+  min-width: 340px;
+}
+
+/* ==========================================================================
+   MODULE: CONTACT
+   ========================================================================== */
+.app-window.contact-window {
+  width: min(460px, 92vw);
+  height: min(340px, calc(100vh - 96px));
+  min-height: 240px;
+  min-width: 320px;
+}
+
+.app-window.contact-window .app-content {
+  padding: calc(18px * var(--app-scale, 1)) calc(22px * var(--app-scale, 1));
+}
+
+/* ==========================================================================
+   MODULE: MATRIX
+   ========================================================================== */
+.app-window.matrix-window {
+  width: min(740px, 92vw);
+  height: min(500px, calc(100vh - 96px));
+  min-height: 260px;
+  min-width: 320px;
+}
+
+.app-window.matrix-window .app-content {
+  padding: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: transparent;
+  display: flex;
+}
+
+.matrix-window canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  background: transparent;
+}
+
+.matrix-cta {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: var(--mono);
+  z-index: 10;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.matrix-cta .ascii-btn {
+  width: auto;
+  min-width: 0;
+  text-decoration: none;
+  padding: calc(6px * var(--app-scale, 1)) calc(12px * var(--app-scale, 1));
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease;
+}
+
+.matrix-cta .ascii-btn .ascii-label {
+  font-size: clamp(12px, calc(12.5px * var(--app-scale, 1)), 18px);
+  margin-top: 0;
+  letter-spacing: 1px;
+  white-space: pre;
+  color: var(--term-green);
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+}
+
+.matrix-cta .ascii-btn:hover .ascii-label,
+.matrix-cta .ascii-btn:focus-visible .ascii-label {
+  color: #ffffff;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.7),
+    0 0 18px var(--term-glow-2, rgba(77, 255, 158, 0.6)),
+    0 0 32px var(--term-glow-3, rgba(77, 255, 158, 0.35));
+}
+
+.matrix-cta .ascii-btn:hover,
+.matrix-cta .ascii-btn:focus-visible {
+  transform: translateY(-1px);
+}
+
+.matrix-cta .ascii-btn:active {
+  transform: scale(0.97);
+}
+
+.matrix-cta .ascii-btn:focus-visible {
+  outline: 1px dashed var(--term-green);
+  outline-offset: 4px;
+}
+
+/* ==========================================================================
+   CLEAN THEME (DARK & LIGHT) OVERRIDES FOR APP WINDOWS
+   ========================================================================== */
+[data-theme="dark"] .tui-globe-pre,
+[data-theme="light"] .tui-globe-pre,
+:root:not([data-theme]) .tui-globe-pre {
+  text-shadow: none !important;
+}
+
+[data-theme="dark"] .tui-globe-pre.revealed,
+[data-theme="light"] .tui-globe-pre.revealed,
+:root:not([data-theme]) .tui-globe-pre.revealed {
+  animation: globeCleanReveal 0.5s var(--ease-apple-spring) forwards !important;
+}
+
+@keyframes globeCleanReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+    filter: none;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+/* ---- Compact Viewport Polish (<480px) ---- */
+@media (max-width: 480px) {
+  .app-content {
+    padding: 12px 14px;
+  }
+  .tui-actions {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+
+
