@@ -46,13 +46,35 @@
   color: var(--text-main);
 }
 
-.app-window.open,
-.app-window.closing {
+.app-window.open {
   display: flex;
 }
 
 .app-window.closing {
+  display: flex;
   pointer-events: none;
+}
+
+@keyframes appWindowPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes appWindowPopOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
 }
 
 .app-window.is-dragging,

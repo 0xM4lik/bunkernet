@@ -202,6 +202,7 @@ export function scrambleTo(el, finalText, opts = {}) {
   el._scrambleProxy = proxy;
 
   const origin = opts.origin || 'center';
+  const isReveal = Boolean(opts.reveal);
   const mid = (length - 1) / 2;
   const maxDist = Math.max(mid, length - 1 - mid);
 
@@ -225,28 +226,50 @@ export function scrambleTo(el, finalText, opts = {}) {
       const progress = proxy.f / totalSteps;
       let output = '';
 
-      if (origin === 'left') {
-        const revealCount = Math.floor(progress * length);
-        for (let i = 0; i < length; i++) {
-          if (i < revealCount) {
-            output += original[i];
-          } else if (original[i] === ' ') {
-            output += ' ';
-          } else {
-            output += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+      if (isReveal) {
+        // Initial decode reveal: characters start scrambled and resolve from center outward
+        if (origin === 'left') {
+          const revealCount = Math.floor(progress * length);
+          for (let i = 0; i < length; i++) {
+            if (i < revealCount) {
+              output += original[i];
+            } else if (original[i] === ' ') {
+              output += ' ';
+            } else {
+              output += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+            }
+          }
+        } else {
+          const revealRadius = progress * (maxDist + 0.55);
+          for (let i = 0; i < length; i++) {
+            const distFromMid = Math.abs(i - mid);
+            if (distFromMid <= revealRadius) {
+              output += original[i];
+            } else if (original[i] === ' ') {
+              output += ' ';
+            } else {
+              output += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+            }
           }
         }
       } else {
-        // Center-to-outer characters reveal
-        const revealRadius = progress * (maxDist + 0.55);
+        // Kinetic scramble wave on hover: matrix perturbation propagates from center outwards
         for (let i = 0; i < length; i++) {
-          const distFromMid = Math.abs(i - mid);
-          if (distFromMid <= revealRadius) {
-            output += original[i];
-          } else if (original[i] === ' ') {
+          if (original[i] === ' ') {
             output += ' ';
-          } else {
+            continue;
+          }
+          const normDist = origin === 'left'
+            ? (length > 1 ? (i / (length - 1)) : 0)
+            : (maxDist > 0 ? (Math.abs(i - mid) / maxDist) : 0);
+
+          const startScramble = normDist * 0.32;
+          const endScramble = startScramble + 0.48;
+
+          if (progress >= startScramble && progress < endScramble) {
             output += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          } else {
+            output += original[i];
           }
         }
       }
@@ -796,7 +819,7 @@ export function revealMenu() {
 
   grid.querySelectorAll('.ascii-label').forEach((label, i) => {
     const finalText = label.getAttribute('data-text');
-    scrambleTo(label, finalText, { delay: 150 + i * 100, duration: 400 });
+    scrambleTo(label, finalText, { delay: 150 + i * 100, duration: 400, reveal: true });
   });
 }
 

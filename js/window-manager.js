@@ -522,9 +522,9 @@ export const WindowManager = {
         window.anime({
           targets: win,
           opacity: [0, 1],
-          scale: [0.90, 1],
-          translateY: [16, 0],
-          duration: 340,
+          scale: [0.92, 1],
+          translateY: [14, 0],
+          duration: 320,
           easing: 'cubicBezier(0.16, 1, 0.3, 1)',
           complete: () => {
             win.style.removeProperty('transform');
@@ -566,8 +566,8 @@ export const WindowManager = {
       window.anime({
         targets: win,
         opacity: [1, 0],
-        scale: [1, 0.92],
-        translateY: [0, 12],
+        scale: [1, 0.94],
+        translateY: [0, 10],
         duration: 220,
         easing: 'cubicBezier(0.4, 0, 0.2, 1)',
         complete: () => {
