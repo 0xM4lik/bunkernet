@@ -1,0 +1,7 @@
+.git
+.gitignore
+.gitignored
+.agents
+backup
+skills-lock.json
+*.md

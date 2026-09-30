@@ -1,6 +1,6 @@
-# Architecture & Technical Documentation
+# Architecture & Technical Reference
 
-This document provides an exhaustive, deep-dive reference for the architecture, mathematical physics, procedural audio synthesis, dynamic module system, and terminal CLI engine powering **bunkernet.cc**.
+Technical reference for the architecture, mathematical physics, procedural audio synthesis, dynamic module system, and terminal CLI engine powering **bunkernet.cc**.
 
 ---
 

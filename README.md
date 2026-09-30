@@ -1,97 +1,78 @@
-# bunkernet.cc — macOS Terminal & 3D Network Web UI
+# bunkernet.cc
 
-An interactive, cyberpunk-inspired personal website and terminal interface featuring a macOS-style window manager, procedural Web Audio synthesizer, and a high-performance infinite 3D canvas node network.
+A terminal-style personal website and interactive dashboard built with vanilla JavaScript. No build step, no frameworks, zero dependencies.
 
-Built with **pure vanilla HTML5, CSS3, and native ES Modules** — zero build step, zero npm dependencies, and completely open source.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Vanilla JS](https://img.shields.io/badge/Stack-Vanilla%20ES6%20Modules-yellow.svg)](index.html)
+[![Dependencies](https://img.shields.io/badge/Dependencies-0-success.svg)](index.html)
+[![Live Site](https://img.shields.io/badge/Live-bunkernet.cc-brightgreen.svg)](https://bunkernet.cc)
 
----
+👉 **Live Demo:** [bunkernet.cc](https://bunkernet.cc)
 
-## ✨ Features
-
-- **macOS CRT Terminal UI**: Authentic scanline filters, phosphor glow breathing, horizontal sync jitter, and traffic light window controls (Minimize, Maximize, Close, and Dock Restore).
-- **Multi-Theme Engine**: 11 synchronized visual themes with persistent preferences and automatic system (Light/Dark) appearance detection:
-  - **System (Auto)**: Automatically adapts to your device's light or dark mode.
-  - **Dark / Light**: Minimalist, high-contrast themes.
-  - **Matrix**: Classic P31 monochrome phosphor green CRT.
-  - **Ocean**: *Subnautica*-inspired bioluminescent abyss and Alterra PDA holographic cyan.
-  - **Dracula, Nord, Amber, Tokyo Night, Gruvbox, Catppuccin, Monokai**.
-- **Infinite 3D Canvas Network**: Mathematically continuous 3D node field rendered on a 2D canvas with toroidal wrapping, drag-to-rotate, mouse-wheel camera zoom, theme-reactive starlight particles, and cursor spring physics.
-- **Procedural Web Audio Synthesizer**: Zero audio files loaded over the network! All mechanical keyboard clicks, CRT coil charging tones, window swooshes, and chimes are synthesized in real-time via the Web Audio API.
-- **Dynamic Module Architecture**: Buttons, CLI commands, and modal windows are dynamically generated from modular ES modules in `js/modules/`.
-- **Draggable Modal Windows**: Desktop-like modal windows with mouse/touch drag physics, auto-centering, backdrop blur, and Esc-key dismiss.
-- **Interactive Terminal CLI**: Built-in shell with command history, live command execution (`about`, `work`, `notes`, `matrix`, `contact`, `theme [name|next|auto]`, `sound [on|off|toggle]`, `whoami`, `clear`, `help`), and mechanical keystroke feedback.
-- **Live Integrations & Interactive Visuals**:
-  - GitHub API repository showcase with offline fallback cache.
-  - Fastfetch / Neofetch bio with interactive 3D ASCII Earth globe raytracer.
-  - Canvas Matrix digital rain streamer.
-- **Ultra-Lightweight & Fast**: Zero build dependencies, zero frameworks, instant load times, and battery-friendly `requestAnimationFrame` lifecycle management.
-
----
-
-## 🚀 Quick Start & Hosting
-
-Because this project uses native ES Modules without a bundler, you can host it anywhere that serves static files.
-
-### 1. Local Preview
-
-Start any local static server inside the project root:
+![bunkernet.cc Preview](assets/preview.png)
 
 ```bash
-# Using Python 3
+# Clone and run locally
+git clone https://github.com/0xM4lik/bunkernet.git
+cd bunkernet
+python3 -m http.server 8000
+```
+Open `http://localhost:8000` in your browser.
+
+---
+
+## Overview
+
+bunkernet.cc is my personal portfolio and homelab landing page. It brings a desktop-style terminal experience to the browser, featuring draggable windows, synthesized sound effects, customizable themes, and an interactive canvas background — all running client-side using standard web technologies.
+
+The project is built entirely with plain HTML, CSS, and modern JavaScript modules. There are no bundlers, no build pipelines, and no third-party runtime dependencies.
+
+## Features
+
+| Feature | Description |
+|---|---|
+| **Window Manager** | Draggable desktop windows. |
+| **Interactive CLI** | Functional shell prompt with command history and autocompletion. |
+| **Interactive Background** | Canvas-based 3D node network simulation with mouse reactivity and spring physics. |
+| **Synthesized Audio** | Procedural UI sound effects using the Web Audio API without loading external audio files. |
+| **Theme Engine** | 11 color palettes (Dark, Light, Matrix, Nord, Dracula, Gruvbox, Catppuccin, etc.) with automatic system light/dark detection. |
+| **System Info & Globe** | Neofetch-style system summary with an interactive rotating ASCII globe in the About window. Inspired by https://github.com/adamsky/globe |
+| **Modular Apps** | Extensible module format for easily adding new launcher buttons, windows and terminal commands. |
+
+## Quick Start & Self-Hosting
+
+Because the site is completely static, you can serve it with any HTTP server:
+
+```bash
+# Python
 python3 -m http.server 8000
 
-# Or using Node.js / npx
+# Node.js
 npx serve .
 
-# Or using PHP
-php -S localhost:8000
+# Caddy
+caddy file-server --listen :8000
 ```
 
-Open your browser and navigate to `http://localhost:8000`.
+### Self-Hosting with Docker
 
----
+Build and run the lightweight Nginx container:
 
-### 2. One-Click Free Static Hosting
-
-| Platform | Deployment Instructions |
-|---|---|
-| **GitHub Pages** | Push repository to GitHub $\to$ Go to **Settings** $\to$ **Pages** $\to$ Select `main` branch / root $\to$ Save. |
-| **Cloudflare Pages** | Connect GitHub repo $\to$ Set Build command: *(leave empty)* $\to$ Output directory: `/` $\to$ Deploy. |
-| **Vercel** | Import repo $\to$ Framework Preset: `Other` $\to$ Root Directory: `./` $\to$ Deploy. |
-| **Netlify** | Drag-and-drop the folder into Netlify Drop or link your Git repo with default static settings. |
-
----
-
-### 3. Self-Hosting with Docker or Nginx
-
-#### Using Docker
-```dockerfile
-FROM nginx:alpine
-COPY . /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-Build and run:
 ```bash
-docker build -t bunkernet-terminal .
-docker run -d -p 8080:80 bunkernet-terminal
+# Build the container
+docker build -t bunkernet .
+
+# Run on port 8080
+docker run -d --name bunkernet -p 8080:80 bunkernet
 ```
 
-#### Using Caddy Server
-```caddyfile
-bunkernet.cc {
-    root * /var/www/bunkernet
-    file_server
-    encode gzip zstd
-}
-```
+Open `http://localhost:8080` in your browser.
 
----
+For production static hosting, point **Cloudflare Pages**, **GitHub Pages**, **Vercel**, or **Netlify** at the repository root. No build command is required.
 
-## ⚙️ Configuration
+## Configuration
 
-Site-wide settings (such as your name, GitHub handle, Matrix address, and contact email) can be configured in a single file: [`js/config.js`](js/config.js).
+Site settings, links, and integration handles are located in [`js/config.js`](js/config.js):
 
 ```javascript
 export const config = {
@@ -100,124 +81,71 @@ export const config = {
   promptUser: 'guest@bunkernet',
   promptPath: '~',
 
-  // GitHub integration (fetches top recent repositories)
-  githubUsername: 'your-github-username',
+  // GitHub integration
+  githubUsername: '0xM4lik',
 
-  // Notes knowledgebase URL (Quartz, Hugo, Obsidian Publish, etc.)
+  // Knowledgebase URL (Quartz, Hugo, Obsidian Publish, etc.)
   notesUrl: 'https://notes.bunkernet.cc',
 
-  // Matrix Community & Direct Messaging
-  matrixRoomUrl: 'https://matrix.to/#/#your-room:matrix.org',
-  matrixUser: '@user:matrix.org',
-  matrixUserUrl: 'https://matrix.to/#/@user:matrix.org',
-
-  // Contact email
-  contactEmail: 'hello@example.com'
+  // Matrix chat
+  matrixRoomUrl: 'https://matrix.to/#/!yIbWuYLKo8LuvvpO3yhkt5Xjvb1H5GeTbthNXggJRyc?via=matrix.bunkernet.cc',
+  contactEmail: 'janik@bunkernet.cc'
 };
 ```
 
----
+## Adding Custom Modules
 
-## 🧩 Adding & Modifying Button Modules
+Adding a new launcher button, terminal command, and modal window takes a single file in `js/modules/`:
 
-Adding a new launcher button, CLI command, and modal window takes just **one new module file**!
-
-### Example: Creating a "Resume" Module
-
-1. Create `js/modules/resume.js`:
-
+1. Create `js/modules/custom.js`:
 ```javascript
 export default {
-  id: 'resume',
-  label: '[ RESUME ]',
-  command: 'resume',
-  windowTitle: 'Resume — bunkernet.cc',
-  asciiArt: `  _____
- / ___ \\
-| |   | |
- \\_____/`,
+  id: 'custom',
+  label: '[ CUSTOM ]',
+  command: 'custom',
+  windowTitle: 'Custom Module',
+  asciiArt: `  _____  \n /     \\ \n|   *   |\n \\_____/ `,
 
   render() {
-    return `
-      <div class="bio">
-        <h2>Curriculum Vitae</h2>
-        <p>Software Engineer & Systems Researcher.</p>
-        <p><a href="/resume.pdf" class="mail-btn" target="_blank">Download PDF ↗</a></p>
-      </div>
-    `;
-  },
-
-  onOpen(winEl) {
-    console.log('Resume modal opened!');
+    return `<div class="tui-content"><p>Custom module content here.</p></div>`;
   }
 };
 ```
 
-2. Register it in [`js/modules/index.js`](js/modules/index.js):
-
+2. Register the module in [`js/modules/index.js`](js/modules/index.js):
 ```javascript
-import resume from './resume.js';
+import custom from './custom.js';
 
 export const modules = [
   about,
   work,
-  resume, // <-- added here!
   notes,
   matrix,
-  contact
+  contact,
+  custom // <-- added
 ];
 ```
 
-The system automatically:
-- Renders the ASCII button in the terminal grid.
-- Registers the scramble-text decoder hover effect.
-- Wires up the interactive CLI command (`guest@bunkernet ~ % resume`).
-- Creates and manages the draggable modal window.
+The system automatically adds the button to the terminal grid, wires up the CLI command (`guest@bunkernet ~ % custom`), and creates the draggable modal window.
 
----
+## Terminal Commands
 
-## 📁 Project Directory Structure
+| Command | Description |
+|---|---|
+| `help` | List available commands |
+| `about` | Display system summary and ASCII globe |
+| `work` | Browse projects and GitHub repositories |
+| `notes` | Open link to notes knowledgebase |
+| `matrix` | Launch digital rain animation |
+| `contact` | Show Matrix and email contact details |
+| `theme <name>` | Switch theme (`matrix`, `nord`, `ocean`, `dark`, etc.) |
+| `sound <on\|off>` | Toggle UI sound effects |
+| `clear` | Clear prompt history |
 
-```
-├── assets/                     # Branding & Logo images (WebP & PNG)
-├── css/                        # Modular CSS stylesheets
-│   ├── variables.css           # Color variables, fonts, and theme constants
-│   ├── base.css                # Base reset, stage, desktop layout
-│   ├── terminal.css            # macOS terminal, CRT filters, traffic lights
-│   ├── apps.css                # Modal windows, project cards, profile styles
-│   └── background.css          # Canvas styling
-├── js/                         # Modular JavaScript (ES6 Modules)
-│   ├── config.js               # Central site configuration
-│   ├── theme.js                # Multi-theme state manager & color engine
-│   ├── audio.js                # Procedural Web Audio API sound synthesizer
-│   ├── background.js           # 3D infinite canvas node network simulation
-│   ├── terminal.js             # Terminal traffic lights, boot sequence & CRT effects
-│   ├── cli.js                  # Shell parser, command dispatcher & history
-│   ├── window-manager.js       # Unified window coordinator & drag manager
-│   ├── globe.js                # 3D ASCII Earth globe raytracer
-│   ├── globe-data.js           # ASCII day & night planet textures
-│   ├── modules/                # Extensible button & app registry
-│   │   ├── index.js            # Module loader
-│   │   ├── about.js            # Profile app module with 3D globe
-│   │   ├── work.js             # GitHub API portfolio module
-│   │   ├── notes.js            # Notes portal module
-│   │   ├── matrix.js           # 2D Matrix rain canvas module
-│   │   └── contact.js          # Contact & mail module
-│   └── main.js                 # App boot orchestrator
-├── index.html                  # Semantic HTML5 entry point
-├── documentation.md            # In-depth architectural reference
-├── LICENSE                     # MIT License
-└── README.md                   # Open source guide & hosting instructions
-```
+## Technical Reference
 
----
+For technical details on the canvas projection math, audio synthesis implementation, and module lifecycle, see [`documentation.md`](documentation.md).
 
-## 📖 Deep-Dive Documentation
+## License
 
-For architectural reference, mathematical physics derivations, procedural audio synthesis diagrams, and internal API details, see [`documentation.md`](documentation.md).
-
----
-
-## 📜 License
-
-[MIT License](LICENSE) — Feel free to use, modify, fork, and self-host for your personal portfolio, homelab portal, or organization.
+[MIT](LICENSE) © 2026 [Janik (0xM4lik)](https://github.com/0xM4lik)
