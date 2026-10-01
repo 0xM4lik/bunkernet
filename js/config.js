@@ -17,6 +17,7 @@ export const config = {
 
   // Profile & Notes URLs
   githubUrl: 'https://github.com/0xM4lik',
+  repoUrl: 'https://github.com/0xM4lik/bunkernet',
   hackTheBoxUrl: 'https://app.hackthebox.com/users/1464597',
   notesUrl: 'https://notes.bunkernet.cc',
 

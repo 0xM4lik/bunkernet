@@ -19,6 +19,8 @@ export const TRANSLATIONS = {
     'titlebar.lang': 'Switch to German',
     'titlebar.langAria': 'Switch language (currently English)',
     'dock.terminal': 'Terminal',
+    'terminal.github': 'View on GitHub',
+    'terminal.githubAria': 'View bunkernet repository on GitHub',
 
     // Audio Consent Prompt
     'audio.enableText': 'Enable sound effects?',
@@ -118,6 +120,8 @@ export const TRANSLATIONS = {
     'titlebar.lang': 'Auf Englisch wechseln',
     'titlebar.langAria': 'Sprache wechseln (aktuell Deutsch)',
     'dock.terminal': 'Terminal',
+    'terminal.github': 'Auf GitHub ansehen',
+    'terminal.githubAria': 'Bunkernet-Repository auf GitHub ansehen',
 
     // Audio Consent Prompt
     'audio.enableText': 'Soundeffekte aktivieren?',
@@ -362,7 +366,10 @@ export function initI18n() {
     initial = localStorage.getItem(STORAGE_KEY);
   } catch (e) {}
 
-  if (initial !== 'de' && initial !== 'en') {
+  const urlLang = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('lang') : null;
+  if (urlLang === 'de' || urlLang === 'en') {
+    initial = urlLang;
+  } else if (initial !== 'de' && initial !== 'en') {
     initial = detectBrowserLanguage();
   }
 

@@ -9,6 +9,7 @@ import { makeDraggable, makeResizable, WindowManager } from './window-manager.js
 import { setBackgroundControlsEnabled } from './background.js';
 import { getModuleById } from './modules/index.js';
 import { t, onLanguageChange } from './i18n.js';
+import { config } from './config.js';
 
 let terminal = null;
 let btnClose = null;
@@ -881,6 +882,8 @@ export function initTerminal() {
   macosDock = document.getElementById('macosDock');
   dockRestore = document.getElementById('dockRestore');
   dockLabel = document.getElementById('dockLabel');
+  const ghBtn = document.getElementById('terminalGithubBtn');
+  const ghLabel = document.getElementById('terminalGithubLabel');
 
   function updateTerminalChromeTitles() {
     if (btnClose) {
@@ -904,10 +907,51 @@ export function initTerminal() {
       const tooltip = dockRestore.querySelector('.dock-tooltip');
       if (tooltip) tooltip.textContent = t('dock.terminal');
     }
+
+    if (ghBtn) {
+      const ghText = t('terminal.github');
+      const ghAria = t('terminal.githubAria');
+      ghBtn.setAttribute('aria-label', ghAria);
+      ghBtn.setAttribute('title', ghText);
+      if (ghLabel) {
+        ghLabel.textContent = ghText;
+        ghLabel.setAttribute('data-text', ghText);
+      }
+    }
   }
 
   updateTerminalChromeTitles();
   onLanguageChange(updateTerminalChromeTitles);
+
+  if (ghBtn) {
+    if (config.repoUrl) {
+      ghBtn.href = config.repoUrl;
+    }
+    ghBtn.addEventListener('mouseenter', () => {
+      ghBtn.classList.add('is-hovered');
+      sound.hoverBlip();
+      if (ghLabel) {
+        const text = t('terminal.github');
+        scrambleTo(ghLabel, text, { duration: 260 });
+      }
+    });
+    ghBtn.addEventListener('mouseleave', () => {
+      ghBtn.classList.remove('is-hovered');
+    });
+    ghBtn.addEventListener('focus', () => {
+      ghBtn.classList.add('is-hovered');
+      if (ghLabel) {
+        const text = t('terminal.github');
+        scrambleTo(ghLabel, text, { duration: 260 });
+      }
+    });
+    ghBtn.addEventListener('blur', () => {
+      ghBtn.classList.remove('is-hovered');
+    });
+    ghBtn.addEventListener('click', () => {
+      sound.keyTick();
+    });
+  }
 
   // Initialize tactile drag with pickup elevation & dynamic tilt on main terminal
   if (terminal && titlebar) {

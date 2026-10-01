@@ -607,7 +607,7 @@ body.window-dragging * {
 /* ---- Terminal Body ---- */
 .body {
   flex: 1 1 auto;
-  padding: calc(22px * var(--term-scale, 1)) calc(20px * var(--term-scale, 1));
+  padding: calc(22px * var(--term-scale, 1)) calc(20px * var(--term-scale, 1)) calc(34px * var(--term-scale, 1));
   font-family: var(--mono);
   font-size: clamp(12.5px, calc(13.5px * var(--term-scale, 1)), 24px);
   line-height: 1.5;
@@ -1227,6 +1227,131 @@ body.window-dragging * {
 }
 
 /* ==========================================================================
+   MAIN TERMINAL GITHUB REPOSITORY LINK BUTTON
+   ========================================================================== */
+
+.terminal-github-btn {
+  position: absolute;
+  bottom: calc(9px * var(--term-scale, 1));
+  left: calc(11px * var(--term-scale, 1));
+  z-index: 15;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: calc(24px * var(--term-scale, 1));
+  width: auto;
+  min-width: calc(24px * var(--term-scale, 1));
+  max-width: calc(24px * var(--term-scale, 1));
+  padding: 0 calc(5.5px * var(--term-scale, 1));
+  box-sizing: border-box;
+  background: var(--theme-btn-bg, transparent);
+  border: 1px solid var(--theme-btn-border, rgba(255, 255, 255, 0.08));
+  border-radius: 6px;
+  color: var(--term-green-dim);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: clamp(10px, calc(11px * var(--term-scale, 1)), 15px);
+  letter-spacing: 0.35px;
+  line-height: 1;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.2);
+  transition:
+    max-width 0.28s var(--ease-apple-spring),
+    padding 0.28s var(--ease-apple-spring),
+    color 0.16s ease,
+    background 0.16s ease,
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.15s var(--ease-apple-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.terminal-github-btn .gh-icon {
+  width: calc(13px * var(--term-scale, 1));
+  height: calc(13px * var(--term-scale, 1));
+  flex-shrink: 0;
+  display: block;
+  color: currentColor;
+  opacity: 0.75;
+  transition: opacity 0.16s ease, filter 0.16s ease, color 0.16s ease;
+}
+
+.terminal-github-btn .gh-label {
+  opacity: 0;
+  max-width: 0;
+  margin-left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--term-btn-hover-color, #ffffff);
+  font-weight: 500;
+  font-size: clamp(10px, calc(11px * var(--term-scale, 1)), 15px);
+  letter-spacing: 0.4px;
+  transition:
+    max-width 0.28s var(--ease-apple-spring),
+    opacity 0.2s ease,
+    margin-left 0.25s ease,
+    color 0.16s ease,
+    text-shadow 0.16s ease;
+}
+
+.terminal-github-btn:hover,
+.terminal-github-btn:focus,
+.terminal-github-btn.is-hovered {
+  max-width: calc(175px * var(--term-scale, 1));
+  padding: 0 calc(7px * var(--term-scale, 1));
+  background: var(--theme-btn-hover-bg, rgba(255, 255, 255, 0.08));
+  border-color: var(--theme-btn-hover-border, var(--term-green));
+  color: var(--term-green);
+  box-shadow:
+    0 0 10px var(--term-glow-1, rgba(77, 255, 158, 0.85)),
+    inset 0 0 6px var(--term-glow-2, rgba(77, 255, 158, 0.35)),
+    0 3px 10px rgba(0, 0, 0, 0.35);
+  transform: translateY(-1px);
+}
+
+.terminal-github-btn:hover .gh-icon,
+.terminal-github-btn:focus .gh-icon,
+.terminal-github-btn.is-hovered .gh-icon {
+  opacity: 1;
+  color: var(--term-btn-hover-color, #ffffff);
+  filter: drop-shadow(0 0 5px var(--term-glow-1, rgba(77, 255, 158, 0.85)));
+}
+
+.terminal-github-btn:hover .gh-label,
+.terminal-github-btn:focus .gh-label,
+.terminal-github-btn.is-hovered .gh-label {
+  opacity: 1;
+  max-width: calc(145px * var(--term-scale, 1));
+  margin-left: calc(5.5px * var(--term-scale, 1));
+  color: var(--term-btn-hover-color, #ffffff);
+  text-shadow:
+    0 0 6px var(--term-glow-1, rgba(77, 255, 158, 0.85)),
+    0 0 16px var(--term-glow-2, rgba(77, 255, 158, 0.55));
+}
+
+.terminal-github-btn:focus-visible {
+  outline: 1.5px dashed var(--term-green);
+  outline-offset: 2px;
+}
+
+.terminal-github-btn:active {
+  transform: translateY(0) scale(0.96);
+  background: var(--theme-btn-active-bg, rgba(255, 255, 255, 0.12));
+}
+
+.terminal.maximized .terminal-github-btn {
+  bottom: calc(12px * var(--term-scale, 1));
+  left: calc(14px * var(--term-scale, 1));
+}
+
+/* ==========================================================================
    OCEAN THEME (SUBNAUTICA) DEDICATED VISUAL EFFECTS
    ========================================================================== */
 
@@ -1250,6 +1375,31 @@ body.window-dragging * {
 
 [data-theme="ocean"] .ascii-btn:hover .ascii-label,
 [data-theme="ocean"] .ascii-btn:focus-visible .ascii-label {
+  color: #e0faff;
+  text-shadow:
+    0 0 8px rgba(0, 240, 255, 0.9),
+    0 0 20px rgba(0, 240, 255, 0.6);
+}
+
+[data-theme="ocean"] .terminal-github-btn:hover,
+[data-theme="ocean"] .terminal-github-btn:focus,
+[data-theme="ocean"] .terminal-github-btn.is-hovered {
+  border-color: #00f0ff;
+  box-shadow:
+    0 0 10px rgba(0, 240, 255, 0.65),
+    inset 0 0 6px rgba(0, 240, 255, 0.3),
+    0 4px 12px rgba(0, 8, 18, 0.6);
+}
+
+[data-theme="ocean"] .terminal-github-btn:hover .gh-icon,
+[data-theme="ocean"] .terminal-github-btn:focus .gh-icon,
+[data-theme="ocean"] .terminal-github-btn.is-hovered .gh-icon {
+  filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.8));
+}
+
+[data-theme="ocean"] .terminal-github-btn:hover .gh-label,
+[data-theme="ocean"] .terminal-github-btn:focus .gh-label,
+[data-theme="ocean"] .terminal-github-btn.is-hovered .gh-label {
   color: #e0faff;
   text-shadow:
     0 0 8px rgba(0, 240, 255, 0.9),

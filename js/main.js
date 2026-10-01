@@ -41,11 +41,16 @@ function boot() {
   //    0ms: 3D Background wavefront expands from center (duration: 1500ms)
   //    1500ms: Background reveal finishes -> Show retro Audio Consent Prompt
   //    User selection: Dialog fades out -> Starts terminal opening sequence with full audio or silent mode
-  setTimeout(() => {
-    showAudioPrompt(() => {
-      startTerminalSequence();
-    });
-  }, 1500);
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('skipAudio') === '1') {
+    startTerminalSequence();
+  } else {
+    setTimeout(() => {
+      showAudioPrompt(() => {
+        startTerminalSequence();
+      });
+    }, 1500);
+  }
 }
 
 if (document.readyState === 'loading') {

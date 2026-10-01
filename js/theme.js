@@ -467,7 +467,11 @@ export function initTheme() {
     saved = localStorage.getItem(STORAGE_KEY);
   } catch (e) {}
 
-  if (!saved || saved === 'system' || saved === 'auto') {
+  const urlTheme = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('theme') : null;
+  if (urlTheme && THEMES[urlTheme]) {
+    userThemePreference = urlTheme;
+    activeThemeId = urlTheme;
+  } else if (!saved || saved === 'system' || saved === 'auto') {
     userThemePreference = 'system';
     activeThemeId = getSystemThemeId();
   } else if (THEMES[saved]) {
