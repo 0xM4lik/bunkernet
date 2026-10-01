@@ -1227,7 +1227,7 @@ body.window-dragging * {
   background: var(--theme-btn-bg, transparent);
   border: 1px solid var(--theme-btn-border, rgba(255, 255, 255, 0.08));
   border-radius: 6px;
-  color: var(--term-green-dim);
+  color: var(--theme-btn-color, var(--title-text-color));
   text-decoration: none;
   font-family: var(--mono);
   font-size: clamp(10px, calc(11px * var(--term-scale, 1)), 15px);
@@ -1241,7 +1241,7 @@ body.window-dragging * {
   -webkit-user-select: none;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   transition:
     max-width 0.28s var(--ease-spring),
     padding 0.28s var(--ease-spring),
@@ -1269,7 +1269,7 @@ body.window-dragging * {
   margin-left: 0;
   overflow: hidden;
   white-space: nowrap;
-  color: var(--term-btn-hover-color, #ffffff);
+  color: var(--theme-btn-hover-color, #ffffff);
   font-weight: 500;
   font-size: clamp(10px, calc(11px * var(--term-scale, 1)), 15px);
   letter-spacing: 0.4px;
@@ -1277,8 +1277,7 @@ body.window-dragging * {
     max-width 0.28s var(--ease-spring),
     opacity 0.2s ease,
     margin-left 0.25s ease,
-    color 0.16s ease,
-    text-shadow 0.16s ease;
+    color 0.16s ease;
 }
 
 .terminal-github-btn:hover,
@@ -1287,12 +1286,9 @@ body.window-dragging * {
   max-width: calc(175px * var(--term-scale, 1));
   padding: 0 calc(7px * var(--term-scale, 1));
   background: var(--theme-btn-hover-bg, rgba(255, 255, 255, 0.08));
-  border-color: var(--theme-btn-hover-border, var(--term-green));
-  color: var(--term-green);
-  box-shadow:
-    0 0 10px var(--term-glow-1, rgba(77, 255, 158, 0.85)),
-    inset 0 0 6px var(--term-glow-2, rgba(77, 255, 158, 0.35)),
-    0 3px 10px rgba(0, 0, 0, 0.35);
+  border-color: var(--theme-btn-hover-border, rgba(255, 255, 255, 0.18));
+  color: var(--theme-btn-hover-color, #ffffff);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   transform: translateY(-1px);
 }
 
@@ -1300,8 +1296,8 @@ body.window-dragging * {
 .terminal-github-btn:focus .gh-icon,
 .terminal-github-btn.is-hovered .gh-icon {
   opacity: 1;
-  color: var(--term-btn-hover-color, #ffffff);
-  filter: drop-shadow(0 0 5px var(--term-glow-1, rgba(77, 255, 158, 0.85)));
+  color: var(--theme-btn-hover-color, #ffffff);
+  filter: none;
 }
 
 .terminal-github-btn:hover .gh-label,
@@ -1310,10 +1306,8 @@ body.window-dragging * {
   opacity: 1;
   max-width: calc(145px * var(--term-scale, 1));
   margin-left: calc(5.5px * var(--term-scale, 1));
-  color: var(--term-btn-hover-color, #ffffff);
-  text-shadow:
-    0 0 6px var(--term-glow-1, rgba(77, 255, 158, 0.85)),
-    0 0 16px var(--term-glow-2, rgba(77, 255, 158, 0.55));
+  color: var(--theme-btn-hover-color, #ffffff);
+  text-shadow: none;
 }
 
 .terminal-github-btn:focus-visible {
@@ -1355,31 +1349,6 @@ body.window-dragging * {
 
 [data-theme="ocean"] .ascii-btn:hover .ascii-label,
 [data-theme="ocean"] .ascii-btn:focus-visible .ascii-label {
-  color: #e0faff;
-  text-shadow:
-    0 0 8px rgba(0, 240, 255, 0.9),
-    0 0 20px rgba(0, 240, 255, 0.6);
-}
-
-[data-theme="ocean"] .terminal-github-btn:hover,
-[data-theme="ocean"] .terminal-github-btn:focus,
-[data-theme="ocean"] .terminal-github-btn.is-hovered {
-  border-color: #00f0ff;
-  box-shadow:
-    0 0 10px rgba(0, 240, 255, 0.65),
-    inset 0 0 6px rgba(0, 240, 255, 0.3),
-    0 4px 12px rgba(0, 8, 18, 0.6);
-}
-
-[data-theme="ocean"] .terminal-github-btn:hover .gh-icon,
-[data-theme="ocean"] .terminal-github-btn:focus .gh-icon,
-[data-theme="ocean"] .terminal-github-btn.is-hovered .gh-icon {
-  filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.8));
-}
-
-[data-theme="ocean"] .terminal-github-btn:hover .gh-label,
-[data-theme="ocean"] .terminal-github-btn:focus .gh-label,
-[data-theme="ocean"] .terminal-github-btn.is-hovered .gh-label {
   color: #e0faff;
   text-shadow:
     0 0 8px rgba(0, 240, 255, 0.9),
