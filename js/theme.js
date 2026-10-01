@@ -48,12 +48,12 @@ export const THEMES = {
     nodeRgb: [255, 255, 255],
     lineRgb: [255, 255, 255],
     matrixColors: { bright: '#e8fff2', dim: '#2fbf6f' },
-    logoFilter: 'none'
+    logoFilter: 'hue-rotate(0deg)'
   },
   ocean: {
     id: 'ocean',
     name: 'Ocean',
-    tagline: 'Subnautica Planet 4546B & Alterra PDA deep cyan aesthetic',
+    tagline: 'Deep oceanic cyan aesthetic with neon amber accents',
     primaryHex: '#00f0ff',
     secondaryHex: '#ff9d00',
     bgHex: '#010a14',
@@ -92,7 +92,7 @@ export const THEMES = {
   amber: {
     id: 'amber',
     name: 'Amber',
-    tagline: 'Classic DEC VT220 monochrome CRT warm amber phosphor glow',
+    tagline: 'Classic monochrome CRT warm amber phosphor glow',
     primaryHex: '#ffb000',
     secondaryHex: '#ff7700',
     bgHex: '#070502',
@@ -280,7 +280,7 @@ const ICONS = {
 };
 
 /**
- * Sets up the authentic macOS titlebar theme popup menu and button.
+ * Sets up the titlebar theme popup menu and button.
  */
 export function setupThemeMenu() {
   const wrap = document.getElementById('themeMenuWrap');
@@ -297,46 +297,46 @@ export function setupThemeMenu() {
     const isLight = !isAuto && activeThemeId === 'light';
 
     const coreHtml = `
-      <button class="macos-menu-item ${isAuto ? 'is-selected' : ''}" data-theme-id="system" type="button" role="menuitem" aria-label="Auto detect system theme">
-        <span class="macos-menu-item-icon">${ICONS.auto}</span>
-        <span class="macos-menu-item-label">${t('theme.auto')}</span>
-        <span class="macos-menu-check">
+      <button class="menu-item ${isAuto ? 'is-selected' : ''}" data-theme-id="system" type="button" role="menuitem" aria-label="Auto detect system theme">
+        <span class="menu-item-icon">${ICONS.auto}</span>
+        <span class="menu-item-label">${t('theme.auto')}</span>
+        <span class="menu-check">
           <svg viewBox="0 0 10 10"><polyline points="2 5.5 4.5 8 8 2.5"/></svg>
         </span>
       </button>
-      <button class="macos-menu-item ${isDark ? 'is-selected' : ''}" data-theme-id="dark" type="button" role="menuitem" aria-label="Dark theme">
-        <span class="macos-menu-item-icon">${ICONS.dark}</span>
-        <span class="macos-menu-item-label">${t('theme.dark')}</span>
-        <span class="macos-menu-check">
+      <button class="menu-item ${isDark ? 'is-selected' : ''}" data-theme-id="dark" type="button" role="menuitem" aria-label="Dark theme">
+        <span class="menu-item-icon">${ICONS.dark}</span>
+        <span class="menu-item-label">${t('theme.dark')}</span>
+        <span class="menu-check">
           <svg viewBox="0 0 10 10"><polyline points="2 5.5 4.5 8 8 2.5"/></svg>
         </span>
       </button>
-      <button class="macos-menu-item ${isLight ? 'is-selected' : ''}" data-theme-id="light" type="button" role="menuitem" aria-label="Light theme">
-        <span class="macos-menu-item-icon">${ICONS.light}</span>
-        <span class="macos-menu-item-label">${t('theme.light')}</span>
-        <span class="macos-menu-check">
+      <button class="menu-item ${isLight ? 'is-selected' : ''}" data-theme-id="light" type="button" role="menuitem" aria-label="Light theme">
+        <span class="menu-item-icon">${ICONS.light}</span>
+        <span class="menu-item-label">${t('theme.light')}</span>
+        <span class="menu-check">
           <svg viewBox="0 0 10 10"><polyline points="2 5.5 4.5 8 8 2.5"/></svg>
         </span>
       </button>
-      <div class="macos-menu-divider" role="separator"></div>
-      <div class="macos-menu-section-header">${t('theme.section')}</div>
+      <div class="menu-divider" role="separator"></div>
+      <div class="menu-section-header">${t('theme.section')}</div>
     `;
 
     const stylizedThemes = Object.values(THEMES).filter(t => t.id !== 'dark' && t.id !== 'light');
     const stylizedHtml = stylizedThemes.map(t => {
       const isSelected = !isAuto && t.id === activeThemeId;
       return `
-        <button class="macos-menu-item ${isSelected ? 'is-selected' : ''}" data-theme-id="${t.id}" type="button" role="menuitem">
-          <span class="macos-menu-item-swatch" style="background-color: ${t.primaryHex};"></span>
-          <span class="macos-menu-item-label">${t.name}</span>
-          <span class="macos-menu-check">
+        <button class="menu-item ${isSelected ? 'is-selected' : ''}" data-theme-id="${t.id}" type="button" role="menuitem">
+          <span class="menu-item-swatch" style="background-color: ${t.primaryHex};"></span>
+          <span class="menu-item-label">${t.name}</span>
+          <span class="menu-check">
             <svg viewBox="0 0 10 10"><polyline points="2 5.5 4.5 8 8 2.5"/></svg>
           </span>
         </button>
       `;
     }).join('');
 
-    const hintHtml = `<div class="macos-menu-hint" aria-hidden="true">${t('theme.cliHint')}</div>`;
+    const hintHtml = `<div class="menu-hint" aria-hidden="true">${t('theme.cliHint')}</div>`;
     popover.innerHTML = coreHtml + stylizedHtml + hintHtml;
   }
 
@@ -417,7 +417,7 @@ export function setupThemeMenu() {
 
   // Handle item click
   popover.addEventListener('click', (e) => {
-    const item = e.target.closest('.macos-menu-item');
+    const item = e.target.closest('.menu-item');
     if (!item) return;
     e.stopPropagation();
     const themeId = item.getAttribute('data-theme-id');

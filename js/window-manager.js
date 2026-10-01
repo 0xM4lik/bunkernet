@@ -35,6 +35,11 @@ export function makeDraggable(element, handle, options = {}) {
   let startPointerX = 0;
   let startPointerY = 0;
 
+  if (mode === 'transform') {
+    element.style.setProperty('--drag-x', '0px');
+    element.style.setProperty('--drag-y', '0px');
+  }
+
   function getScreenBounds() {
     const winW = window.innerWidth;
     const winH = window.innerHeight;
@@ -62,6 +67,8 @@ export function makeDraggable(element, handle, options = {}) {
     curX = x;
     curY = y;
     if (mode === 'transform') {
+      element.style.setProperty('--drag-x', `${x}px`);
+      element.style.setProperty('--drag-y', `${y}px`);
       element.style.transform = `translate3d(${x}px, ${y}px, 0px)`;
     } else {
       element.style.left = `${x}px`;
@@ -170,13 +177,16 @@ export function makeDraggable(element, handle, options = {}) {
   handle.addEventListener('dragstart', (e) => e.preventDefault());
   handle.addEventListener('selectstart', (e) => e.preventDefault());
 
-  return {
+  const controller = {
     resetPosition() {
       applyPosition(0, 0);
     },
     getPosition: () => ({ x: curX, y: curY }),
     setPosition: (x, y) => applyPosition(x, y)
   };
+
+  element._drag = controller;
+  return controller;
 }
 
 /**

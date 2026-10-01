@@ -1,5 +1,5 @@
 /**
- * macOS Terminal Window Controller & CRT Effects
+ * Terminal Window Controller & CRT Effects
  * Manages traffic light window state, dock restore pill, draggable terminal,
  * audio consent prompt, CRT phosphor ignition, and scramble-text effects.
  */
@@ -15,7 +15,7 @@ let terminal = null;
 let btnClose = null;
 let btnMin = null;
 let btnMax = null;
-let macosDock = null;
+let desktopDock = null;
 let dockRestore = null;
 let dockLabel = null;
 
@@ -710,21 +710,21 @@ export function resetTerminalContentForReveal() {
 }
 
 /**
- * Updates the macOS / GNOME desktop dock item and dock bar visibility.
+ * Updates the desktop dock item and dock bar visibility.
  * The dock is ONLY shown when the terminal is minimized or closed.
  * @param {'open'|'minimized'|'closed'} state - The window state.
  */
 export function updateDockState(state) {
-  if (!macosDock) {
-    macosDock = document.getElementById('macosDock');
+  if (!desktopDock) {
+    desktopDock = document.getElementById('desktopDock');
   }
   if (!dockRestore) {
     dockRestore = document.getElementById('dockRestore');
   }
 
   if (state === 'open') {
-    if (macosDock) {
-      macosDock.classList.remove('visible');
+    if (desktopDock) {
+      desktopDock.classList.remove('visible');
     }
     if (dockRestore) {
       dockRestore.classList.remove('is-open', 'is-minimized', 'dock-bounce');
@@ -733,8 +733,8 @@ export function updateDockState(state) {
   }
 
   // When minimized or closed, the dock slides into view
-  if (macosDock) {
-    macosDock.classList.add('visible');
+  if (desktopDock) {
+    desktopDock.classList.add('visible');
   }
 
   if (dockRestore) {
@@ -879,7 +879,7 @@ export function initTerminal() {
   btnClose = document.getElementById('btnClose');
   btnMin = document.getElementById('btnMin');
   btnMax = document.getElementById('btnMax');
-  macosDock = document.getElementById('macosDock');
+  desktopDock = document.getElementById('desktopDock');
   dockRestore = document.getElementById('dockRestore');
   dockLabel = document.getElementById('dockLabel');
   const ghBtn = document.getElementById('terminalGithubBtn');
@@ -1106,11 +1106,17 @@ export function initTerminal() {
     }
   });
 
-  // Traffic light close button (macOS Cocoa window close & app quit state)
+  // Traffic light close button (Window close & app quit state)
   if (btnClose) {
     btnClose.addEventListener('click', () => {
       if (terminalState !== 'open') return;
       sound.terminalClose();
+
+      if (isMaximized) {
+        isMaximized = false;
+        terminal.classList.remove('maximized');
+        if (terminalDrag) terminalDrag.resetPosition();
+      }
 
       terminal.classList.remove('open', 'minimizing', 'unminimizing');
       terminal.style.removeProperty('animation');
@@ -1129,11 +1135,17 @@ export function initTerminal() {
     });
   }
 
-  // Traffic light minimize button (macOS suction into dock & restore state)
+  // Traffic light minimize button (Suction into dock & restore state)
   if (btnMin) {
     btnMin.addEventListener('click', () => {
       if (terminalState !== 'open') return;
       sound.minimize();
+
+      if (isMaximized) {
+        isMaximized = false;
+        terminal.classList.remove('maximized');
+        if (terminalDrag) terminalDrag.resetPosition();
+      }
 
       terminal.classList.remove('open', 'closing', 'unminimizing');
       terminal.style.removeProperty('animation');
@@ -1184,13 +1196,13 @@ export function initTerminal() {
     });
   }
 
-  // macOS / GNOME Desktop Dock Item
+  // Desktop Dock Item
   if (dockRestore) {
     const handleDockClick = () => {
       if (!terminal) return;
 
       if (terminalState === 'open') {
-        // Clicking open app in dock minimizes it down (standard Apple/GNOME desktop behavior)
+        // Clicking open app in dock minimizes it down (standard desktop behavior)
         if (btnMin) {
           btnMin.click();
         }
@@ -1198,10 +1210,6 @@ export function initTerminal() {
       }
 
       setBackgroundControlsEnabled(false);
-
-      if (terminalDrag) {
-        terminalDrag.resetPosition();
-      }
 
       updateTerminalScale();
       terminal.style.visibility = 'visible';
@@ -1219,7 +1227,8 @@ export function initTerminal() {
           terminal.classList.remove('unminimizing');
           terminal.style.removeProperty('animation');
           terminal.style.opacity = '1';
-          terminal.style.transform = 'translate(0px, 0px)';
+          const pos = terminalDrag ? terminalDrag.getPosition() : { x: 0, y: 0 };
+          terminal.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0px)`;
           const input = document.getElementById('promptInput');
           if (input) input.focus();
         }, { once: true });
@@ -1231,6 +1240,10 @@ export function initTerminal() {
         // --- 2. CLOSED RELAUNCH: Launch window and replay boot reveal sequence from scratch ---
         sound.terminalOpen();
         updateDockState('open');
+
+        if (terminalDrag) {
+          terminalDrag.resetPosition();
+        }
 
         // Reset content to pristine state for replay
         resetTerminalContentForReveal();

@@ -15,7 +15,6 @@ html, body {
   background: var(--desktop-bg);
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {

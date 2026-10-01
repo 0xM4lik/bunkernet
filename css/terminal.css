@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MACOS TERMINAL WINDOW & CRT PHOSPHOR STYLING
+   TERMINAL WINDOW & CRT PHOSPHOR STYLING
    ========================================================================== */
 
 .terminal {
@@ -23,85 +23,85 @@
   flex-direction: column;
   transform-origin: center center;
   opacity: 0;
-  transform: scale(0.88) translateY(24px);
+  transform: translate3d(var(--drag-x, 0px), var(--drag-y, 0px), 0px) scale(0.88) translateY(24px);
   transition: box-shadow 0.3s ease;
   will-change: transform, opacity, filter;
 }
 
-/* macOS App Launch Zoom Entrance */
+/* Window Launch Zoom Entrance */
 .terminal.open {
-  animation: macosWindowOpen 0.44s var(--ease-apple-spring) forwards !important;
+  animation: windowOpen 0.44s var(--ease-spring) forwards !important;
 }
 
-@keyframes macosWindowOpen {
+@keyframes windowOpen {
   0% {
     opacity: 0;
-    transform: scale(0.88) translateY(24px);
+    transform: translate3d(var(--drag-x, 0px), var(--drag-y, 0px), 0px) scale(0.88) translateY(24px);
     filter: blur(8px);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translate3d(var(--drag-x, 0px), var(--drag-y, 0px), 0px) scale(1) translateY(0);
     filter: blur(0px);
   }
 }
 
-/* Authentic macOS Window Close (Snappy, stationary depth recede & fade) */
+/* Window Close (Snappy, stationary depth recede & fade) */
 .terminal.closing {
-  animation: macosWindowClose 0.2s cubic-bezier(0.2, 0, 0.25, 1) forwards !important;
+  animation: windowClose 0.2s cubic-bezier(0.2, 0, 0.25, 1) forwards !important;
   pointer-events: none;
   transform-origin: center center;
 }
 
-@keyframes macosWindowClose {
+@keyframes windowClose {
   0% {
     opacity: 1;
-    transform: scale(1);
+    transform: translate3d(var(--drag-x, 0px), var(--drag-y, 0px), 0px) scale(1);
     filter: brightness(1);
   }
   100% {
     opacity: 0;
-    transform: scale(0.92);
+    transform: translate3d(var(--drag-x, 0px), var(--drag-y, 0px), 0px) scale(0.92);
     filter: brightness(0.85);
   }
 }
 
-/* macOS Dock Suction ("Genie/Scale to Dock" into bottom-center dock restore item) */
+/* Dock Suction ("Scale to Dock" into bottom-center dock restore item) */
 .terminal.minimizing {
-  animation: macosMinimizeToDock 0.38s var(--ease-apple-in-out) forwards !important;
+  animation: minimizeToDock 0.38s var(--ease-in-out) forwards !important;
   pointer-events: none;
   transform-origin: center bottom;
 }
 
-@keyframes macosMinimizeToDock {
+@keyframes minimizeToDock {
   0% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translate3d(var(--drag-x, 0px), var(--drag-y, 0px), 0px) scale(1);
     filter: blur(0px);
   }
   60% {
     opacity: 0.85;
-    transform: scale(0.55, 0.35) translateY(22vh);
+    transform: translate3d(calc(var(--drag-x, 0px) * 0.4), calc(var(--drag-y, 0px) * 0.4 + 22vh), 0px) scale(0.55, 0.35);
     filter: blur(2px);
   }
   100% {
     opacity: 0;
-    transform: scale(0.16, 0.06) translateY(44vh);
+    transform: translate3d(0px, 44vh, 0px) scale(0.16, 0.06);
     filter: blur(5px);
   }
 }
 
-/* macOS Dock Restore ("Unminimize from Dock" springing out smoothly back into place) */
+/* Dock Restore ("Unminimize from Dock" springing out smoothly back into place) */
 .terminal.unminimizing {
-  animation: macosUnminimizeFromDock 0.44s var(--ease-apple-spring) forwards !important;
+  animation: unminimizeFromDock 0.44s var(--ease-spring) forwards !important;
   transform-origin: center bottom;
   pointer-events: none;
 }
 
-@keyframes macosUnminimizeFromDock {
+@keyframes unminimizeFromDock {
   0% {
     opacity: 0;
-    transform: scale(0.18, 0.08) translateY(40vh);
+    transform: translate3d(0px, 40vh, 0px) scale(0.18, 0.08);
     filter: blur(5px);
   }
   40% {
@@ -109,7 +109,7 @@
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translate3d(var(--drag-x, 0px), var(--drag-y, 0px), 0px) scale(1);
     filter: blur(0px);
   }
 }
@@ -266,7 +266,7 @@ body.window-dragging * {
   pointer-events: none;
 }
 
-/* ---- macOS Titlebar Controls (Language Toggle & Theme Menu) ---- */
+/* ---- Titlebar Controls (Language Toggle & Theme Menu) ---- */
 .titlebar-controls {
   margin-left: auto;
   position: relative;
@@ -279,7 +279,7 @@ body.window-dragging * {
   touch-action: auto;
 }
 
-.macos-theme-menu-wrap {
+.theme-menu-wrap {
   position: relative;
   display: flex;
   align-items: center;
@@ -288,8 +288,8 @@ body.window-dragging * {
   touch-action: auto;
 }
 
-/* ---- macOS Titlebar Language Toggle Control ---- */
-.macos-lang-btn {
+/* ---- Titlebar Language Toggle Control ---- */
+.lang-btn {
   display: inline-flex;
   align-items: center;
   gap: 4.5px;
@@ -307,22 +307,22 @@ body.window-dragging * {
   outline: none;
   touch-action: auto;
   pointer-events: auto;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s var(--ease-apple-spring);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s var(--ease-spring);
   -webkit-tap-highlight-color: transparent;
 }
 
-.macos-lang-btn:hover {
+.lang-btn:hover {
   background: var(--theme-btn-hover-bg, rgba(255, 255, 255, 0.08));
   border-color: var(--theme-btn-hover-border, transparent);
   color: var(--theme-btn-hover-color, #ffffff);
 }
 
-.macos-lang-btn:focus-visible {
+.lang-btn:focus-visible {
   outline: 1.5px dashed var(--term-green);
   outline-offset: 2px;
 }
 
-.macos-lang-btn:active {
+.lang-btn:active {
   transform: scale(0.96);
   background: var(--theme-btn-active-bg, rgba(255, 255, 255, 0.12));
 }
@@ -339,7 +339,7 @@ body.window-dragging * {
   transition: opacity 0.15s ease;
 }
 
-.macos-lang-btn:hover .lang-btn-icon {
+.lang-btn:hover .lang-btn-icon {
   opacity: 1;
 }
 
@@ -351,7 +351,7 @@ body.window-dragging * {
   line-height: 1;
 }
 
-.macos-theme-btn {
+.theme-btn {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -369,27 +369,27 @@ body.window-dragging * {
   outline: none;
   touch-action: auto;
   pointer-events: auto;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s var(--ease-apple-spring);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s var(--ease-spring);
   -webkit-tap-highlight-color: transparent;
 }
 
-.macos-theme-btn:hover {
+.theme-btn:hover {
   background: var(--theme-btn-hover-bg, rgba(255, 255, 255, 0.08));
   border-color: var(--theme-btn-hover-border, transparent);
   color: var(--theme-btn-hover-color, #ffffff);
 }
 
-.macos-theme-btn:focus-visible {
+.theme-btn:focus-visible {
   outline: 1.5px dashed var(--term-green);
   outline-offset: 2px;
 }
 
-.macos-theme-btn:active {
+.theme-btn:active {
   transform: scale(0.96);
   background: var(--theme-btn-active-bg, rgba(255, 255, 255, 0.12));
 }
 
-.macos-theme-menu-wrap.is-open .macos-theme-btn {
+.theme-menu-wrap.is-open .theme-btn {
   background: var(--theme-btn-open-bg, rgba(255, 255, 255, 0.10));
   border-color: var(--theme-btn-open-border, var(--window-border));
   color: var(--theme-btn-hover-color, #ffffff);
@@ -413,7 +413,7 @@ body.window-dragging * {
   height: 13px;
 }
 
-.macos-theme-btn:hover .theme-btn-icon {
+.theme-btn:hover .theme-btn-icon {
   opacity: 1;
 }
 
@@ -434,17 +434,17 @@ body.window-dragging * {
   transition: transform 0.2s ease, opacity 0.15s ease;
 }
 
-.macos-theme-btn:hover .theme-chevron-svg {
+.theme-btn:hover .theme-chevron-svg {
   opacity: 0.85;
 }
 
-.macos-theme-menu-wrap.is-open .theme-chevron-svg {
+.theme-menu-wrap.is-open .theme-chevron-svg {
   transform: rotate(180deg);
   opacity: 1;
 }
 
-/* ---- macOS Popover Menu ---- */
-.macos-theme-popover {
+/* ---- Popover Menu ---- */
+.theme-popover {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
@@ -468,25 +468,25 @@ body.window-dragging * {
   transform: translateY(-4px) scale(0.97);
   pointer-events: none;
   transform-origin: top right;
-  transition: opacity 0.16s ease, transform 0.16s var(--ease-apple-spring);
+  transition: opacity 0.16s ease, transform 0.16s var(--ease-spring);
 }
 
-.macos-theme-popover::-webkit-scrollbar {
+.theme-popover::-webkit-scrollbar {
   width: 4px;
 }
 
-.macos-theme-popover::-webkit-scrollbar-thumb {
+.theme-popover::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb, rgba(255, 255, 255, 0.15));
   border-radius: 2px;
 }
 
-.macos-menu-divider {
+.menu-divider {
   height: 1px;
   background: var(--popover-border, rgba(255, 255, 255, 0.12));
   margin: 4px 2px;
 }
 
-.macos-menu-section-header {
+.menu-section-header {
   font-family: var(--sans);
   font-size: 10px;
   font-weight: 600;
@@ -498,7 +498,7 @@ body.window-dragging * {
   -webkit-user-select: none;
 }
 
-.macos-menu-hint {
+.menu-hint {
   font-family: var(--mono);
   font-size: 10px;
   color: var(--text-dim);
@@ -509,13 +509,13 @@ body.window-dragging * {
   letter-spacing: 0.2px;
 }
 
-.macos-theme-menu-wrap.is-open .macos-theme-popover {
+.theme-menu-wrap.is-open .theme-popover {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
 }
 
-.macos-menu-item {
+.menu-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -537,17 +537,17 @@ body.window-dragging * {
   -webkit-tap-highlight-color: transparent;
 }
 
-.macos-menu-item:hover,
-.macos-menu-item:focus-visible {
+.menu-item:hover,
+.menu-item:focus-visible {
   background: var(--popover-item-hover-bg, #21262d);
   color: var(--popover-item-hover-color, #58a6ff);
 }
 
-.macos-menu-item.is-selected {
+.menu-item.is-selected {
   font-weight: 600;
 }
 
-.macos-menu-item-icon {
+.menu-item-icon {
   width: 14px;
   height: 14px;
   display: inline-flex;
@@ -558,13 +558,13 @@ body.window-dragging * {
   opacity: 0.85;
 }
 
-.macos-menu-item-icon svg {
+.menu-item-icon svg {
   width: 13px;
   height: 13px;
   display: block;
 }
 
-.macos-menu-item-swatch {
+.menu-item-swatch {
   width: 9px;
   height: 9px;
   border-radius: 50%;
@@ -572,16 +572,16 @@ body.window-dragging * {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-[data-theme="light"] .macos-menu-item-swatch {
+[data-theme="light"] .menu-item-swatch {
   border-color: rgba(0, 0, 0, 0.15);
 }
 
-.macos-menu-item-label {
+.menu-item-label {
   flex: 1;
   line-height: 1.25;
 }
 
-.macos-menu-check {
+.menu-check {
   width: 13px;
   height: 13px;
   display: inline-flex;
@@ -592,11 +592,11 @@ body.window-dragging * {
   color: var(--term-green, #58a6ff);
 }
 
-.macos-menu-item.is-selected .macos-menu-check {
+.menu-item.is-selected .menu-check {
   opacity: 1;
 }
 
-.macos-menu-check svg {
+.menu-check svg {
   width: 10px;
   height: 10px;
   stroke: currentColor;
@@ -645,7 +645,7 @@ body.window-dragging * {
 /* ---- CRT Logo Container & Phosphor Styling ---- */
 .logo-wrap {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: calc(26px * var(--term-scale, 1));
   width: 100%;
   max-width: calc(600px * var(--term-scale, 1));
@@ -664,6 +664,14 @@ body.window-dragging * {
   max-width: calc(600px * var(--term-scale, 1));
   position: relative;
   z-index: 1;
+}
+
+/* Organic breathing CRT phosphor glow animation for non-standard themes */
+.logo-wrap.glow picture,
+#logoWrap.glow picture,
+.logo-wrap:has(.logo-img.glow) picture {
+  animation: logoPhosphorGlow 3.4s ease-in-out infinite alternate;
+  will-change: filter, opacity;
 }
 
 .logo-img {
@@ -685,59 +693,31 @@ body.window-dragging * {
   animation: crtIgnition 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Steady clean phosphor characters without background blur */
+/* Steady clean phosphor characters in resting position */
 .logo-img.glow {
   opacity: 1;
   transform: scaleY(1) scaleX(1);
-  filter: none !important;
-  animation: none !important;
 }
 
-/* Character-only glow gradient moving from bottom to top — strictly on character pixels */
+/* Deprecated gradient overlay - disabled to prevent white bar and mask glitching */
 .logo-glow-gradient {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  -webkit-mask-image: url('../assets/ASCII-logo.png');
-  mask-image: url('../assets/ASCII-logo.png');
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  background: linear-gradient(
-    0deg,
-    transparent 0%,
-    rgba(var(--term-primary-rgb, 77, 255, 158), 0) 15%,
-    rgba(var(--term-primary-rgb, 77, 255, 158), 0.45) 35%,
-    rgba(var(--term-primary-rgb, 77, 255, 158), 0.95) 50%,
-    rgba(var(--term-primary-rgb, 77, 255, 158), 0.45) 65%,
-    rgba(var(--term-primary-rgb, 77, 255, 158), 0) 85%,
-    transparent 100%
-  );
-  background-size: 100% 250%;
-  background-position: 0 100%;
-  mix-blend-mode: screen;
+  display: none !important;
 }
 
-.logo-wrap.glow .logo-glow-gradient,
-.logo-wrap:has(.logo-img.glow) .logo-glow-gradient {
-  opacity: 1;
-  animation: logoGlowSweepUp 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-@keyframes logoGlowSweepUp {
+@keyframes logoPhosphorGlow {
   0% {
-    background-position: 0 100%;
+    filter: var(--logo-filter, none)
+            drop-shadow(0 0 2px var(--term-glow-1, rgba(77, 255, 158, 0.85)))
+            drop-shadow(0 0 7px var(--term-glow-2, rgba(77, 255, 158, 0.5)))
+            drop-shadow(0 0 16px var(--term-glow-3, rgba(77, 255, 158, 0.25)));
+    opacity: 0.92;
   }
   100% {
-    background-position: 0 -150%;
+    filter: var(--logo-filter, none)
+            drop-shadow(0 0 5px var(--term-glow-1, rgba(77, 255, 158, 0.95)))
+            drop-shadow(0 0 14px var(--term-glow-2, rgba(77, 255, 158, 0.65)))
+            drop-shadow(0 0 28px var(--term-glow-3, rgba(77, 255, 158, 0.35)));
+    opacity: 1;
   }
 }
 
@@ -807,7 +787,7 @@ body.window-dragging * {
 }
 
 .audio-prompt-box.open-anim {
-  animation: macosWindowOpen 0.44s var(--ease-apple-spring) forwards;
+  animation: windowOpen 0.44s var(--ease-spring) forwards;
 }
 
 .audio-prompt-titlebar {
@@ -998,10 +978,10 @@ body.window-dragging * {
 }
 
 /* ==========================================================================
-   APPLE / GNOME DESKTOP DOCK & APP TILE
+   DESKTOP DOCK & APP TILE
    ========================================================================== */
 
-.macos-dock {
+.desktop-dock {
   position: fixed;
   bottom: 14px;
   left: 50%;
@@ -1025,10 +1005,10 @@ body.window-dragging * {
   z-index: 35;
   user-select: none;
   -webkit-user-select: none;
-  transition: transform 0.38s var(--ease-apple-spring), opacity 0.26s ease;
+  transition: transform 0.38s var(--ease-spring), opacity 0.26s ease;
 }
 
-.macos-dock.visible {
+.desktop-dock.visible {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
   pointer-events: auto;
@@ -1045,7 +1025,7 @@ body.window-dragging * {
   align-items: center;
   position: relative;
   outline: none;
-  transition: transform 0.2s var(--ease-apple-spring);
+  transition: transform 0.2s var(--ease-spring);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -1084,7 +1064,7 @@ body.window-dragging * {
   stroke: var(--term-green);
 }
 
-/* Apple / GNOME Running Indicator Dot */
+/* Running Indicator Dot */
 .dock-indicator {
   width: 4px;
   height: 4px;
@@ -1094,7 +1074,7 @@ body.window-dragging * {
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.85);
   opacity: 0;
   transform: scale(0.5);
-  transition: opacity 0.25s ease, transform 0.25s var(--ease-apple-spring), background 0.25s ease, box-shadow 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s var(--ease-spring), background 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* When terminal is open or minimized, indicator is ON! */
@@ -1110,7 +1090,7 @@ body.window-dragging * {
   box-shadow: 0 0 6px rgba(254, 188, 46, 0.85);
 }
 
-/* macOS Floating Tooltip on Hover */
+/* Floating Tooltip on Hover */
 .dock-tooltip {
   position: absolute;
   bottom: calc(100% + 8px);
@@ -1131,7 +1111,7 @@ body.window-dragging * {
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.15s ease, transform 0.15s var(--ease-apple-spring);
+  transition: opacity 0.15s ease, transform 0.15s var(--ease-spring);
   z-index: 50;
 }
 
@@ -1263,13 +1243,13 @@ body.window-dragging * {
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.2);
   transition:
-    max-width 0.28s var(--ease-apple-spring),
-    padding 0.28s var(--ease-apple-spring),
+    max-width 0.28s var(--ease-spring),
+    padding 0.28s var(--ease-spring),
     color 0.16s ease,
     background 0.16s ease,
     border-color 0.16s ease,
     box-shadow 0.16s ease,
-    transform 0.15s var(--ease-apple-spring);
+    transform 0.15s var(--ease-spring);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -1294,7 +1274,7 @@ body.window-dragging * {
   font-size: clamp(10px, calc(11px * var(--term-scale, 1)), 15px);
   letter-spacing: 0.4px;
   transition:
-    max-width 0.28s var(--ease-apple-spring),
+    max-width 0.28s var(--ease-spring),
     opacity 0.2s ease,
     margin-left 0.25s ease,
     color 0.16s ease,
@@ -1352,7 +1332,7 @@ body.window-dragging * {
 }
 
 /* ==========================================================================
-   OCEAN THEME (SUBNAUTICA) DEDICATED VISUAL EFFECTS
+   OCEAN THEME DEDICATED VISUAL EFFECTS
    ========================================================================== */
 
 [data-theme="ocean"] .terminal,
@@ -1424,7 +1404,17 @@ body.window-dragging * {
 [data-theme="dark"] .logo-img.revealed,
 [data-theme="light"] .logo-img.revealed,
 :root:not([data-theme]) .logo-img.revealed {
-  animation: logoCleanReveal 0.5s var(--ease-apple-spring) forwards !important;
+  animation: logoCleanReveal 0.5s var(--ease-spring) forwards !important;
+}
+
+[data-theme="dark"] .logo-wrap picture,
+[data-theme="dark"] #logoWrap picture,
+[data-theme="light"] .logo-wrap picture,
+[data-theme="light"] #logoWrap picture,
+:root:not([data-theme]) .logo-wrap picture,
+:root:not([data-theme]) #logoWrap picture {
+  animation: none !important;
+  filter: var(--logo-filter, none) !important;
 }
 
 [data-theme="dark"] .logo-img.glow,

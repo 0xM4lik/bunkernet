@@ -12,7 +12,7 @@
   z-index: 20;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.28s var(--ease-apple-in-out);
+  transition: opacity 0.28s var(--ease-in-out);
 }
 
 .overlay.visible {
@@ -142,7 +142,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.16s var(--ease-apple-spring), box-shadow 0.16s ease, filter 0.15s ease;
+  transition: transform 0.16s var(--ease-spring), box-shadow 0.16s ease, filter 0.15s ease;
   z-index: 2;
   box-sizing: border-box;
   -webkit-appearance: none;
@@ -716,7 +716,7 @@
 [data-theme="dark"] .tui-globe-pre.revealed,
 [data-theme="light"] .tui-globe-pre.revealed,
 :root:not([data-theme]) .tui-globe-pre.revealed {
-  animation: globeCleanReveal 0.5s var(--ease-apple-spring) forwards !important;
+  animation: globeCleanReveal 0.5s var(--ease-spring) forwards !important;
 }
 
 @keyframes globeCleanReveal {

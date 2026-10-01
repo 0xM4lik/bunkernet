@@ -44,7 +44,7 @@ The application is structured as a client-side, zero-build, modular web applicat
 graph TD
     subgraph Browser DOM & Canvas
         Canvas[Infinite 3D Background Canvas]
-        Stage[macOS Stage & Terminal Window]
+        Stage[Desktop Stage & Terminal Window]
         Overlay[Modal Overlay & Draggable Windows]
     end
 
@@ -262,7 +262,7 @@ The `ModuleRegistry` iterates registered modules:
 3. Registers CLI command triggers in `cli.js`.
 
 When a module window opens:
-- `streamFullPageTUI(containerEl)` orchestrates a clean, blank-start sequential typewriter stream revealing headers, Neofetch ASCII art, spec rows, lines, and bracket-only buttons (`[ ACTION ]`) from top to bottom with procedural mechanical audio ticks (`sound.streamTick()`).
+- `streamFullPageTUI(containerEl)` orchestrates a clean, blank-start sequential typewriter stream revealing headers, system specs ASCII art, spec rows, lines, and bracket-only buttons (`[ ACTION ]`) from top to bottom with procedural mechanical audio ticks (`sound.streamTick()`).
 - Interactive buttons and links glow on hover (`text-shadow: 0 0 8px rgba(77, 255, 158, 0.85)`).
 - An instant click-to-skip / keypress-to-skip listener enables fast reading without animation blocks.
 
@@ -300,7 +300,7 @@ All executed commands and responses are appended to `#promptHistory`. HTML tags 
 
 ### Traffic Lights & Window State Machine
 
-The terminal window supports macOS traffic light controls:
+The terminal window supports traffic light controls:
 - **Close ($\times$)**: Collapses terminal scale and reveals the dock restore pill (`dockRestore`).
 - **Minimize ($-$)**: Shrinks terminal toward the bottom-left dock.
 - **Maximize ($+$)**: Toggles full-viewport expanded mode (`.maximized`).

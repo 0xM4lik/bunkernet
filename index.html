@@ -133,7 +133,7 @@
         </div>
         <div class="title-text">bunkernet.cc</div>
         <div class="titlebar-controls" id="titlebarControls">
-          <button class="macos-lang-btn" id="langToggleBtn" type="button" aria-label="Switch Language (DE/EN)" title="Switch to German / Auf Deutsch wechseln">
+          <button class="lang-btn" id="langToggleBtn" type="button" aria-label="Switch Language (DE/EN)" title="Switch to German / Auf Deutsch wechseln">
             <span class="lang-btn-icon" aria-hidden="true">
               <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8" cy="8" r="6.25"/>
@@ -143,8 +143,8 @@
             </span>
             <span class="lang-btn-label" id="langBtnLabel">EN</span>
           </button>
-          <div class="macos-theme-menu-wrap" id="themeMenuWrap">
-            <button class="macos-theme-btn" id="themeMenuBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch Theme">
+          <div class="theme-menu-wrap" id="themeMenuWrap">
+            <button class="theme-btn" id="themeMenuBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch Theme">
               <span class="theme-btn-icon" id="themeBtnIcon" aria-hidden="true">
                 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="8" cy="8" r="6.25"/>
@@ -156,7 +156,7 @@
                 <polyline points="1.5 1.75 4 4.25 6.5 1.75"/>
               </svg>
             </button>
-            <div class="macos-theme-popover" id="themeMenuPopover" role="menu" aria-label="Themes"></div>
+            <div class="theme-popover" id="themeMenuPopover" role="menu" aria-label="Themes"></div>
           </div>
         </div>
       </div>
@@ -168,7 +168,6 @@
               <source srcset="assets/ASCII-logo.webp" type="image/webp">
               <img src="assets/ASCII-logo.png" alt="bunkernet.cc Logo" class="logo-img" id="asciiLogo" draggable="false" />
             </picture>
-            <div class="logo-glow-gradient" id="logoGlowGradient" aria-hidden="true"></div>
           </div>
 
           <!-- Dynamic ASCII Launcher Button Grid -->
@@ -193,8 +192,8 @@
     </div>
   </div>
 
-  <!-- macOS / GNOME Desktop Dock -->
-  <div class="macos-dock" id="macosDock" role="toolbar" aria-label="Application Dock">
+  <!-- Desktop Dock -->
+  <div class="desktop-dock" id="desktopDock" role="toolbar" aria-label="Application Dock">
     <button class="dock-app" id="dockRestore" aria-label="Terminal" title="Terminal">
       <div class="dock-app-squircle">
         <svg class="dock-app-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

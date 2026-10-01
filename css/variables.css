@@ -1,13 +1,13 @@
 /* ==========================================================================
-   CSS VARIABLES & MULTI-THEME DESIGN SYSTEM (DOCK & MAC-TUI)
+   CSS VARIABLES & MULTI-THEME DESIGN SYSTEM (DOCK & TERMINAL TUI)
    ========================================================================== */
 
 :root {
   /* Common Fonts */
-  --mono: ui-monospace, "SF Mono", "Menlo", "Cascadia Code", "Roboto Mono", monospace;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, monospace;
+  --sans: system-ui, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
 
-  /* macOS Traffic Light Colors */
+  /* Window Traffic Light Colors */
   --red: #ff5f57;
   --red-dark: #e0443e;
   --yellow: #febc2e;
@@ -15,10 +15,10 @@
   --green: #28c840;
   --green-dark: #1aab29;
 
-  /* macOS Animation & Physics Curves */
-  --ease-apple-spring: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-apple-close: cubic-bezier(0.32, 0, 0.67, 0);
-  --ease-apple-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Window Animation & Physics Curves */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-close: cubic-bezier(0.32, 0, 0.67, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-dock-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Fallback System Defaults (Dark) */
@@ -346,7 +346,7 @@
   --app-dim: var(--text-dim);
   --overlay-bg: rgba(0, 0, 0, 0.5);
 
-  --logo-filter: none;
+  --logo-filter: hue-rotate(0deg);
   --scanline-opacity: 0.85;
   --term-btn-hover-color: #ffffff;
 
@@ -394,7 +394,7 @@
 }
 
 /* ==========================================================================
-   THEME: OCEAN (Subnautica Planet 4546B & Alterra PDA)
+   THEME: OCEAN (Deep Oceanic Cyan & Amber)
    ========================================================================== */
 [data-theme="ocean"] {
   --desktop-bg: #010a14;
@@ -619,7 +619,7 @@
 }
 
 /* ==========================================================================
-   THEME: AMBER (Classic DEC VT220 Monochrome CRT)
+   THEME: AMBER (Classic Monochrome Amber CRT)
    ========================================================================== */
 [data-theme="amber"] {
   --desktop-bg: #070502;
