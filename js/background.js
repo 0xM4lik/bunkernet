@@ -70,7 +70,7 @@ export function initBackground() {
   let W = 0, H = 0, dpr = 1;
 
   const CFG = {
-    nodeCount: window.matchMedia('(max-width: 768px)').matches ? 100 : 230,
+    nodeCount: window.matchMedia('(max-width: 768px)').matches ? 40 : 230,
 
     // Repeating volume
     worldX: 1900,
@@ -222,7 +222,8 @@ export function initBackground() {
   function resize() {
     W = window.innerWidth;
     H = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 
     canvas.width = Math.max(1, Math.floor(W * dpr));
     canvas.height = Math.max(1, Math.floor(H * dpr));

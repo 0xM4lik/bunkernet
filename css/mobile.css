@@ -1,7 +1,7 @@
 /* ==========================================================================
    MOBILE SUPPORT — bunkernet.cc
-   Loaded via <link media="(max-width: 768px)"> so desktop is untouched.
-   Skills: mobile-native, responsive-craft, frontend-design
+   Loaded via <link media="(max-width: 768px)"> so desktop is completely untouched.
+   Skills applied: mobile-native, responsive-craft, frontend-design
    ========================================================================== */
 
 /* ==========================================================================
@@ -19,7 +19,7 @@ html, body {
 }
 
 input, textarea, select {
-  font-size: 16px; /* Prevent iOS zoom on input focus */
+  font-size: 16px; /* Prevent iOS automatic zoom on input focus */
 }
 
 button, a, [role="button"] {
@@ -29,7 +29,7 @@ button, a, [role="button"] {
 }
 
 /* ==========================================================================
-   2. TERMINAL WINDOW — FULL VIEWPORT
+   2. TERMINAL WINDOW — FULL VIEWPORT & ZERO-LAG SURFACE
    ========================================================================== */
 
 .stage {
@@ -39,6 +39,11 @@ button, a, [role="button"] {
   align-items: stretch;
   justify-content: stretch;
   z-index: 2;
+  pointer-events: none; /* Let empty areas pass touches through to 3D canvas */
+}
+
+.stage > * {
+  pointer-events: auto;
 }
 
 .terminal {
@@ -53,9 +58,17 @@ button, a, [role="button"] {
   transform: none !important;
   position: fixed !important;
   inset: 0 !important;
+
+  /* PERFORMANCE FIX: Eliminate backdrop-filter blur on mobile (stops GPU thrashing) */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+
+  /* Translucent surface: allows 3D starfield canvas to be clearly visible */
+  background: var(--window-bg) !important;
 }
 
-/* Hide desktop-only window chrome */
+/* Hide desktop-only window resize handles & retro grip */
 .resize-handle,
 .resize-grip {
   display: none !important;
@@ -63,54 +76,86 @@ button, a, [role="button"] {
 
 /* Hide traffic lights — no close/min/max on mobile */
 .titlebar .traffic-lights {
-  display: none;
+  display: none !important;
 }
 
+/* ==========================================================================
+   3. TITLEBAR — SPACE-BETWEEN LAYOUT (ZERO OVERLAP)
+   ========================================================================== */
+
 .titlebar {
-  height: 44px;
-  padding: 0 12px;
-  padding-top: env(safe-area-inset-top, 0px);
-  cursor: default;
-  touch-action: auto;
+  height: 46px !important;
+  padding: 0 14px !important;
+  padding-top: env(safe-area-inset-top, 0px) !important;
+  cursor: default !important;
+  touch-action: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: var(--titlebar-bg) !important;
+  border-bottom: 1px solid var(--titlebar-border) !important;
 }
 
 .titlebar:active {
-  cursor: default;
+  cursor: default !important;
 }
 
-/* Bigger touch targets for titlebar controls */
+/* Left-aligned title text with no absolute centering -> prevents collision with buttons */
+.titlebar .title-text {
+  position: static !important;
+  text-align: left !important;
+  margin-right: auto !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  font-family: var(--mono) !important;
+  letter-spacing: 0.5px !important;
+  color: var(--title-text-color) !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+}
+
+/* Right-aligned titlebar controls (Language & Theme) */
 .titlebar-controls {
-  gap: 8px;
+  margin-left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
 }
 
 .lang-btn,
 .theme-btn {
-  height: 32px;
-  padding: 0 10px;
-  font-size: 12px;
-  min-width: 44px;
+  height: 30px !important;
+  padding: 0 9px !important;
+  font-size: 11.5px !important;
+  min-width: 44px !important;
+  border-radius: 6px !important;
 }
 
 /* ==========================================================================
-   3. TERMINAL BODY — MOBILE LAYOUT
+   4. TERMINAL BODY — SMOOTH SCROLLING & PROPER SPACING
    ========================================================================== */
 
 .body {
-  padding: 16px 14px 20px;
-  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-  font-size: 13px;
-  justify-content: flex-start;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  padding: 16px 14px 20px !important;
+  /* Extra bottom padding to clear the bottom-fixed GitHub button */
+  padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+  font-size: 13px !important;
+  justify-content: flex-start !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 .body-inner {
-  max-width: 100%;
-  width: 100%;
+  max-width: 100% !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
 }
 
 /* ==========================================================================
-   4. HIDE CLI PROMPT & HISTORY ON MOBILE
+   5. HIDE CLI PROMPT & HISTORY ON MOBILE
    ========================================================================== */
 
 #promptHistory,
@@ -119,50 +164,123 @@ button, a, [role="button"] {
 }
 
 /* ==========================================================================
-   5. LOGO — SCALED FOR MOBILE
+   6. LOGO — CENTERED & PROPORTIONALLY SCALED
    ========================================================================== */
 
 .logo-wrap {
-  margin-bottom: 18px;
+  margin-bottom: 20px !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .logo-img,
 .logo-wrap picture {
-  max-width: 85vw;
+  max-width: 88vw !important;
+  width: 100% !important;
+  height: auto !important;
 }
 
 /* ==========================================================================
-   6. MENU GRID — MOBILE-OPTIMIZED
+   7. MODULE BUTTONS — RESPONSIVE 2-COLUMN CYBERPUNK GRID
    ========================================================================== */
 
 .menu-grid {
-  gap: 14px;
-  margin-bottom: 18px;
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px 10px !important;
+  width: 100% !important;
+  max-width: 380px !important;
+  margin: 0 auto 24px !important;
+  opacity: 1 !important;
+  box-sizing: border-box !important;
 }
 
+/* Flatten the desktop 3+2 DOM rows so all buttons layout uniformly */
 .menu-row {
-  gap: 12px 10px;
-  justify-content: center;
+  display: contents !important;
 }
 
 .ascii-btn {
-  width: calc(42vw - 10px);
-  max-width: 150px;
-  min-width: 100px;
-  padding: 10px 6px;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  padding: 12px 8px 10px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(var(--term-primary-rgb, 88, 166, 255), 0.05) !important;
+  border: 1px solid rgba(var(--term-primary-rgb, 88, 166, 255), 0.22) !important;
+  border-radius: 8px !important;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease !important;
+}
+
+.ascii-btn:active {
+  transform: scale(0.97) !important;
+  background: rgba(var(--term-primary-rgb, 88, 166, 255), 0.14) !important;
+}
+
+/* Only the 5th button (Contact in the second row) spans across both columns as a clean centered card */
+.menu-row:last-child .ascii-btn:last-child {
+  grid-column: 1 / -1 !important;
+  max-width: 220px !important;
+  margin: 0 auto !important;
 }
 
 .ascii-btn .ascii-art {
-  font-size: 11px;
+  font-size: clamp(9.5px, 2.8vw, 12px) !important;
+  line-height: 1.25 !important;
+  color: var(--term-green) !important;
+  opacity: 0.95 !important;
+  margin: 0 0 6px 0 !important;
+  text-align: center !important;
 }
 
 .ascii-btn .ascii-label {
-  font-size: 11px;
-  letter-spacing: 0.5px;
+  font-size: clamp(11px, 3.2vw, 13px) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.6px !important;
+  color: var(--term-green) !important;
+  margin-top: 0 !important;
+  text-align: center !important;
 }
 
 /* ==========================================================================
-   7. APP WINDOWS — FULL-SCREEN MODAL ON MOBILE
+   8. GITHUB BUTTON — ANCHORED TO BOTTOM CENTER (NO LOGO OVERLAP)
+   ========================================================================== */
+
+.terminal-github-btn {
+  position: fixed !important;
+  top: auto !important;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  right: auto !important;
+  z-index: 30 !important;
+  max-width: 180px !important;
+  height: 30px !important;
+  padding: 0 12px !important;
+  background: var(--titlebar-bg) !important;
+  border: 1px solid var(--term-green-dim) !important;
+  border-radius: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.terminal-github-btn .gh-label {
+  opacity: 1 !important;
+  max-width: 140px !important;
+  margin-left: 6px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+/* ==========================================================================
+   9. FULL-SCREEN MODAL APP WINDOWS ON MOBILE
    ========================================================================== */
 
 .app-window {
@@ -176,28 +294,31 @@ button, a, [role="button"] {
   max-height: none !important;
   border-radius: 0 !important;
   border: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: var(--window-bg) !important;
 }
 
 .app-titlebar {
-  height: 44px;
-  padding-top: env(safe-area-inset-top, 0px);
-  cursor: default;
-  touch-action: auto;
+  height: 46px !important;
+  padding: 0 14px !important;
+  padding-top: env(safe-area-inset-top, 0px) !important;
+  cursor: default !important;
+  touch-action: auto !important;
 }
 
 .app-content {
-  padding: 14px 16px;
-  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-  -webkit-overflow-scrolling: touch;
+  padding: 16px 14px !important;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
-/* Hide resize handles in app windows */
 .app-window .resize-handle {
   display: none !important;
 }
 
 /* ==========================================================================
-   8. DESKTOP DOCK — HIDDEN ON MOBILE
+   10. DESKTOP DOCK — HIDDEN ON MOBILE
    ========================================================================== */
 
 .desktop-dock {
@@ -205,72 +326,52 @@ button, a, [role="button"] {
 }
 
 /* ==========================================================================
-   9. GITHUB BUTTON — REPOSITIONED ON MOBILE
-   ========================================================================== */
-
-.terminal-github-btn {
-  bottom: auto;
-  top: calc(44px + env(safe-area-inset-top, 0px) + 8px);
-  right: 12px;
-  left: auto;
-  z-index: 20;
-  max-width: 160px !important;
-  padding: 0 8px !important;
-}
-
-/* Always show expanded on mobile */
-.terminal-github-btn .gh-label {
-  opacity: 1;
-  max-width: 120px;
-  margin-left: 5px;
-}
-
-/* ==========================================================================
-   10. BACKGROUND CANVAS — TOUCH-FRIENDLY
+   11. BACKGROUND CANVAS — VISIBLE & PERFORMANT
    ========================================================================== */
 
 #bg-canvas {
-  touch-action: auto;
-  cursor: default;
-  pointer-events: none;
+  touch-action: auto !important;
+  cursor: default !important;
+  pointer-events: none !important;
 }
 
 /* ==========================================================================
-   11. AUDIO PROMPT — MOBILE POLISH
+   12. AUDIO PROMPT — MOBILE POLISH
    ========================================================================== */
 
 .audio-prompt-box {
-  width: 90vw;
-  max-width: 340px;
+  width: 90vw !important;
+  max-width: 340px !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .audio-prompt-actions .ascii-btn {
-  min-width: 80px;
+  min-width: 80px !important;
 }
 
 /* ==========================================================================
-   12. THEME POPOVER — MOBILE POSITIONING
+   13. THEME POPOVER — MOBILE POSITIONING
    ========================================================================== */
 
 .theme-popover {
-  max-height: calc(100dvh - 100px);
-  right: -4px;
+  max-height: calc(100dvh - 120px) !important;
+  right: -4px !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* ==========================================================================
-   13. NEOFETCH — STACKED LAYOUT
+   14. NEOFETCH — STACKED LAYOUT
    ========================================================================== */
 
 .tui-neofetch {
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 16px !important;
 }
 
-.tui-neofetch-logo {
-  width: 100%;
-}
-
+.tui-neofetch-logo,
 .tui-neofetch-specs {
-  width: 100%;
+  width: 100% !important;
 }
