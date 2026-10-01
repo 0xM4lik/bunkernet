@@ -8,6 +8,7 @@ import { sound, enableAudioFromUserGesture, setAudioMuted } from './audio.js';
 import { makeDraggable, makeResizable, WindowManager } from './window-manager.js';
 import { setBackgroundControlsEnabled } from './background.js';
 import { getModuleById } from './modules/index.js';
+import { t, onLanguageChange } from './i18n.js';
 
 let terminal = null;
 let btnClose = null;
@@ -65,8 +66,28 @@ export function showAudioPrompt(onChoice) {
     return;
   }
 
+  // Localize prompt content and buttons
+  const promptText = dialog.querySelector('.audio-prompt-text');
+  if (promptText) promptText.textContent = t('audio.enableText');
+
+  const yesLabel = btnYes.querySelector('.ascii-label');
+  if (yesLabel) {
+    yesLabel.textContent = t('audio.yes');
+    yesLabel.setAttribute('data-text', t('audio.yes'));
+  }
+  btnYes.setAttribute('aria-label', t('audio.yesAria'));
+
+  const noLabel = btnNo.querySelector('.ascii-label');
+  if (noLabel) {
+    noLabel.textContent = t('audio.no');
+    noLabel.setAttribute('data-text', t('audio.no'));
+  }
+  btnNo.setAttribute('aria-label', t('audio.noAria'));
+
   // Close button on audio prompt gracefully dismisses with audio muted
   if (btnClose) {
+    btnClose.setAttribute('aria-label', t('titlebar.close'));
+    btnClose.setAttribute('title', t('titlebar.close'));
     btnClose.onclick = (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -780,16 +801,17 @@ export function initButtonScrambles() {
     };
 
     if (label) {
-      const finalText = label.getAttribute('data-text');
       btn.addEventListener('mouseenter', () => {
-        scrambleTo(label, finalText, { duration: 350 });
+        const currentText = label.getAttribute('data-text') || (mod ? mod.label : label.textContent);
+        scrambleTo(label, currentText, { duration: 350 });
         if (!btn.closest('#audioPromptDialog')) {
           sound.hoverBlip();
         }
         startArtAnimation();
       });
       btn.addEventListener('focus', () => {
-        scrambleTo(label, finalText, { duration: 350 });
+        const currentText = label.getAttribute('data-text') || (mod ? mod.label : label.textContent);
+        scrambleTo(label, currentText, { duration: 350 });
         startArtAnimation();
       });
       btn.addEventListener('mouseleave', stopArtAnimation);
@@ -859,6 +881,33 @@ export function initTerminal() {
   macosDock = document.getElementById('macosDock');
   dockRestore = document.getElementById('dockRestore');
   dockLabel = document.getElementById('dockLabel');
+
+  function updateTerminalChromeTitles() {
+    if (btnClose) {
+      btnClose.setAttribute('aria-label', t('titlebar.close'));
+      btnClose.setAttribute('title', t('titlebar.close'));
+    }
+    if (btnMin) {
+      btnMin.setAttribute('aria-label', t('titlebar.min'));
+      btnMin.setAttribute('title', t('titlebar.min'));
+    }
+    if (btnMax) {
+      btnMax.setAttribute('aria-label', t('titlebar.max'));
+      btnMax.setAttribute('title', t('titlebar.max'));
+    }
+    const rhSe = document.querySelector('.rh-se');
+    if (rhSe) rhSe.setAttribute('title', t('titlebar.resize'));
+
+    if (dockRestore) {
+      dockRestore.setAttribute('aria-label', t('dock.terminal'));
+      dockRestore.setAttribute('title', t('dock.terminal'));
+      const tooltip = dockRestore.querySelector('.dock-tooltip');
+      if (tooltip) tooltip.textContent = t('dock.terminal');
+    }
+  }
+
+  updateTerminalChromeTitles();
+  onLanguageChange(updateTerminalChromeTitles);
 
   // Initialize tactile drag with pickup elevation & dynamic tilt on main terminal
   if (terminal && titlebar) {

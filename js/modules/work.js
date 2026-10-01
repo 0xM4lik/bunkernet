@@ -3,14 +3,15 @@
  */
 import { config } from '../config.js';
 import { streamTUIContent } from '../terminal.js';
+import { t, getLanguage } from '../i18n.js';
 
 let projectsLoaded = false;
 
 const FALLBACK_PROJECTS = [
-  { name: 'bunker-notes', description: 'Quartz notes site, self-hosted on bunker infrastructure.', lang: 'TypeScript', stars: '—', url: 'https://notes.bunkernet.cc' },
-  { name: 'ctf-toolkit', description: 'Scripts and automation tools for security research & CTFs.', lang: 'Python', stars: '—', url: `https://github.com/${config.githubUsername}/ctf-toolkit` },
-  { name: 'homelab', description: 'Infrastructure-as-code configuration for the bunkernet stack.', lang: 'Shell', stars: '—', url: `https://github.com/${config.githubUsername}/homelab` },
-  { name: 'this-site', description: 'Zero-build procedural terminal website with Web Audio & 3D starfield.', lang: 'JavaScript', stars: '—', url: `https://github.com/${config.githubUsername}/bunkernet.cc` }
+  { name: 'bunker-notes', get description() { return t('work.fallback.notes'); }, lang: 'TypeScript', stars: '—', url: 'https://notes.bunkernet.cc' },
+  { name: 'ctf-toolkit', get description() { return t('work.fallback.ctf'); }, lang: 'Python', stars: '—', url: `https://github.com/${config.githubUsername}/ctf-toolkit` },
+  { name: 'homelab', get description() { return t('work.fallback.homelab'); }, lang: 'Shell', stars: '—', url: `https://github.com/${config.githubUsername}/homelab` },
+  { name: 'this-site', get description() { return t('work.fallback.site'); }, lang: 'JavaScript', stars: '—', url: `https://github.com/${config.githubUsername}/bunkernet.cc` }
 ];
 
 function escapeHtml(str) {
@@ -21,9 +22,9 @@ function escapeHtml(str) {
 
 export default {
   id: 'work',
-  label: '[ WORK ]',
+  get label() { return t('menu.work'); },
   command: 'work',
-  windowTitle: `bunkernet.cc — work`,
+  get windowTitle() { return t('window.work'); },
   windowClass: 'work-window',
   baseWidth: 720,
   baseHeight: 520,
@@ -54,14 +55,14 @@ export default {
   render() {
     return `
       <div class="tui-section">
-        <div class="tui-heading" data-tui-stream>Skills &amp; Technologies:</div>
+        <div class="tui-heading" data-tui-stream>${t('work.skillsHeading')}</div>
         <div class="tui-line" data-tui-stream>[ Python ]  [ JavaScript ]  [ CSS ]  [ HTML ]  [ Linux ]  [ Docker ]</div>
       </div>
 
       <div class="tui-section">
-        <div class="tui-heading" data-tui-stream>Projects &amp; Repositories: <span class="tui-status-tag" id="workStatus">[ CONNECTING ]</span></div>
+        <div class="tui-heading" data-tui-stream>${t('work.projectsHeading')} <span class="tui-status-tag" id="workStatus">${t('work.statusConnecting')}</span></div>
         <div id="projectsList">
-          <div class="tui-dim" data-tui-stream>[ Fetching repositories from GitHub... ]</div>
+          <div class="tui-dim" data-tui-stream>${t('work.fetching')}</div>
         </div>
       </div>
     `;
@@ -82,33 +83,35 @@ export default {
 
       if (statusEl) {
         statusEl.className = 'tui-status-tag live';
-        statusEl.textContent = '[ LIVE: GITHUB ]';
+        statusEl.textContent = t('work.statusLive');
       }
 
       list.innerHTML = repos.map(r => `
         <div class="tui-item">
           <div class="tui-bright" data-tui-stream>${escapeHtml(r.name)}</div>
-          <div class="tui-line" data-tui-stream>${escapeHtml(r.description || 'No description provided.')}</div>
+          <div class="tui-line" data-tui-stream>${escapeHtml(r.description || t('work.noDesc'))}</div>
           <div class="tui-actions">
             <span class="tui-dim">${escapeHtml(r.language || 'Source')}</span>
             <span class="tui-dim">·</span>
             <span class="tui-dim">[ ★ ${r.stargazers_count} ]</span>
             <span class="tui-dim">·</span>
-            <a class="tui-btn primary" href="${r.html_url}" target="_blank" rel="noopener">[ VIEW ON GITHUB ]</a>
+            <a class="tui-btn primary" href="${r.html_url}" target="_blank" rel="noopener">[ ${t('work.viewGithub')} ]</a>
           </div>
         </div>
       `).join('');
       streamTUIContent(list);
     } catch (err) {
       if (statusEl) {
+        const retryLabel = getLanguage() === 'de' ? 'WIEDERHOLEN' : 'RETRY';
+        const offlineLabel = getLanguage() === 'de' ? 'OFFLINE-CACHE' : 'OFFLINE CACHE';
         statusEl.className = 'tui-status-tag';
-        statusEl.innerHTML = '[ OFFLINE CACHE · <button class="tui-btn" id="btnRetryWork" style="font-size:11px;padding:0;">RETRY</button> ]';
+        statusEl.innerHTML = `[ ${offlineLabel} · <button class="tui-btn" id="btnRetryWork" style="font-size:11px;padding:0;">${retryLabel}</button> ]`;
         const retryBtn = statusEl.querySelector('#btnRetryWork');
         if (retryBtn) {
           retryBtn.onclick = (e) => {
             e.stopPropagation();
             projectsLoaded = false;
-            list.innerHTML = '<div class="tui-dim">[ Retrying GitHub connection... ]</div>';
+            list.innerHTML = `<div class="tui-dim">${t('work.retrying')}</div>`;
             this.onOpen(winEl);
           };
         }
@@ -123,7 +126,7 @@ export default {
             <span class="tui-dim">·</span>
             <span class="tui-dim">[ ★ ${p.stars} ]</span>
             <span class="tui-dim">·</span>
-            <a class="tui-btn primary" href="${p.url}" target="_blank" rel="noopener">[ VIEW ON GITHUB ]</a>
+            <a class="tui-btn primary" href="${p.url}" target="_blank" rel="noopener">[ ${t('work.viewGithub')} ]</a>
           </div>
         </div>
       `).join('');

@@ -7,6 +7,7 @@ import { WindowManager } from './window-manager.js';
 import { mountModules } from './modules/index.js';
 import { initCli } from './cli.js';
 import { initTheme, setupThemeMenu } from './theme.js';
+import { initI18n, setupLangToggle } from './i18n.js';
 import {
   initTerminal,
   showAudioPrompt,
@@ -16,9 +17,11 @@ import {
 import { setupAudioUI } from './audio.js';
 
 function boot() {
-  // 0. Initialize theme before rendering modules
+  // 0. Initialize theme & localization before rendering modules
   initTheme();
   setupThemeMenu();
+  initI18n();
+  setupLangToggle();
 
   const menuGrid = document.getElementById('menuGrid');
   const appWindowsContainer = document.getElementById('appWindowsContainer');

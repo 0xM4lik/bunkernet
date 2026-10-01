@@ -29,6 +29,30 @@
     })();
   </script>
 
+  <!-- Instant Language Auto-Detection (Flash Prevention) -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('bunkernet_lang');
+        var lang = saved;
+        if (!saved || (saved !== 'de' && saved !== 'en')) {
+          var navLangs = (navigator.languages && navigator.languages.length > 0)
+            ? navigator.languages
+            : [navigator.language || navigator.userLanguage || ''];
+          var isGerman = false;
+          for (var i = 0; i < navLangs.length; i++) {
+            if (navLangs[i] && navLangs[i].toLowerCase().indexOf('de') === 0) {
+              isGerman = true;
+              break;
+            }
+          }
+          lang = isGerman ? 'de' : 'en';
+        }
+        document.documentElement.setAttribute('lang', lang);
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- External Animation Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>window.anime || document.write('<script src="js/vendor/anime.min.js"><\/script>')</script>
@@ -102,20 +126,32 @@
           </button>
         </div>
         <div class="title-text">bunkernet.cc</div>
-        <div class="macos-theme-menu-wrap" id="themeMenuWrap">
-          <button class="macos-theme-btn" id="themeMenuBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch Theme">
-            <span class="theme-btn-icon" id="themeBtnIcon" aria-hidden="true">
-              <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <div class="titlebar-controls" id="titlebarControls">
+          <button class="macos-lang-btn" id="langToggleBtn" type="button" aria-label="Switch Language (DE/EN)" title="Switch to German / Auf Deutsch wechseln">
+            <span class="lang-btn-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8" cy="8" r="6.25"/>
-                <path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/>
+                <line x1="1.75" y1="8" x2="14.25" y2="8"/>
+                <path d="M8 1.75a9.5 9.5 0 0 0 0 12.5M8 1.75a9.5 9.5 0 0 1 0 12.5"/>
               </svg>
             </span>
-            <span class="theme-btn-label" id="themeBtnLabel">Auto</span>
-            <svg class="theme-chevron-svg" viewBox="0 0 8 6" width="7" height="6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="1.5 1.75 4 4.25 6.5 1.75"/>
-            </svg>
+            <span class="lang-btn-label" id="langBtnLabel">EN</span>
           </button>
-          <div class="macos-theme-popover" id="themeMenuPopover" role="menu" aria-label="Themes"></div>
+          <div class="macos-theme-menu-wrap" id="themeMenuWrap">
+            <button class="macos-theme-btn" id="themeMenuBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch Theme">
+              <span class="theme-btn-icon" id="themeBtnIcon" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="8" cy="8" r="6.25"/>
+                  <path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/>
+                </svg>
+              </span>
+              <span class="theme-btn-label" id="themeBtnLabel">Auto</span>
+              <svg class="theme-chevron-svg" viewBox="0 0 8 6" width="7" height="6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="1.5 1.75 4 4.25 6.5 1.75"/>
+              </svg>
+            </button>
+            <div class="macos-theme-popover" id="themeMenuPopover" role="menu" aria-label="Themes"></div>
+          </div>
         </div>
       </div>
 

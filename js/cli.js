@@ -8,6 +8,7 @@ import { WindowManager } from './window-manager.js';
 import { getModuleByCommand, getAllModules } from './modules/index.js';
 import { config } from './config.js';
 import { THEMES, getCurrentTheme, getAllThemes, applyTheme, cycleNextTheme, getThemePreference } from './theme.js';
+import { t, getLanguage, setLanguage, toggleLanguage } from './i18n.js';
 
 let promptInput = null;
 let promptHistory = null;
@@ -43,10 +44,10 @@ export function handleCommand(raw) {
 
   if (mainCmd === 'help') {
     const moduleCmds = getAllModules().map(m => m.command || m.id).join(', ');
-    output.textContent = `commands: ${moduleCmds}, theme [name|next|auto], sound [on|off|toggle], whoami, clear, help`;
+    output.textContent = t('cli.helpCommands', { mods: moduleCmds });
     sound.ready();
   } else if (mainCmd === 'whoami') {
-    output.textContent = 'guest';
+    output.textContent = getLanguage() === 'de' ? 'gast' : 'guest';
     sound.ready();
   } else if (mainCmd === 'clear') {
     promptHistory.innerHTML = '';
@@ -56,28 +57,49 @@ export function handleCommand(raw) {
     const sub = args[0] ? args[0].toLowerCase() : '';
     if (sub === 'off' || sub === 'mute' || sub === 'disable') {
       setAudioMuted(true);
-      output.textContent = 'sound effects muted.';
+      output.textContent = t('cli.soundMuted');
     } else if (sub === 'on' || sub === 'unmute' || sub === 'enable') {
       enableAudioFromUserGesture().then(() => {
         setAudioMuted(false);
         sound.ready();
       });
-      output.textContent = 'sound effects enabled.';
+      output.textContent = t('cli.soundEnabled');
     } else if (sub === 'toggle') {
       toggleAudio().then(active => {
-        output.textContent = active ? 'sound effects enabled.' : 'sound effects muted.';
+        output.textContent = active ? t('cli.soundEnabled') : t('cli.soundMuted');
       });
     } else {
-      const state = isAudioMuted() ? 'OFF (muted)' : 'ON (active)';
-      output.textContent = `sound is currently ${state}. Usage: sound on | sound off | sound toggle`;
+      const state = isAudioMuted()
+        ? (getLanguage() === 'de' ? 'AUS (stumm)' : 'OFF (muted)')
+        : (getLanguage() === 'de' ? 'AN (aktiv)' : 'ON (active)');
+      output.textContent = t('cli.soundStatus', { state });
       sound.ready();
     }
   } else if (mainCmd === 'exit' || mainCmd === 'close') {
     if (WindowManager.getActiveWindow()) {
       WindowManager.closeActive();
-      output.textContent = 'window closed.';
+      output.textContent = t('cli.windowClosed');
     } else {
-      output.textContent = 'use titlebar buttons to minimize/close terminal.';
+      output.textContent = t('cli.closeHint');
+    }
+  } else if (mainCmd === 'lang' || mainCmd === 'language' || mainCmd === 'sprache') {
+    const sub = args[0] ? args[0].toLowerCase() : '';
+    if (sub === 'de' || sub === 'german' || sub === 'deutsch') {
+      setLanguage('de', true);
+      output.textContent = t('cli.langSwitched', { lang: 'Deutsch (German)' });
+      sound.ready();
+    } else if (sub === 'en' || sub === 'english' || sub === 'englisch') {
+      setLanguage('en', true);
+      output.textContent = t('cli.langSwitched', { lang: 'English' });
+      sound.ready();
+    } else if (sub === 'toggle' || sub === 'switch') {
+      const next = toggleLanguage();
+      output.textContent = t('cli.langSwitched', { lang: next === 'de' ? 'Deutsch (German)' : 'English' });
+      sound.ready();
+    } else {
+      const cur = getLanguage() === 'de' ? 'Deutsch [DE]' : 'English [EN]';
+      output.textContent = t('cli.langCurrent', { lang: cur });
+      sound.ready();
     }
   } else if (mainCmd === 'theme') {
     const sub = args[0] ? args[0].toLowerCase() : '';
@@ -112,16 +134,16 @@ export function handleCommand(raw) {
     const mod = getModuleByCommand(mainCmd);
     if (mod) {
       if (mod.url) {
-        output.textContent = `opening ${mod.url.replace(/^https?:\/\//, '')}...`;
+        output.textContent = t('cli.opening', { target: mod.url.replace(/^https?:\/\//, '') });
         sound.windowOpen();
         window.open(mod.url, '_blank', 'noopener,noreferrer');
       } else {
-        output.textContent = `opening ${mod.id}...`;
+        output.textContent = t('cli.opening', { target: mod.id });
         sound.windowOpen();
         WindowManager.open(mod.id);
       }
     } else {
-      output.textContent = `command not found: ${cmd}. Type 'help' for available commands.`;
+      output.textContent = t('cli.cmdNotFound', { cmd });
       sound.error();
     }
   }

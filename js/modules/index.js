@@ -10,6 +10,7 @@ import matrix from './matrix.js';
 import contact from './contact.js';
 import { WindowManager } from '../window-manager.js';
 import { sound } from '../audio.js';
+import { onLanguageChange, t } from '../i18n.js';
 
 export const modules = [
   about,
@@ -155,4 +156,71 @@ export function mountModules(gridContainer, windowsContainer) {
   if (row2.children.length > 0) {
     gridContainer.appendChild(row2);
   }
+
+  // Reactive UI update whenever language toggles
+  onLanguageChange(() => {
+    // 1. Update launcher buttons in gridContainer
+    import('../terminal.js').then(({ scrambleTo }) => {
+      modules.forEach((mod) => {
+        const btn = gridContainer.querySelector(`[data-window="${mod.id}"]`);
+        if (btn) {
+          const labelText = mod.label;
+          btn.setAttribute('aria-label', labelText);
+          const labelSpan = btn.querySelector('.ascii-label');
+          if (labelSpan) {
+            labelSpan.setAttribute('data-text', labelText);
+            if (typeof scrambleTo === 'function') {
+              scrambleTo(labelSpan, labelText, { reveal: true, duration: 320 });
+            } else {
+              labelSpan.textContent = labelText;
+            }
+          }
+        }
+      });
+    }).catch(() => {
+      modules.forEach((mod) => {
+        const btn = gridContainer.querySelector(`[data-window="${mod.id}"]`);
+        if (btn) {
+          const labelText = mod.label;
+          btn.setAttribute('aria-label', labelText);
+          const labelSpan = btn.querySelector('.ascii-label');
+          if (labelSpan) {
+            labelSpan.setAttribute('data-text', labelText);
+            labelSpan.textContent = labelText;
+          }
+        }
+      });
+    });
+
+    // 2. Update modal window titles and close button aria-labels
+    modules.forEach((mod) => {
+      const win = document.getElementById(`win-${mod.id}`);
+      if (win) {
+        const titleText = mod.windowTitle || mod.label;
+        const titleEl = win.querySelector(`#win-title-${mod.id}`);
+        if (titleEl) titleEl.textContent = titleText;
+        const closeBtn = win.querySelector('[data-close]');
+        if (closeBtn) {
+          closeBtn.setAttribute('aria-label', `${t('titlebar.close')} ${titleText}`);
+          closeBtn.setAttribute('title', t('titlebar.close'));
+        }
+      }
+    });
+
+    // 3. If an active window is open, re-render its content
+    const activeWin = WindowManager.getActiveWindow ? WindowManager.getActiveWindow() : null;
+    if (activeWin && activeWin.classList.contains('open')) {
+      const modId = activeWin.id.replace('win-', '');
+      const mod = getModuleById(modId);
+      if (mod && mod.id !== 'matrix' && typeof mod.render === 'function') {
+        const content = activeWin.querySelector('.app-content');
+        if (content) {
+          content.innerHTML = mod.render();
+          if (typeof mod.onOpen === 'function') {
+            mod.onOpen(activeWin);
+          }
+        }
+      }
+    }
+  });
 }

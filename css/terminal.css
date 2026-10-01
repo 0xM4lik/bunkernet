@@ -266,16 +266,89 @@ body.window-dragging * {
   pointer-events: none;
 }
 
-/* ---- macOS Titlebar Theme Menu Control ---- */
-.macos-theme-menu-wrap {
+/* ---- macOS Titlebar Controls (Language Toggle & Theme Menu) ---- */
+.titlebar-controls {
   margin-left: auto;
   position: relative;
   z-index: 10;
   display: flex;
   align-items: center;
+  gap: 6px;
   user-select: none;
   -webkit-user-select: none;
   touch-action: auto;
+}
+
+.macos-theme-menu-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: auto;
+}
+
+/* ---- macOS Titlebar Language Toggle Control ---- */
+.macos-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4.5px;
+  height: 22px;
+  padding: 0 7px 0 6px;
+  background: var(--theme-btn-bg, transparent);
+  border: 1px solid var(--theme-btn-border, transparent);
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  color: var(--theme-btn-color, var(--title-text-color));
+  cursor: pointer;
+  outline: none;
+  touch-action: auto;
+  pointer-events: auto;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s var(--ease-apple-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.macos-lang-btn:hover {
+  background: var(--theme-btn-hover-bg, rgba(255, 255, 255, 0.08));
+  border-color: var(--theme-btn-hover-border, transparent);
+  color: var(--theme-btn-hover-color, #ffffff);
+}
+
+.macos-lang-btn:focus-visible {
+  outline: 1.5px dashed var(--term-green);
+  outline-offset: 2px;
+}
+
+.macos-lang-btn:active {
+  transform: scale(0.96);
+  background: var(--theme-btn-active-bg, rgba(255, 255, 255, 0.12));
+}
+
+.lang-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.macos-lang-btn:hover .lang-btn-icon {
+  opacity: 1;
+}
+
+.lang-btn-label {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
+  line-height: 1;
 }
 
 .macos-theme-btn {

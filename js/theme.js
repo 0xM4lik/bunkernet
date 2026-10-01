@@ -8,6 +8,7 @@
 
 import { sound } from './audio.js';
 import { updateBackgroundTheme } from './background.js';
+import { t, onLanguageChange } from './i18n.js';
 
 export const THEMES = {
   dark: {
@@ -298,27 +299,27 @@ export function setupThemeMenu() {
     const coreHtml = `
       <button class="macos-menu-item ${isAuto ? 'is-selected' : ''}" data-theme-id="system" type="button" role="menuitem" aria-label="Auto detect system theme">
         <span class="macos-menu-item-icon">${ICONS.auto}</span>
-        <span class="macos-menu-item-label">Auto (System)</span>
+        <span class="macos-menu-item-label">${t('theme.auto')}</span>
         <span class="macos-menu-check">
           <svg viewBox="0 0 10 10"><polyline points="2 5.5 4.5 8 8 2.5"/></svg>
         </span>
       </button>
       <button class="macos-menu-item ${isDark ? 'is-selected' : ''}" data-theme-id="dark" type="button" role="menuitem" aria-label="Dark theme">
         <span class="macos-menu-item-icon">${ICONS.dark}</span>
-        <span class="macos-menu-item-label">Dark</span>
+        <span class="macos-menu-item-label">${t('theme.dark')}</span>
         <span class="macos-menu-check">
           <svg viewBox="0 0 10 10"><polyline points="2 5.5 4.5 8 8 2.5"/></svg>
         </span>
       </button>
       <button class="macos-menu-item ${isLight ? 'is-selected' : ''}" data-theme-id="light" type="button" role="menuitem" aria-label="Light theme">
         <span class="macos-menu-item-icon">${ICONS.light}</span>
-        <span class="macos-menu-item-label">Light</span>
+        <span class="macos-menu-item-label">${t('theme.light')}</span>
         <span class="macos-menu-check">
           <svg viewBox="0 0 10 10"><polyline points="2 5.5 4.5 8 8 2.5"/></svg>
         </span>
       </button>
       <div class="macos-menu-divider" role="separator"></div>
-      <div class="macos-menu-section-header">Themes</div>
+      <div class="macos-menu-section-header">${t('theme.section')}</div>
     `;
 
     const stylizedThemes = Object.values(THEMES).filter(t => t.id !== 'dark' && t.id !== 'light');
@@ -335,7 +336,7 @@ export function setupThemeMenu() {
       `;
     }).join('');
 
-    const hintHtml = `<div class="macos-menu-hint" aria-hidden="true">cli: theme &lt;name&gt; | theme next</div>`;
+    const hintHtml = `<div class="macos-menu-hint" aria-hidden="true">${t('theme.cliHint')}</div>`;
     popover.innerHTML = coreHtml + stylizedHtml + hintHtml;
   }
 
@@ -347,9 +348,9 @@ export function setupThemeMenu() {
       if (isAuto) {
         label.textContent = 'Auto';
       } else if (effectivePref === 'dark') {
-        label.textContent = 'Dark';
+        label.textContent = t('theme.dark');
       } else if (effectivePref === 'light') {
-        label.textContent = 'Light';
+        label.textContent = t('theme.light');
       } else {
         label.textContent = theme.name;
       }
@@ -369,9 +370,9 @@ export function setupThemeMenu() {
 
     if (btn) {
       if (isAuto) {
-        btn.setAttribute('title', `Theme: Auto (${theme.name})`);
+        btn.setAttribute('title', `${t('titlebar.theme')}: Auto (${theme.name})`);
       } else {
-        btn.setAttribute('title', `Theme: ${theme.name}`);
+        btn.setAttribute('title', `${t('titlebar.theme')}: ${theme.name}`);
       }
     }
 
@@ -443,6 +444,12 @@ export function setupThemeMenu() {
   // Subscribe to theme changes (e.g. from CLI or system preference changes)
   onThemeChange((theme, oldTheme, pref) => {
     updateMenuUI(theme, pref);
+  });
+
+  // Subscribe to language changes to update localized labels & hints
+  onLanguageChange(() => {
+    renderPopoverItems();
+    updateMenuUI(getCurrentTheme(), userThemePreference);
   });
 }
 

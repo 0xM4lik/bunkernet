@@ -5,6 +5,7 @@
 import { config } from '../config.js';
 import { sound } from '../audio.js';
 import { getCurrentTheme } from '../theme.js';
+import { t } from '../i18n.js';
 
 let matrixLoopId = null;
 let mCanvas = null;
@@ -128,9 +129,9 @@ function drawFrame(timestamp) {
 
 export default {
   id: 'matrix',
-  label: '[ MATRIX ]',
+  get label() { return t('menu.matrix'); },
   command: 'matrix',
-  windowTitle: 'bunkernet.cc — matrix',
+  get windowTitle() { return t('window.matrix'); },
   windowClass: 'matrix-window',
   baseWidth: 740,
   baseHeight: 500,
@@ -162,8 +163,8 @@ export default {
     return `
       <canvas id="matrixCanvas"></canvas>
       <div class="matrix-cta">
-        <a class="ascii-btn" href="${config.matrixRoomUrl}" target="_blank" rel="noopener" aria-label="Join the Bunkerspace on Matrix">
-          <span class="ascii-label" data-text="[ JOIN THE BUNKERSPACE ]">[ JOIN THE BUNKERSPACE ]</span>
+        <a class="ascii-btn" href="${config.matrixRoomUrl}" target="_blank" rel="noopener" aria-label="${t('matrix.ctaAria')}">
+          <span class="ascii-label" data-text="${t('matrix.cta')}">${t('matrix.cta')}</span>
         </a>
       </div>
     `;

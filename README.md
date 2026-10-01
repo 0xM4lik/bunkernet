@@ -36,6 +36,7 @@ The project is built entirely with plain HTML, CSS, and modern JavaScript module
 | **Interactive Background** | Canvas-based 3D node network simulation with mouse reactivity and spring physics. |
 | **Synthesized Audio** | Procedural UI sound effects using the Web Audio API without loading external audio files. |
 | **Theme Engine** | 11 color palettes (Dark, Light, Matrix, Nord, Dracula, Gruvbox, Catppuccin, etc.) with automatic system light/dark detection. |
+| **Internationalization (i18n)** | German (DE) and English (EN) localization with automatic browser/system language detection, persistent storage, titlebar toggle button, dynamic scramble animations, and CLI `lang` command. |
 | **System Info & Globe** | Neofetch-style system summary with an interactive rotating ASCII globe in the About window. Inspired by https://github.com/adamsky/globe |
 | **Modular Apps** | Extensible module format for easily adding new launcher buttons, windows and terminal commands. |
 
