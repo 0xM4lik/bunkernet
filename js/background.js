@@ -70,7 +70,7 @@ export function initBackground() {
   let W = 0, H = 0, dpr = 1;
 
   const CFG = {
-    nodeCount: 230,
+    nodeCount: window.matchMedia('(max-width: 768px)').matches ? 100 : 230,
 
     // Repeating volume
     worldX: 1900,

@@ -190,7 +190,7 @@ export function initCli() {
 
   if (bodyEl) {
     bodyEl.addEventListener('click', (e) => {
-      if (!e.target.closest('.ascii-btn') && !e.target.closest('a')) {
+      if (!e.target.closest('.ascii-btn') && !e.target.closest('a') && !window.matchMedia('(max-width: 768px)').matches) {
         promptInput.focus();
       }
     });

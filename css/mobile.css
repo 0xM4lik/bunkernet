@@ -1,0 +1,276 @@
+/* ==========================================================================
+   MOBILE SUPPORT — bunkernet.cc
+   Loaded via <link media="(max-width: 768px)"> so desktop is untouched.
+   Skills: mobile-native, responsive-craft, frontend-design
+   ========================================================================== */
+
+/* ==========================================================================
+   1. MOBILE-NATIVE BASELINE
+   ========================================================================== */
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+  overscroll-behavior: none;
+  height: 100dvh;
+}
+
+input, textarea, select {
+  font-size: 16px; /* Prevent iOS zoom on input focus */
+}
+
+button, a, [role="button"] {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ==========================================================================
+   2. TERMINAL WINDOW — FULL VIEWPORT
+   ========================================================================== */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  z-index: 2;
+}
+
+.terminal {
+  width: 100% !important;
+  height: 100dvh !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+  transform: none !important;
+  position: fixed !important;
+  inset: 0 !important;
+}
+
+/* Hide desktop-only window chrome */
+.resize-handle,
+.resize-grip {
+  display: none !important;
+}
+
+/* Hide traffic lights — no close/min/max on mobile */
+.titlebar .traffic-lights {
+  display: none;
+}
+
+.titlebar {
+  height: 44px;
+  padding: 0 12px;
+  padding-top: env(safe-area-inset-top, 0px);
+  cursor: default;
+  touch-action: auto;
+}
+
+.titlebar:active {
+  cursor: default;
+}
+
+/* Bigger touch targets for titlebar controls */
+.titlebar-controls {
+  gap: 8px;
+}
+
+.lang-btn,
+.theme-btn {
+  height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
+  min-width: 44px;
+}
+
+/* ==========================================================================
+   3. TERMINAL BODY — MOBILE LAYOUT
+   ========================================================================== */
+
+.body {
+  padding: 16px 14px 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  font-size: 13px;
+  justify-content: flex-start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.body-inner {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* ==========================================================================
+   4. HIDE CLI PROMPT & HISTORY ON MOBILE
+   ========================================================================== */
+
+#promptHistory,
+.prompt-line {
+  display: none !important;
+}
+
+/* ==========================================================================
+   5. LOGO — SCALED FOR MOBILE
+   ========================================================================== */
+
+.logo-wrap {
+  margin-bottom: 18px;
+}
+
+.logo-img,
+.logo-wrap picture {
+  max-width: 85vw;
+}
+
+/* ==========================================================================
+   6. MENU GRID — MOBILE-OPTIMIZED
+   ========================================================================== */
+
+.menu-grid {
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.menu-row {
+  gap: 12px 10px;
+  justify-content: center;
+}
+
+.ascii-btn {
+  width: calc(42vw - 10px);
+  max-width: 150px;
+  min-width: 100px;
+  padding: 10px 6px;
+}
+
+.ascii-btn .ascii-art {
+  font-size: 11px;
+}
+
+.ascii-btn .ascii-label {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   7. APP WINDOWS — FULL-SCREEN MODAL ON MOBILE
+   ========================================================================== */
+
+.app-window {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.app-titlebar {
+  height: 44px;
+  padding-top: env(safe-area-inset-top, 0px);
+  cursor: default;
+  touch-action: auto;
+}
+
+.app-content {
+  padding: 14px 16px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide resize handles in app windows */
+.app-window .resize-handle {
+  display: none !important;
+}
+
+/* ==========================================================================
+   8. DESKTOP DOCK — HIDDEN ON MOBILE
+   ========================================================================== */
+
+.desktop-dock {
+  display: none !important;
+}
+
+/* ==========================================================================
+   9. GITHUB BUTTON — REPOSITIONED ON MOBILE
+   ========================================================================== */
+
+.terminal-github-btn {
+  bottom: auto;
+  top: calc(44px + env(safe-area-inset-top, 0px) + 8px);
+  right: 12px;
+  left: auto;
+  z-index: 20;
+  max-width: 160px !important;
+  padding: 0 8px !important;
+}
+
+/* Always show expanded on mobile */
+.terminal-github-btn .gh-label {
+  opacity: 1;
+  max-width: 120px;
+  margin-left: 5px;
+}
+
+/* ==========================================================================
+   10. BACKGROUND CANVAS — TOUCH-FRIENDLY
+   ========================================================================== */
+
+#bg-canvas {
+  touch-action: auto;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   11. AUDIO PROMPT — MOBILE POLISH
+   ========================================================================== */
+
+.audio-prompt-box {
+  width: 90vw;
+  max-width: 340px;
+}
+
+.audio-prompt-actions .ascii-btn {
+  min-width: 80px;
+}
+
+/* ==========================================================================
+   12. THEME POPOVER — MOBILE POSITIONING
+   ========================================================================== */
+
+.theme-popover {
+  max-height: calc(100dvh - 100px);
+  right: -4px;
+}
+
+/* ==========================================================================
+   13. NEOFETCH — STACKED LAYOUT
+   ========================================================================== */
+
+.tui-neofetch {
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.tui-neofetch-logo {
+  width: 100%;
+}
+
+.tui-neofetch-specs {
+  width: 100%;
+}

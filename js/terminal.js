@@ -11,6 +11,11 @@ import { getModuleById } from './modules/index.js';
 import { t, onLanguageChange } from './i18n.js';
 import { config } from './config.js';
 
+/** Detect mobile viewport — used to skip keyboard-triggering focus */
+function isMobile() {
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
 let terminal = null;
 let btnClose = null;
 let btnMin = null;
@@ -866,7 +871,7 @@ export function enablePrompt() {
   }
   setTimeout(() => {
     const input = document.getElementById('promptInput');
-    if (input) input.focus();
+    if (input && !isMobile()) input.focus();
   }, 420);
 }
 
@@ -1230,7 +1235,7 @@ export function initTerminal() {
           const pos = terminalDrag ? terminalDrag.getPosition() : { x: 0, y: 0 };
           terminal.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0px)`;
           const input = document.getElementById('promptInput');
-          if (input) input.focus();
+          if (input && !isMobile()) input.focus();
         }, { once: true });
 
         terminalState = 'open';
