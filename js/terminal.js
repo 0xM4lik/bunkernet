@@ -532,7 +532,9 @@ export function streamFullPageTUI(containerEl, htmlInput, options = {}) {
 
   const globeEl = containerEl.querySelector('.tui-globe-pre');
   let initialDelay = 0;
-  if (globeEl) {
+  // Only auto-trigger globe ignition if the globe is NOT inside a data-no-stream
+  // container (modules that manage their own animation sequence, like about, opt out)
+  if (globeEl && !globeEl.closest('[data-no-stream]')) {
     if (parentWin) {
       const modId = parentWin.id.replace('win-', '');
       const mod = getModuleById(modId);

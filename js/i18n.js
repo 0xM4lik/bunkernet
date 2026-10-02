@@ -61,8 +61,8 @@ export const TRANSLATIONS = {
     'about.spec.aiTools': 'AI Tooling:',
     'about.spec.languages': 'Languages:',
     'about.spec.languagesVal': 'German (Native), English',
-    'about.bio1': "Hey, I'm Janik, also known as 0xM4lik online. I love open-source software and learning new tech.",
-    'about.bio2': "I made this website to share some of the things I have learned over the years and some of my projects. Most of my time goes into security research, CTFs and improving / maintaining my homelab.",
+    'about.bio1': "Hey, I'm Janik, also known as **0xM4lik** online. I love **open-source software** and learning new tech.",
+    'about.bio2': "I made this website to share some of the things I have learned over the years and some of my projects. Most of my time goes into **security research**, **CTFs** and improving / maintaining my **homelab**.",
 
     // Work Module
     'work.skillsHeading': 'Skills & Technologies:',
@@ -162,8 +162,8 @@ export const TRANSLATIONS = {
     'about.spec.aiTools': 'KI-Tools:',
     'about.spec.languages': 'Sprachen:',
     'about.spec.languagesVal': 'Deutsch (Muttersprache), Englisch',
-    'about.bio1': 'Hey, ich bin Janik, online bekannt als 0xM4lik. Ich liebe Open-Source-Software und neue Technologien.',
-    'about.bio2': 'Mit dieser Website möchte ich Erfahrungen und Projekte der letzten Jahre teilen. Die meiste Zeit widme ich der IT-Sicherheitsforschung, CTFs sowie dem Betrieb und Ausbau meines Homelabs.',
+    'about.bio1': 'Hey, ich bin Janik, online bekannt als **0xM4lik**. Ich liebe **Open-Source-Software** und neue Technologien.',
+    'about.bio2': 'Mit dieser Website möchte ich Erfahrungen und Projekte der letzten Jahre teilen. Die meiste Zeit widme ich der **IT-Sicherheitsforschung**, **CTFs** sowie dem Betrieb und Ausbau meines **Homelabs**.',
 
     // Work Module
     'work.skillsHeading': 'Skills & Technologien:',

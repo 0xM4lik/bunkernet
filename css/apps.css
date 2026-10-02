@@ -577,6 +577,68 @@
   padding: calc(16px * var(--app-scale, 1)) calc(20px * var(--app-scale, 1));
 }
 
+.tui-about-intro {
+  margin-bottom: calc(14px * var(--app-scale, 1));
+  padding-left: calc(12px * var(--app-scale, 1));
+  border-left: 2px solid rgba(var(--term-primary-rgb), 0.3);
+}
+
+.tui-glow-line {
+  margin-bottom: calc(8px * var(--app-scale, 1));
+  line-height: 1.55;
+}
+
+.tui-glow-line:last-child {
+  margin-bottom: 0;
+}
+
+/* Clean bold text in about markdown (no glow) */
+.tui-glow-bold {
+  color: var(--text-main);
+  font-weight: 700;
+  text-shadow: none !important;
+}
+
+/* Fastfetch command prompt line */
+.tui-fastfetch-cmd {
+  font-family: var(--mono);
+  font-size: clamp(11.5px, calc(12px * var(--app-scale, 1)), 17px);
+  line-height: 1.45;
+  margin-bottom: calc(10px * var(--app-scale, 1));
+  user-select: none;
+}
+
+.tui-fastfetch-prompt {
+  color: var(--term-green);
+  font-weight: 600;
+}
+
+.tui-fastfetch-typed {
+  color: var(--text-main);
+}
+
+/* Fastfetch output block — starts hidden, revealed by JS */
+.tui-fastfetch-output {
+  will-change: opacity, transform;
+}
+
+/* Enlarged link buttons in about window (GitHub, HackTheBox, Notes) */
+.about-window .tui-links-row {
+  gap: calc(12px * var(--app-scale, 1));
+  margin-top: calc(12px * var(--app-scale, 1));
+}
+
+.about-window .tui-links-row .tui-btn {
+  font-size: clamp(13.5px, calc(15px * var(--app-scale, 1)), 20px);
+  padding: calc(3px * var(--app-scale, 1)) calc(6px * var(--app-scale, 1));
+}
+
+.about-window .tui-links-row .tui-btn-icon {
+  width: calc(16px * var(--app-scale, 1));
+  height: calc(16px * var(--app-scale, 1));
+  margin: 0 calc(3px * var(--app-scale, 1));
+}
+
 /* ==========================================================================
    MODULE: WORK
    ========================================================================== */
