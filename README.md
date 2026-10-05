@@ -23,7 +23,7 @@ Open `http://localhost:8000` in your browser.
 
 ## Overview
 
-bunkernet.cc is my personal portfolio and homelab landing page. It brings a desktop-style terminal experience to the browser, featuring draggable windows, synthesized sound effects, customizable themes, and an interactive canvas background — all running client-side using standard web technologies.
+bunkernet.cc is my personal portfolio and homelab landing page. It brings a desktop-style terminal experience to the browser, featuring draggable windows, synthesized sound effects, customizable themes, and an interactive canvas background, all running client-side using standard web technologies.
 
 The project is built entirely with plain HTML, CSS, and modern JavaScript modules. There are no bundlers, no build pipelines, and no third-party runtime dependencies.
 
