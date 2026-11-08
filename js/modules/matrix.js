@@ -2,7 +2,6 @@
  * Matrix Rain App Module
  * 100% transparent canvas with high-performance digital phosphor stream trails.
  */
-import { config } from '../config.js';
 import { sound } from '../audio.js';
 import { getCurrentTheme } from '../theme.js';
 import { t } from '../i18n.js';
@@ -129,8 +128,10 @@ function drawFrame(timestamp) {
 
 export default {
   id: 'matrix',
+  hidden: true,
   get label() { return t('menu.matrix'); },
   command: 'matrix',
+  aliases: ['cmatrix'],
   get windowTitle() { return t('window.matrix'); },
   windowClass: 'matrix-window',
   baseWidth: 740,
@@ -162,11 +163,6 @@ export default {
   render() {
     return `
       <canvas id="matrixCanvas"></canvas>
-      <div class="matrix-cta">
-        <a class="ascii-btn" href="${config.matrixRoomUrl}" target="_blank" rel="noopener" aria-label="${t('matrix.ctaAria')}">
-          <span class="ascii-label" data-text="${t('matrix.cta')}">${t('matrix.cta')}</span>
-        </a>
-      </div>
     `;
   },
 
@@ -178,12 +174,6 @@ export default {
       lastFrameTime = 0;
       if (matrixLoopId) cancelAnimationFrame(matrixLoopId);
       matrixLoopId = requestAnimationFrame(drawFrame);
-    }
-
-    const btn = winEl.querySelector('.matrix-cta .ascii-btn');
-    if (btn && !btn._soundBound) {
-      btn._soundBound = true;
-      btn.addEventListener('click', () => sound.pickup());
     }
   },
 

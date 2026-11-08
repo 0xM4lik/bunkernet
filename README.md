@@ -88,8 +88,8 @@ export const config = {
   // Knowledgebase URL (Quartz, Hugo, Obsidian Publish, etc.)
   notesUrl: 'https://notes.bunkernet.cc',
 
-  // Matrix chat
-  matrixRoomUrl: 'https://matrix.to/#/!yIbWuYLKo8LuvvpO3yhkt5Xjvb1H5GeTbthNXggJRyc?via=matrix.bunkernet.cc',
+  // Contact details
+  matrixUser: '@malik:matrix.bunkernet.cc',
   contactEmail: 'janik@bunkernet.cc'
 };
 ```
@@ -137,8 +137,8 @@ The system automatically adds the button to the terminal grid, wires up the CLI 
 | `about` | Display system summary and ASCII globe |
 | `work` | Browse projects and GitHub repositories |
 | `notes` | Open link to notes knowledgebase |
-| `matrix` | Launch digital rain animation |
 | `contact` | Show Matrix and email contact details |
+| `cmatrix`, `matrix` | Launch digital rain animation (easter egg) |
 | `theme <name>` | Switch theme (`matrix`, `nord`, `ocean`, `dark`, etc.) |
 | `sound <on\|off>` | Toggle UI sound effects |
 | `clear` | Clear prompt history |

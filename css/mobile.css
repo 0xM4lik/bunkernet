@@ -222,13 +222,6 @@ button, a, [role="button"] {
   background: rgba(var(--term-primary-rgb, 88, 166, 255), 0.14) !important;
 }
 
-/* Only the 5th button (Contact in the second row) spans across both columns as a clean centered card */
-.menu-row:last-child .ascii-btn:last-child {
-  grid-column: 1 / -1 !important;
-  max-width: 220px !important;
-  margin: 0 auto !important;
-}
-
 .ascii-btn .ascii-art {
   font-size: clamp(9.5px, 2.8vw, 12px) !important;
   line-height: 1.25 !important;

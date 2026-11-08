@@ -21,8 +21,7 @@ export const config = {
   hackTheBoxUrl: 'https://app.hackthebox.com/users/1464597',
   notesUrl: 'https://notes.bunkernet.cc',
 
-  // Matrix Community & Direct Messaging
-  matrixRoomUrl: 'https://matrix.to/#/!yIbWuYLKo8LuvvpO3yhkt5Xjvb1H5GeTbthNXggJRyc?via=matrix.bunkernet.cc',
+  // Matrix Direct Messaging
   matrixUser: '@malik:matrix.bunkernet.cc',
   matrixUserUrl: 'https://matrix.to/#/@malik:matrix.bunkernet.cc',
 

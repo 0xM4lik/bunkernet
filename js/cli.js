@@ -43,7 +43,7 @@ export function handleCommand(raw) {
   const args = parts.slice(1);
 
   if (mainCmd === 'help') {
-    const moduleCmds = getAllModules().map(m => m.command || m.id).join(', ');
+    const moduleCmds = getAllModules().filter(m => !m.hidden).map(m => m.command || m.id).join(', ');
     output.textContent = t('cli.helpCommands', { mods: moduleCmds });
     sound.ready();
   } else if (mainCmd === 'whoami') {
@@ -138,7 +138,7 @@ export function handleCommand(raw) {
         sound.windowOpen();
         window.open(mod.url, '_blank', 'noopener,noreferrer');
       } else {
-        output.textContent = t('cli.opening', { target: mod.id });
+        output.textContent = t('cli.opening', { target: mainCmd === 'cmatrix' ? 'cmatrix' : mod.id });
         sound.windowOpen();
         WindowManager.open(mod.id);
       }

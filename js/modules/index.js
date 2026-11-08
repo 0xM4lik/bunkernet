@@ -30,7 +30,7 @@ export function getModuleById(id) {
 
 export function getModuleByCommand(cmd) {
   const c = cmd.toLowerCase();
-  return modules.find(m => m.command === c || m.id === c);
+  return modules.find(m => m.command === c || m.id === c || (Array.isArray(m.aliases) && m.aliases.includes(c)));
 }
 
 /**
@@ -45,14 +45,15 @@ export function mountModules(gridContainer, windowsContainer) {
   gridContainer.innerHTML = '';
   windowsContainer.innerHTML = '';
 
-  // Split buttons into rows (3 in row 1, 2 in row 2)
+  // Split visible launcher buttons into rows (2 in row 1, 2 in row 2)
+  const launcherModules = modules.filter(m => !m.hidden);
   const row1 = document.createElement('div');
   row1.className = 'menu-row';
   const row2 = document.createElement('div');
   row2.className = 'menu-row';
 
   // 1. Build launcher buttons for main terminal
-  modules.forEach((mod, index) => {
+  launcherModules.forEach((mod, index) => {
     const isExternal = Boolean(mod.url);
     const btn = document.createElement(isExternal ? 'a' : 'button');
     btn.className = 'ascii-btn';
@@ -85,7 +86,7 @@ export function mountModules(gridContainer, windowsContainer) {
     btn.appendChild(pre);
     btn.appendChild(span);
 
-    if (index < 3) {
+    if (index < 2) {
       row1.appendChild(btn);
     } else {
       row2.appendChild(btn);

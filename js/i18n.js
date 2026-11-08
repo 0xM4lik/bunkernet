@@ -84,10 +84,6 @@ export const TRANSLATIONS = {
     'notes.openBtn': '[ OPEN NOTES ↗ ]',
     'notes.cancelBtn': '[ CANCEL ]',
 
-    // Matrix Module
-    'matrix.cta': '[ JOIN THE BUNKERSPACE ]',
-    'matrix.ctaAria': 'Join the Bunkerspace on Matrix',
-
     // Contact Module
     'contact.emailLabel': 'Email:',
     'contact.matrixLabel': 'Matrix:',
@@ -184,10 +180,6 @@ export const TRANSLATIONS = {
     'notes.prompt': 'Notizen in neuem Tab öffnen?',
     'notes.openBtn': '[ NOTIZEN ÖFFNEN ↗ ]',
     'notes.cancelBtn': '[ ABBRECHEN ]',
-
-    // Matrix Module
-    'matrix.cta': '[ DEM BUNKERSPACE BEITRETEN ]',
-    'matrix.ctaAria': 'Dem Bunkerspace auf Matrix beitreten',
 
     // Contact Module
     'contact.emailLabel': 'E-Mail:',
